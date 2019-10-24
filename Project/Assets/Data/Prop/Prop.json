@@ -1,0 +1,26 @@
+[
+    {
+        "ID": 0,
+        "ParentID": -1,
+        "Name": "桃木剑",
+        "Effect": "攻击+8",
+        "Directory": "攻击力+8%",
+        "MakerID": -1
+    },
+    {
+        "ID": 1,
+        "ParentID": -1,
+        "Name": "定海神针",
+        "Effect": "移动速度-20",
+        "Directory": "沉重的定海神针在不合适的人手中只会是拖累",
+        "MakerID": 0
+    },
+    {
+        "ID": 2,
+        "ParentID": -1,
+        "Name": "铁剑",
+        "Effect": "攻击+7",
+        "Directory": "普通镔铁制成的单手剑",
+        "MakerID": -1
+    }
+]

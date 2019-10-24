@@ -1,0 +1,466 @@
+fileFormatVersion: 2
+guid: 0b811209bfb7e2d42bc7e79cca150f22
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: PowerPoint
+  - first:
+      213: 21300002
+    second: HP
+  - first:
+      213: 21300004
+    second: Icon
+  - first:
+      213: 21300006
+    second: CombatLine
+  - first:
+      213: 21300008
+    second: background
+  - first:
+      213: 21300010
+    second: MP
+  - first:
+      213: 21300012
+    second: HPLIne
+  - first:
+      213: 21300014
+    second: SikllBox
+  - first:
+      213: 21300016
+    second: MPLIne
+  - first:
+      213: 21300018
+    second: SkillIcon
+  - first:
+      213: 21300020
+    second: SkillLine
+  - first:
+      213: 21300022
+    second: CharImageShade
+  - first:
+      213: 21300024
+    second: "\u6218\u6597UIver1.0_14"
+  - first:
+      213: 21300026
+    second: "\u6218\u6597UIver1.0_15"
+  - first:
+      213: 21300028
+    second: CharImageBox
+  - first:
+      213: 21300030
+    second: Power Point
+  - first:
+      213: 21300032
+    second: V3
+  - first:
+      213: 21300034
+    second: Skill Box
+  - first:
+      213: 21300036
+    second: Icon
+  - first:
+      213: 21300038
+    second: RoleIMage
+  - first:
+      213: 21300040
+    second: Mock
+  - first:
+      213: 21300042
+    second: Sikll Line
+  - first:
+      213: 21300044
+    second: backgound
+  - first:
+      213: 21300046
+    second: "\u6218\u6597UIver1.0_6"
+  - first:
+      213: 21300048
+    second: "\u6218\u6597UIver1.0_7"
+  - first:
+      213: 21300050
+    second: "\u6218\u6597UIver1.0_8"
+  - first:
+      213: 21300052
+    second: Combat Line
+  - first:
+      213: 21300054
+    second: HP Line
+  - first:
+      213: 21300056
+    second: "\u6218\u6597UIver1.0_12"
+  - first:
+      213: 21300058
+    second: MP Line
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 800
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Power Point
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1765
+        width: 193
+        height: 191
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e12c58188aadd04cabc0a0b7f5f63ab
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HP
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 1913
+        width: 55
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49b070d0b919e3044961a93a884374d9
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MP
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1847
+        width: 63
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fd25be8db90c394d97f26ff34f62bb9
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: V3
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 1691
+        width: 84
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: afe623c6959d6ca418c323f59d117d4b
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skill Box
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 1540
+        width: 386
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 950b59e6416bca14f9e5e6523a77e710
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icon
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 1480
+        width: 388
+        height: 516
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24031902f9237e441b40171006160ef1
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RoleIMage
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 1504
+        width: 435
+        height: 436
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bfb414c165ee504c8a5ab7226befbb9
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mock
+      rect:
+        serializedVersion: 2
+        x: 1503
+        y: 1500
+        width: 437
+        height: 440
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c120dd3f912996b4f8791065c5bc891b
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sikll Line
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 1251
+        width: 1726
+        height: 110
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cff010e2d19044d4cafc931bb6175d12
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: backgound
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 734
+        width: 1966
+        height: 404
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01ef0a984fbbbef42a4cbf41f268610b
+      internalID: 21300044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combat Line
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 24
+        width: 2034
+        height: 186
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12f099391a05bc642b6e4d174fa9efd0
+      internalID: 21300052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HP Line
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 515
+        width: 1522
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41d536db227d9ef4fade1ef3214317f9
+      internalID: 21300054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MP Line
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 432
+        width: 1521
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46582d608a2a5e547929804622c515f9
+      internalID: 21300058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 6047f11ad0e69d94d8f5840344452f3e
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

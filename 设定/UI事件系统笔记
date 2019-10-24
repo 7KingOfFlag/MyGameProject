@@ -1,0 +1,5 @@
+Event System
+    First Selected 默认选项 打开场景后默认获得焦点的UI对象
+Standalone Input Module
+    Input Action Per Second 每秒接收的指令数量，指令接收周期是这个值的倒数。比如这个值设为10则0.1秒接收一次指令
+    Repeat Delay 重复延迟
