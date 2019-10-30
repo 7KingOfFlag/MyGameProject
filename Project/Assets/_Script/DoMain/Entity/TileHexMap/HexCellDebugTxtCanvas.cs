@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -24,21 +25,97 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         public AssetReference hexPosTxtPrefab;
 
         private Canvas hexCellCanvas;
+        private CanvasGroup canvasGroup;
         /// <summary>
         /// 文本框实例字典
         /// </summary>
-        private Dictionary<Vector2Int, TextMeshProUGUI> txtInstanceDict;
+        private Dictionary<Vector2Int, TextMeshProUGUI> txtDict;
+        /// <summary>
+        /// 文本显示模式
+        /// </summary>
+        private TxtShowModeEnum m_txtShowMode = TxtShowModeEnum.Blank;
+        private TxtShowModeEnum TxtShowMode
+        {
+            get
+            {
+                return m_txtShowMode;
+            }
+            set
+            {
+                if (value == m_txtShowMode)
+                {
+                    return;
+                }
+                if (value != TxtShowModeEnum.Blank)
+                {
+                    m_previousTxtShowMode = m_txtShowMode;
+                }
+                m_txtShowMode = value;
+                ShfitTxtShowMode(m_txtShowMode);
+            }
+        }
 
         void Awake()
         {
             hexCellCanvas = GetComponent<Canvas>();
-            txtInstanceDict = new Dictionary<Vector2Int, TextMeshProUGUI>();
-            hexCellCanvas.enabled = false;
+            canvasGroup = GetComponent<CanvasGroup>();
+            txtDict = new Dictionary<Vector2Int, TextMeshProUGUI>();
+            canvasGroup.alpha = 0;
         }
 
-        void Start()
+        TxtShowModeEnum m_previousTxtShowMode;
+        /// <summary>
+        /// 切换文本显示模式
+        /// </summary>
+        /// <param name="txtShowMode"></param>
+        private void ShfitTxtShowMode(TxtShowModeEnum txtShowMode)
         {
-            BuildHexPosTxt(50, 50);
+            switch (txtShowMode)
+            {
+                case TxtShowModeEnum.Blank:
+                    canvasGroup.alpha = 0;
+                    break;
+                case TxtShowModeEnum.ShowCoordinate:
+                    canvasGroup.alpha = 1;
+                    if (m_previousTxtShowMode == TxtShowModeEnum.ShowCoordinate) return;
+
+                    ShowCoordinate();
+                    break;
+                case TxtShowModeEnum.ShowDistance:
+                    canvasGroup.alpha = 1;
+                    if (m_previousTxtShowMode == TxtShowModeEnum.ShowDistance) return;
+
+                    ShowDistance();
+                    break;
+                default:
+                    Debug.LogWarning($"In {gameObject.name} has undefined enum");
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 显示距离
+        /// </summary>
+        private void ShowDistance()
+        {
+            foreach (var item in txtDict)
+            {
+                var txt = item.Value;
+                txt.text = $"{item.Key.x}";
+                txt.fontSize = 0.4f;
+            }
+        }
+        /// <summary>
+        /// 显示坐标
+        /// </summary>
+        private void ShowCoordinate()
+        {
+            foreach (var item in txtDict)
+            {
+                var txt = item.Value;
+                txt.text = $"{item.Key.x},{item.Key.y}";
+                txt.fontSize = 0.3f;
+            }
         }
 
         /// <summary>
@@ -47,7 +124,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         public void BuildHexPosTxt(int InitSzieX, int InitSzieY)
         {
             ClearInstaceTxt();
-            txtInstanceDict.Clear();
+            txtDict.Clear();
             for (int x = 0; x < InitSzieX; x++)
             {
                 for (int y = 0; y < InitSzieY; y++)
@@ -61,11 +138,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         private void ClearInstaceTxt()
         {
-            foreach (var item in txtInstanceDict.Values)
+            foreach (var item in txtDict.Values)
             {
                 Destroy(item.gameObject);
             }
-            txtInstanceDict.Clear();
+            txtDict.Clear();
         }
 
         /// <summary>
@@ -85,13 +162,38 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         {
             var txt = obj.Result.GetComponent<TextMeshProUGUI>();
             var txtPosition = tilemapBackground.WorldToCell(txt.transform.position);
+            txtDict.Add(new Vector2Int(txtPosition.x, txtPosition.y), txt);
             txt.SetText($"{txtPosition.x},{txtPosition.y}");
-            txtInstanceDict.Add(new Vector2Int(txtPosition.x, txtPosition.y), txt);
         }
 
-        public void IsShowNumberGrid(Toggle toggle)
+        /// <summary>
+        /// 设置文本视图显示模式<-通关Unity事件机制调用
+        /// </summary>
+        /// <param name="dropdown"></param>
+        public void SetTxtShowMode(TMP_Dropdown dropdown)
         {
-            hexCellCanvas.enabled = toggle.isOn;
+            TxtShowMode = (TxtShowModeEnum)dropdown.value;
+            Debug.Log($"TxtShowMode = {TxtShowMode}");
+
+        }
+
+        /// <summary>
+        /// 文本显示模式枚举
+        /// </summary>
+        private enum TxtShowModeEnum
+        {
+            /// <summary>
+            /// 不显示
+            /// </summary>
+            Blank,
+            /// <summary>
+            /// 显示坐标
+            /// </summary>
+            ShowCoordinate,
+            /// <summary>
+            /// 显示距离
+            /// </summary>
+            ShowDistance
         }
     }
 }

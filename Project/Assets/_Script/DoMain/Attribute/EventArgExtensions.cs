@@ -13,7 +13,7 @@ namespace OurGameName.DoMain.Attribute
         /// <param name="sender"></param>
         /// <param name="eventDelegate"></param>
         public static void Raise<TEventArgs>(this TEventArgs e,
-            Object sender, ref EventHandler<TEventArgs> eventDelegate)
+            object sender, ref EventHandler<TEventArgs> eventDelegate)
         {
             EventHandler<TEventArgs> temp = Volatile.Read(ref eventDelegate);
             if (temp != null) temp(sender, e);

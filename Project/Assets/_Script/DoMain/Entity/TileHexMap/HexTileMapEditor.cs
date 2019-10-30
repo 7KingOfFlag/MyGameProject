@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using OurGameName.DoMain.Data;
 using OurGameName.DoMain.Entity.HexMap;
 using TMPro;
@@ -23,9 +26,13 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         public Tilemap tilemapBackground;
         /// <summary>
+        /// 网格地图
+        /// </summary>
+        public HexMeshTileMap marginMeshTilemap;
+        /// <summary>
         /// 信息地图
         /// </summary>
-        public InfoTileMap infoTileMap;
+        public HexMeshTileMap infoTileMap;
         /// <summary>
         /// 主摄像头
         /// </summary>
@@ -66,13 +73,15 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         {
             mainCamera = Camera.main;
             savePath = Application.dataPath + "/Data/Save/Save1.json";
+            GameDataCentre.AseetLoadStatusChang += GameDataCentre_AseetLoadStatusChang;
             MouseDetectionColliderInit();
         }
 
         void Start()
         {
             var mapSize = tilemapBackground.size;
-            //hexCellDebugTxtCanvas.BuildHexPosTxt(mapSize.x, mapSize.y);
+            hexCellDebugTxtCanvas.BuildHexPosTxt(mapSize.x, mapSize.y);
+            marginMeshTilemap.enabled = false;
         }
 
         void Update()
@@ -98,8 +107,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         public void SaveMapData()
         {
-            //Debug.Log($"tilesize:{tilemapBackground.size}");
-            //Debug.Log($"tileOrigin:{tilemapBackground.origin}");
             Vector3Int mapsize = tilemapBackground.size;
             HexTileMapData data = new HexTileMapData(mapsize.x, mapsize.y);
             for (int x = 0; x < mapsize.x; x++)
@@ -162,6 +169,24 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         public void ClearTilemapBackground()
         {
             tilemapBackground.ClearAllTiles();
+        }
+
+        #endregion
+
+        #region 网格地图
+        private void GameDataCentre_AseetLoadStatusChang(object sender, AseetLoadStatusArgs e)
+        {
+            if (e.AseetType == typeof(TileBase) &&
+                e.AseetName == "TileAsset" &&
+                e.AseetLoadStatus == AseetLoadStatusArgs.LoadStatus.Completed)
+            {
+                TileBase tileBase = GameDataCentre.TileAssetDate.GetTileBaseAsset("border");
+                marginMeshTilemap.InitHexMeshTileMap(tilemapBackground.size, tileBase);
+            }
+        }
+        public void SetEnabledOfMarginMeshTileMap(Toggle toggle)
+        {
+            marginMeshTilemap.enabled = toggle.isOn;
         }
 
         #endregion
@@ -290,7 +315,13 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             if (CurrentUnderCell != MouseCellPosition)
             {
                 CurrentUnderCell = MouseCellPosition;
-                infoTileMap.DrawPreviewCell(HexTileMetrics.GetCellInRange(CurrentUnderCell, brushSize));
+                TileBase tileBase = GameDataCentre.TileAssetDate.GetTileBaseAsset("border");
+                if (tileBase == null)
+                {
+                    Debug.LogWarning("TileAsset border didn't load");
+                    return;
+                }
+                infoTileMap.DrawHexMeshTileCells(HexTileMetrics.GetCellInRange(CurrentUnderCell, brushSize), tileBase);
             }
         }
 
@@ -318,7 +349,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <param name="postiton"></param>
         private void SetTileAsset(Vector3Int postiton,string TileAssetName)
         {
-            if (TileAssetName == "" || GameDataCentre.TileAssetDate.AssetLoadCompleted == false)
+            if (TileAssetName == "" || GameDataCentre.TileAssetDate.IsAssetLoadCompleted == false)
             {
                 return;
             }
@@ -344,16 +375,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 Vector3 mapSzie = tilemapBackground.size;
                 mouseDetectionCollider.size = new Vector3(mapSzie.x, mapSzie.y, 0f);
                 mouseDetectionCollider.center = new Vector3(mapSzie.x / 2, mapSzie.y / 2, 0f);
-                if (InputController != null)
-                {
-                    var InputControllerCollider = InputController.GetComponent<BoxCollider>();
-                    InputControllerCollider.size = mouseDetectionCollider.size;
-                    InputControllerCollider.center = mouseDetectionCollider.center;
-                }
-                else
-                {
-                    Debug.LogError("InputController is Null");
-                }
             }
             else
             {

@@ -7,7 +7,17 @@ namespace OurGameName.DoMain.Controller
     internal class CameraMove : MonoBehaviour
     {
         public PlayerInput PlayerInput;
+        /// <summary>
+        /// 键盘移动速度
+        /// </summary>
         public float KeyboardMovespeed = 10f;
+        /// <summary>
+        /// 鼠标俯仰速度
+        /// </summary>
+        public float MouseTiltSpeed = 5f;
+        /// <summary>
+        /// 鼠标拖曳速度
+        /// </summary>
         public float MouseDragSpeed = 12f;
         public Tilemap BackGroundTilemap;
         public Cinemachine.CinemachineVirtualCamera CinemachineCamera;
@@ -32,6 +42,7 @@ namespace OurGameName.DoMain.Controller
             currentMouse = Mouse.current;
             PlayerInput.actions["ScrollWheel"].performed += ScrollWheelEvent;
             MoveAction = PlayerInput.actions["Move"];
+            
         }
 
         void FixedUpdate()
@@ -43,7 +54,7 @@ namespace OurGameName.DoMain.Controller
         private void ScrollWheelEvent(InputAction.CallbackContext obj)
         {
             var position = transform.position;
-            float newFileOfView = position.z + obj.ReadValue<Vector2>().y * KeyboardMovespeed * Time.deltaTime;
+            float newFileOfView = position.z + obj.ReadValue<Vector2>().y * MouseTiltSpeed * Time.deltaTime;
             transform.position = new Vector3(position.x, position.y, Mathf.Clamp(newFileOfView, MinFieldOfView, MaxFieldOfView));
         }
 
