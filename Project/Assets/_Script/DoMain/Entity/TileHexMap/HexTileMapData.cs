@@ -8,7 +8,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
 {
     internal class HexTileMapData
     {
-        public HexTileCell[] HexTileCells;
+        public HexCell[] HexTileCells;
         private Vector2Int m_mapSize;
         public Vector2Int MapSize
         {
@@ -19,7 +19,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         }
         public HexTileMapData(int x,int y)
         {
-            HexTileCells = new HexTileCell[x * y];
+            HexTileCells = new HexCell[x * y];
             m_mapSize = new Vector2Int(x, y);
         }
         

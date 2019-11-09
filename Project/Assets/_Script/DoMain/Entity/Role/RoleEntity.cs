@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OurGameName.DoMain.Attribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,9 +74,9 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// 移动角色
         /// </summary>
         /// <param name="TargetCellPosition">目的地单元格</param>
-        public void MoveRole(Vector3Int TargetCellPosition)
+        public void MoveRole(Vector2Int TargetCellPosition)
         {
-            MoveComponent.Move(TargetCellPosition);
+            MoveComponent.Move(TargetCellPosition.ToVector3Int());
         }
         void OnMouseUpAsButton()
         {

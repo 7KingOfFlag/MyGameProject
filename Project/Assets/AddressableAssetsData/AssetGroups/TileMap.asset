@@ -17,15 +17,21 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 99b3e76073ed5964080c9f426755b92e
   m_SerializeEntries:
-  - m_GUID: 2ddc4acf43a6d0c43bbff5552e3fdb81
-    m_Address: Assets/Prefab/HexTileMap/HexPos.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 59ef6b22e355dbc4ba617cdb50876f00
     m_Address: Assets/Data/TileMap
     m_ReadOnly: 0
     m_SerializedLabels:
     - TileMapAsset
+  - m_GUID: 5a5edeb3527881544bc6b3614a526eeb
+    m_Address: Assets/Prefab/HexTileMap
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UIPrefabAsset
+    - UiPrefabAsset
+  - m_GUID: 6398bc26c9d939c43828a72846431a86
+    m_Address: Assets/Prefab/HexTileMap/MakeMapBox.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0e7c5bfce2adc6844910eb2039e9827e, type: 2}
   m_SchemaSet:

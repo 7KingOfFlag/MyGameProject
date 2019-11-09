@@ -214,10 +214,10 @@ namespace OurGameName.Manager
         }
 
         /// <summary>
-        /// 增殖节点
+        /// 增殖单元格
         /// </summary>
-        /// <param name="cell">需要增殖的节点</param>
-        /// <param name="Size">节点增值的数量</param>
+        /// <param name="cell">需要增殖的单元格</param>
+        /// <param name="Size">单元格增值的数量</param>
         /// <param name="math">增殖单元格选择范围断言</param>
         /// <returns>增殖过项的列表</returns>
         private List<HexCell> ProliferationHexCell(HexCell cell,int Size,Predicate<HexCell> math)
@@ -234,7 +234,7 @@ namespace OurGameName.Manager
             {
                 Size = MapSize;
             }
-            //增殖的节点的地图类型 即核心节点的地图类型 
+            //增殖的单元格的地图类型 即核心单元格的地图类型 
             Terrain thisTerrain = cell.TerrainTypeIndex;
             int i = 0;
             while (i < Size && AddCell.Count > 0)
@@ -253,14 +253,14 @@ namespace OurGameName.Manager
                 }
 
                 //如果没有可改变的单元格则将这个单元格从增殖单元格备选列表中移除
-                //然后重新选择一个备选列表中的节点
+                //然后重新选择一个备选列表中的单元格
                 if (alternative.Count == 0)
                 {
                     AddCell.Remove(selectedCell);
                     continue;
                 }
 
-                //随机从邻近备选列表中选一个节点改变地貌，并加它添加到备选列表中
+                //随机从邻近备选列表中选一个单元格改变地貌，并加它添加到备选列表中
                 HexCell neighbor = alternative.GetRandomItem(random);
                 neighbor.TerrainTypeIndex = thisTerrain;
                 ProliferationList.Add(neighbor);

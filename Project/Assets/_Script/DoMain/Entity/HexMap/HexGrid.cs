@@ -7,12 +7,12 @@ namespace OurGameName.DoMain.Entity.HexMap
     public class HexGrid :MonoBehaviour
     {
         /// <summary>
-        /// 地图节点总数
+        /// 地图单元格总数
         /// </summary>
         int cellCountX, cellCountZ;
 
         /// <summary>
-        /// 地图节点预制体
+        /// 地图单元格预制体
         /// </summary>
         public HexCell cellPrefab;
         /// <summary>
@@ -28,7 +28,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         public HexCellMesh cellMeshPrefab;
 
         /// <summary>
-        /// 地图节点数组 地图上数据的存储对象
+        /// 地图单元格数组 地图上数据的存储对象
         /// </summary>
         public HexCell[,] HexCells { get; private set; }
 
@@ -70,8 +70,8 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <summary>
         /// 初始化地图
         /// </summary>
-        /// <param name="CellCountX">地图节点数量</param>
-        /// <param name="CellCountZ">地图节点数量</param>
+        /// <param name="CellCountX">地图单元格数量</param>
+        /// <param name="CellCountZ">地图单元格数量</param>
         public void Init(int CellCountX,int CellCountZ)
         {
             cellCountX = CellCountX;
@@ -82,7 +82,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 新建地图节点
+        /// 新建地图单元格
         /// </summary>
         private void CreateCell()
         {
@@ -105,7 +105,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 创建对应索引的地图节点
+        /// 创建对应索引的地图单元格
         /// </summary>
         /// <param name="x"></param>
         /// <param name="z"></param>
@@ -119,11 +119,11 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 设置地图节点在场景中的坐标
+        /// 设置地图单元格在场景中的坐标
         /// </summary>
-        /// <param name="cell">地图节点</param>
-        /// <param name="x">节点数组索引</param>
-        /// <param name="z">节点数组索引</param>
+        /// <param name="cell">地图单元格</param>
+        /// <param name="x">单元格数组索引</param>
+        /// <param name="z">单元格数组索引</param>
         private void SetCellPosition(HexCell cell, int x, int z)
         {
             Vector3 position;
@@ -135,7 +135,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 设置节点相邻关系
+        /// 设置单元格相邻关系
         /// </summary>
         /// <param name="x"></param>
         /// <param name="z"></param>
@@ -178,7 +178,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 将节点添加到地图块中
+        /// 将单元格添加到地图块中
         /// </summary>
         /// <param name="x"></param>
         /// <param name="z"></param>
@@ -205,10 +205,10 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 从世界位置上获取相应的地图节点
+        /// 从世界位置上获取相应的地图单元格
         /// </summary>
         /// <param name="position">世界坐标</param>
-        /// <returns>世界坐标上的地图节点对象</returns>
+        /// <returns>世界坐标上的地图单元格对象</returns>
         public HexCell GetCell(Vector3 position)
         {
             position = transform.InverseTransformPoint(position);
@@ -218,10 +218,10 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 根据六边形坐标获取地图节点对象
+        /// 根据六边形坐标获取地图单元格对象
         /// </summary>
         /// <param name="Coordinates"></param>
-        /// <returns>返回地图是的节点 节点不存在时返回null</returns>
+        /// <returns>返回地图是的单元格 单元格不存在时返回null</returns>
         public HexCell GetCell(HexCoordinates Coordinates)
         {
             int x = Coordinates.X + Coordinates.Z / 2;

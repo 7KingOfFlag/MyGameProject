@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Random = System.Random;
 
 namespace OurGameName.DoMain.Attribute
 {
@@ -84,5 +85,9 @@ namespace OurGameName.DoMain.Attribute
                 return i;
             }
         }
+
+
+        
     }
+
 }

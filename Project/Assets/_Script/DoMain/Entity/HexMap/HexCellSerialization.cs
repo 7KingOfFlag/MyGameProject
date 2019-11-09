@@ -13,7 +13,7 @@ namespace OurGameName.DoMain.Entity.HexMap
     public class HexCellSerialization
     {
         /// <summary>
-        /// 地图节点坐标
+        /// 地图单元格坐标
         /// </summary>
         public int X, Z;
 
@@ -84,7 +84,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                     {
                         StringBuilder builder = new StringBuilder();
                         builder.Append(string.Format("数组下标越界\n序列化数组大小{1} 下标:{0}\n", i, serializations.Length));
-                        builder.Append(string.Format("地图节点数组大小({0},{1}) 下标:({2},{3})", cells.GetLength(0), cells.GetLength(1), x, z));
+                        builder.Append(string.Format("地图单元格数组大小({0},{1}) 下标:({2},{3})", cells.GetLength(0), cells.GetLength(1), x, z));
                         Debug.Log(builder.ToString());
                     }
                 }
@@ -92,10 +92,10 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         /// <summary>
-        /// 用序列化地图的中的节点覆盖游戏场景中的地图节点
+        /// 用序列化地图的中的单元格覆盖游戏场景中的地图单元格
         /// </summary>
-        /// <param name="hexCell">游戏场景中的地图节点</param>
-        /// <param name="hexCellSerialization">序列化地图的节点</param>
+        /// <param name="hexCell">游戏场景中的地图单元格</param>
+        /// <param name="hexCellSerialization">序列化地图的单元格</param>
         private static void CoverageHexMap(HexCell hexCell, HexCellSerialization serializationCell)
         {
             hexCell.TerrainTypeIndex = (Terrain)serializationCell.TerrainTypeIndex;

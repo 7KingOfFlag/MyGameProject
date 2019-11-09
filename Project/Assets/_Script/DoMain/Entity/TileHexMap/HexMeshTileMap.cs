@@ -32,14 +32,31 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 Debug.LogError("marginMeshTilemap is null");
                 return;
             }
-            for (int x = 0; x < mapSize.x; x++)
+            SetTileOfSize(new Vector2Int(mapSize.x, mapSize.y), tileAsset);
+            m_meshTilemap.RefreshAllTiles();
+        }
+
+        /// <summary>
+        /// 重新设置大小
+        /// </summary>
+        /// <param name="size"></param>
+        public void ResetSize(Vector2Int size)
+        {
+            TileBase tileBase = m_meshTilemap.GetTile(Vector3Int.zero);
+            m_meshTilemap.ClearAllTiles();
+            SetTileOfSize(size, tileBase);
+            m_meshTilemap.RefreshAllTiles();
+        }
+
+        private void SetTileOfSize(Vector2Int size, TileBase tileAsset)
+        {
+            for (int x = 0; x < size.x; x++)
             {
-                for (int y = 0; y < mapSize.y; y++)
+                for (int y = 0; y < size.y; y++)
                 {
                     m_meshTilemap.SetTile(new Vector3Int(x, y, 0), tileAsset);
                 }
             }
-            m_meshTilemap.RefreshAllTiles();
         }
 
         /// <summary>

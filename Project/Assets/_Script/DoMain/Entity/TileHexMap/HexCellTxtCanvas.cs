@@ -6,13 +6,14 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using OurGameName.DoMain.Attribute;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
     /// <summary>
-    /// 六边形节点表面画布
+    /// 六边形单元格文本画布
     /// </summary>
-    internal class HexCellDebugTxtCanvas : MonoBehaviour
+    internal class HexCellTxtCanvas : MonoBehaviour
     {
         /// <summary>
         /// 背景tileMap
@@ -20,11 +21,10 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         public Tilemap tilemapBackground;
 
         /// <summary>
-        /// 节点位置文本框预制体
+        /// 单元格位置文本框预制体
         /// </summary>
         public AssetReference hexPosTxtPrefab;
 
-        private Canvas hexCellCanvas;
         private CanvasGroup canvasGroup;
         /// <summary>
         /// 文本框实例字典
@@ -34,13 +34,13 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 文本显示模式
         /// </summary>
         private TxtShowModeEnum m_txtShowMode = TxtShowModeEnum.Blank;
-        private TxtShowModeEnum TxtShowMode
+        public TxtShowModeEnum TxtShowMode
         {
             get
             {
                 return m_txtShowMode;
             }
-            set
+            private set
             {
                 if (value == m_txtShowMode)
                 {
@@ -57,7 +57,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
 
         void Awake()
         {
-            hexCellCanvas = GetComponent<Canvas>();
             canvasGroup = GetComponent<CanvasGroup>();
             txtDict = new Dictionary<Vector2Int, TextMeshProUGUI>();
             canvasGroup.alpha = 0;
@@ -93,6 +92,28 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             }
         }
 
+        public void SetTxt(Vector2Int position, string content)
+        {
+            if (position == position.Error())
+            {
+                return;
+            }
+            txtDict[position].SetText(content);
+        }
+
+        public void SetTxts(Vector2Int[] positions, string[] contents)
+        {
+            if (positions.Length != contents.Length)
+            {
+                Debug.LogError("positions.Length != contents.Length");
+                return;
+            }
+            for (int i = 0; i < positions.Length; i++)
+            {
+                SetTxt(positions[i], contents[i]);
+            }
+        }
+
         /// <summary>
         /// 显示距离
         /// </summary>
@@ -101,7 +122,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             foreach (var item in txtDict)
             {
                 var txt = item.Value;
-                txt.text = $"{item.Key.x}";
+                txt.SetText("");
                 txt.fontSize = 0.4f;
             }
         }
@@ -119,7 +140,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         }
 
         /// <summary>
-        /// 生成位置节点信息文本框
+        /// 生成位置单元格信息文本框
         /// </summary>
         public void BuildHexPosTxt(int InitSzieX, int InitSzieY)
         {
@@ -146,7 +167,18 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         }
 
         /// <summary>
-        /// 在坐标位置实例化位置信息文本框
+        /// 清空文本框内容
+        /// </summary>
+        public void Clear()
+        {
+            foreach (var item in txtDict.Values)
+            {
+                item.SetText("");
+            }
+        }
+
+        /// <summary>
+        /// 以Tiel地图坐标位置实例化位置信息文本框
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -180,7 +212,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <summary>
         /// 文本显示模式枚举
         /// </summary>
-        private enum TxtShowModeEnum
+        public enum TxtShowModeEnum
         {
             /// <summary>
             /// 不显示

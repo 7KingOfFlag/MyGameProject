@@ -18,7 +18,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         private Terrain terrainType;
 
         /// <summary>
-        /// 邻近的节点
+        /// 邻近的单元格
         /// </summary>
         [SerializeField]
         public HexCell[] neighbors;
@@ -151,7 +151,6 @@ namespace OurGameName.DoMain.Entity.HexMap
                 }
             }
         }
-
         #endregion
     }
 

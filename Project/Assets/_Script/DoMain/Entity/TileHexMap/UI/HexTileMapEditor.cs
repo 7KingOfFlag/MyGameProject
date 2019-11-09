@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 using OurGameName.DoMain.Data;
-using OurGameName.DoMain.Entity.HexMap;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using OurGameName.DoMain.Attribute;
 
-
-
-namespace OurGameName.DoMain.Entity.TileHexMap
+namespace OurGameName.DoMain.Entity.TileHexMap.UI
 {
     /// <summary>
     /// 六边形tile地图编辑器
@@ -20,6 +18,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap
     internal class HexTileMapEditor : MonoBehaviour
     {
         public GameObject InputController;
+
+        /// <summary>
+        /// 六边形地图
+        /// </summary>
+        private HexGrid m_HexGrid;
 
         /// <summary>
         /// 背景地图
@@ -40,11 +43,15 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <summary>
         /// 游戏数据中心
         /// </summary>
-        public GameData GameDataCentre;
+        public GameAssetDataHelper GameDataCentre;
         /// <summary>
-        /// 六边形节点表面画布
+        /// 编辑器所在的画布
         /// </summary>
-        public HexCellDebugTxtCanvas hexCellDebugTxtCanvas;
+        public Canvas EditorCanvas;
+        /// <summary>
+        /// 六边形单元格表面画布
+        /// </summary>
+        public HexCellTxtCanvas hexCellDebugTxtCanvas;
         /// <summary>
         /// 鼠标检测碰撞体
         /// </summary>
@@ -66,13 +73,15 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <summary>
         /// 当前鼠标下面的单元格的位置信息
         /// </summary>
-        private Vector3Int CurrentUnderCell = Vector3Int.zero;
+        private Vector2Int CurrentUnderCell = Vector2Int.zero;
+
+
+        public AssetReference HexMapMakeBoxAsset;
 
         #region Unity实体方法
         void Awake()
         {
             mainCamera = Camera.main;
-            savePath = Application.dataPath + "/Data/Save/Save1.json";
             GameDataCentre.AseetLoadStatusChang += GameDataCentre_AseetLoadStatusChang;
             MouseDetectionColliderInit();
         }
@@ -91,7 +100,22 @@ namespace OurGameName.DoMain.Entity.TileHexMap
 
         void OnMouseUpAsButton()
         {
-            EditCell();
+            if (Input.GetMouseButtonUp(0) != true)
+            {
+                return;
+            }
+            Vector3 MouseWorldPosition = GetMouseWorldPosition();
+            if (IsMouseWorldPositionError(MouseWorldPosition) == true)
+            {
+                return;
+            }
+            Vector2Int cellPosition = tilemapBackground.WorldToCell(MouseWorldPosition).ToVector2Int();
+
+            EditCell(cellPosition);
+            if (hexCellDebugTxtCanvas.TxtShowMode == HexCellTxtCanvas.TxtShowModeEnum.ShowDistance)
+            {
+                CalculateDistance(cellPosition);
+            }
         }
         #endregion
 
@@ -100,77 +124,58 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         #endregion
 
         #region 地图操作
-        private string savePath;
-
         /// <summary>
-        /// 保存地图数据
+        /// 显示地图创建界面
         /// </summary>
-        public void SaveMapData()
+        public void ShowHexMapMakeBox()
         {
-            Vector3Int mapsize = tilemapBackground.size;
-            HexTileMapData data = new HexTileMapData(mapsize.x, mapsize.y);
-            for (int x = 0; x < mapsize.x; x++)
-            {
-                for (int y = 0; y < mapsize.y; y++)
-                {
-                    var cellPostiton = new Vector3Int(x, y, 0);
-                    if (tilemapBackground.HasTile(cellPostiton) == true)
-                    {
-                        data.HexTileCells[x + y * mapsize.y] =
-                            new HexTileCell(tilemapBackground.GetTile(cellPostiton).name, cellPostiton);
-                    }
-                }
-            }
-            if (!System.IO.Directory.Exists(savePath))
-            {
-                System.IO.Directory.CreateDirectory(Application.dataPath + "//Data//Save");
-            }
-            data.SaveToFile(savePath);
+            HexMapMakeBoxAsset.InstantiateAsync(parent: EditorCanvas.transform ).Completed += HexMapMakeBoxAsset_Completed;
+        }
+
+        private void HexMapMakeBoxAsset_Completed(AsyncOperationHandle<GameObject> obj)
+        {
+            var makeBox = obj.Result.GetComponent<HexMapMakeBox>();
+            makeBox.context = this;
+            var rect = obj.Result.GetComponent<RectTransform>();
+            rect.localPosition = Vector3.zero;
         }
 
         /// <summary>
-        /// 创建地图
+        /// 根据地图创建参数 新建地图
         /// </summary>
-        /// <param name="data">地图shuju</param>
-        public void CreateMap(HexTileMapData data)
+        /// <param name="args">地图创建参数</param>
+        public void CreateHexMap(HexMapCreateArgs args)
         {
-            ClearTilemapBackground();
-
-            for (int i = 0; i < data.HexTileCells.Length; i++)
-            {
-                SetTile(data.HexTileCells[i]);
-            }
-            MouseDetectionColliderInit();
-        }
-
-        /// <summary>
-        /// 载入地图
-        /// </summary>
-        public void LoadMap()
-        {
-            var data = LoadMapData(savePath);
-            CreateMap(data);
-        }
-
-        /// <summary>
-        /// 载入地图数据
-        /// </summary>
-        /// <param name="dataPath"></param>
-        /// <returns></returns>
-        private HexTileMapData LoadMapData(string dataPath)
-        {
-            HexTileMapData data = HexTileMapData.LoadForFile(dataPath);
-            return data;
+            ClearAllMap();
+            Debug.Log($"x:{args.MapSize.x} y:{args.MapSize.y}");
+            m_HexGrid = new HexGrid(args);
+            Refresh();
+            hexCellDebugTxtCanvas.BuildHexPosTxt(m_HexGrid.HexCells.GetLength(0), m_HexGrid.HexCells.GetLength(1));
+            marginMeshTilemap.ResetSize(args.MapSize);
         }
 
         /// <summary>
         /// 清空背景地图
         /// </summary>
-        public void ClearTilemapBackground()
+        public void ClearAllMap()
         {
             tilemapBackground.ClearAllTiles();
         }
+        #endregion
 
+        #region 刷新
+
+        private void Refresh()
+        {
+
+            for (int x = 0; x < m_HexGrid.HexCells.GetLength(0); x++)
+            {
+                for (int y = 0; y < m_HexGrid.HexCells.GetLength(1); y++)
+                {
+                    SetTile(m_HexGrid.HexCells[x, y]);
+                }
+            }
+        }
         #endregion
 
         #region 网格地图
@@ -188,8 +193,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         {
             marginMeshTilemap.enabled = toggle.isOn;
         }
-
         #endregion
+
+        #region 鼠标位置获取与判断
 
         /// <summary>
         /// 鼠标世界位置是否处于异常值
@@ -207,16 +213,16 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <para>鼠标位置异常时返回（0,0,-1）</para>
         /// </summary>
         /// <returns></returns>
-        public Vector3Int GetMouseCellPosition()
+        public Vector2Int GetMouseCellPosition()
         {
             Vector3 MouseWorldPosition = GetMouseWorldPosition();
             if (IsMouseWorldPositionError(MouseWorldPosition) == false)
             {
-                return tilemapBackground.WorldToCell(MouseWorldPosition);
+                return tilemapBackground.WorldToCell(MouseWorldPosition).ToVector2Int();
             }
             else
             {
-                return new Vector3Int(0, 0, -1);
+                return new Vector2Int().Error();
             }
         }
 
@@ -236,26 +242,36 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             //如果鼠标不在碰撞体之内则返回Vector3.back (0,0,-1) 因为碰撞体碰撞体 z = 0 所以不会有 z = -1 的情况
             return Vector3.back;
         }
+        #endregion
 
         /// <summary>
         /// 检查到鼠标左键点击单元格是编辑单元格
         /// </summary>
-        private void EditCell()
+        private void EditCell(Vector2Int cellPosition)
         {
-            if (Input.GetMouseButtonUp(0) == true)
+            TileBase cell = tilemapBackground.GetTile(cellPosition.ToVector3Int());
+            if (cell != null)
             {
-                Vector3 MouseWorldPosition = GetMouseWorldPosition();
-                if (IsMouseWorldPositionError(MouseWorldPosition) == false)
-                {
-                    Vector3Int cellPosition = tilemapBackground.WorldToCell(MouseWorldPosition);
-                    TileBase cell = tilemapBackground.GetTile(cellPosition);
-                    if (cell != null)
-                    {
-                        EditCell(cellPosition, brushSize);
-                        //Debug.Log($"get cell {cell.name}");
-                    }
-                }
+                EditCell(cellPosition, brushSize);
+                //Debug.Log($"get cell {cell.name}");
             }
+        }
+
+        /// <summary>
+        /// 计算其他单元格到当前坐标的距离
+        /// </summary>
+        /// <param name="CalculayePosition"></param>
+        private void CalculateDistance(Vector2Int calculayePosition)
+        {
+            Vector2Int[] claculatTrget = HexTileMetrics.GetCellInRange(calculayePosition, brushSize);
+            string[] result = new string[claculatTrget.Length];
+            for (int i = 0; i < claculatTrget.Length; i++)
+            {
+                result[i] = HexTileMetrics.CalculateDistance(calculayePosition, claculatTrget[i]).ToString();
+            }
+            hexCellDebugTxtCanvas.Clear();
+            claculatTrget = m_HexGrid.FiltrationOutOfGridRangePosition(claculatTrget);
+            hexCellDebugTxtCanvas.SetTxts(claculatTrget, result);
         }
 
         /// <summary>
@@ -263,9 +279,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         /// <param name="CellPosition">中心单元格位置</param>
         /// <param name="BrushSzie">笔刷大小</param>
-        private void EditCell(Vector3Int CellPosition, int BrushSzie)
+        private void EditCell(Vector2Int CellPosition, int BrushSzie)
         {
-            Vector3Int[] brushEfectArrary = HexTileMetrics.GetCellInRange(CellPosition, BrushSzie);
+            Vector2Int[] brushEfectArrary = HexTileMetrics.GetCellInRange(CellPosition, BrushSzie);
             foreach (var item in brushEfectArrary)
             {
                 SetTile(item);
@@ -276,34 +292,29 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 设置并刷新单元格
         /// </summary>
         /// <param name="CellPosition"></param>
-        private void SetTile(Vector3Int CellPosition)
+        private void SetTile(Vector2Int CellPosition)
         {
-            if (CellPosition.x<0||CellPosition.y<0)
+            if (m_HexGrid.IsPositionOutOfGridRange(CellPosition))
             {
-                Debug.Log("以屏蔽超出正界限的单元格设置");
+                //Debug.Log("以屏蔽超出正界限的单元格设置");
                 return;
             }
             SetTileAsset(CellPosition,activeTileAssetName);
-            tilemapBackground.RefreshTile(CellPosition);
+            tilemapBackground.RefreshTile(CellPosition.ToVector3Int());
         }
         /// <summary>
         /// 设置并刷新单元格
         /// </summary>
         /// <param name="CellPosition"></param>
-        private void SetTile(HexTileCell cell)
+        private void SetTile(HexCell cell)
         {
-            if (cell == null)
+
+            if (cell == null || m_HexGrid.IsPositionOutOfGridRange(cell.CellPosition) == true)
             {
-                //Debug.Log("Cell is null");
                 return;
             }
-            if (cell.CeellPosition.x < 0 || cell.CeellPosition.y < 0)
-            {
-                Debug.Log("以屏蔽超出正界限的单元格设置");
-                return;
-            }
-            SetTileAsset(cell.CeellPosition, cell.TileAssetName);
-            tilemapBackground.RefreshTile(cell.CeellPosition);
+            SetTileAsset(cell.CellPosition, cell.TileAssetName);
+            tilemapBackground.RefreshTile(cell.CellPosition.ToVector3Int());
         }
 
         /// <summary>
@@ -311,7 +322,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         private void DrawPrevuewCell()
         {
-            Vector3Int MouseCellPosition = GetMouseCellPosition();
+            Vector2Int MouseCellPosition = GetMouseCellPosition();
             if (CurrentUnderCell != MouseCellPosition)
             {
                 CurrentUnderCell = MouseCellPosition;
@@ -321,7 +332,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                     Debug.LogWarning("TileAsset border didn't load");
                     return;
                 }
-                infoTileMap.DrawHexMeshTileCells(HexTileMetrics.GetCellInRange(CurrentUnderCell, brushSize), tileBase);
+                infoTileMap.DrawHexMeshTileCells(HexTileMetrics.GetCellInRange(CurrentUnderCell, brushSize).ToVector3Int(), tileBase);
             }
         }
 
@@ -347,7 +358,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 设置指定坐标的tile资源
         /// </summary>
         /// <param name="postiton"></param>
-        private void SetTileAsset(Vector3Int postiton,string TileAssetName)
+        private void SetTileAsset(Vector2Int postiton,string TileAssetName)
         {
             if (TileAssetName == "" || GameDataCentre.TileAssetDate.IsAssetLoadCompleted == false)
             {
@@ -355,13 +366,14 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             }
 
             var asset = GameDataCentre.TileAssetDate.GetTileBaseAsset(TileAssetName);
+            Vector3Int m_position = postiton.ToVector3Int();
             if (asset != null)
             {
-                tilemapBackground.SetTile(postiton, asset);
+                tilemapBackground.SetTile(m_position, asset);
             }
             else
             {
-                tilemapBackground.SetTile(postiton, GameDataCentre.TileAssetDate.GetTileBaseAsset("Null"));
+                tilemapBackground.SetTile(m_position, GameDataCentre.TileAssetDate.GetTileBaseAsset("Null"));
             }
         }
 
@@ -400,6 +412,5 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             /// </summary>
             No
         }
-        
     }
 }

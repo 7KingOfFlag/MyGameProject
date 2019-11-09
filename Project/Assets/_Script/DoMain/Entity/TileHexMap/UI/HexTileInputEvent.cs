@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 using OurGameName.DoMain.Attribute;
 using UnityEngine.UIElements;
 
-namespace OurGameName.DoMain.Entity.TileHexMap
+namespace OurGameName.DoMain.Entity.TileHexMap.UI
 {
     internal class HexTileInputEvent : MonoBehaviour
     {
