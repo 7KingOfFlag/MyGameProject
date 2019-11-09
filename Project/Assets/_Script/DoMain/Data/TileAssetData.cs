@@ -2,23 +2,19 @@
 using UnityEngine.AddressableAssets;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
-using System.Collections;
-using TMPro;
-using System.Reflection;
-using System;
-using OurGameName.DoMain.Attribute;
 
 namespace OurGameName.DoMain.Data
 {
     /// <summary>
     /// tile资源数据
     /// </summary>
-    internal class TileAssetDate : MonoBehaviour
+    internal class TileAssetData : MonoBehaviour
     {
         public AssetLabelReference TileAssetLabel;
-        public GameData context;
+        public AssetLabelReference UiPrefabAssetLabel;
+        public GameAssetDataHelper context;
 
-        private Dictionary<string, TileBase> TileAsset;
+        private Dictionary<string, TileBase> TileAssetDict;
 
         /// <summary>
         /// 资源已全部加载完成
@@ -32,26 +28,26 @@ namespace OurGameName.DoMain.Data
         /// <returns></returns>
         public TileBase GetTileBaseAsset(string AssetName)
         {
-            if (IsAssetLoadCompleted == false || TileAsset.ContainsKey(AssetName) == false)
+            if (IsAssetLoadCompleted == false || TileAssetDict.ContainsKey(AssetName) == false)
             {
                 return null;
             }
             else
             {
-                return TileAsset[AssetName];
+                return TileAssetDict[AssetName];
             }
         }
 
         void Awake()
         {
             IsAssetLoadCompleted = false;
-            TileAsset = new Dictionary<string, TileBase>();
+            TileAssetDict = new Dictionary<string, TileBase>();
             Addressables.LoadAssetsAsync<TileBase>(TileAssetLabel, TileAseetCompleted).Completed += TileAssetDate_Completed;
         }
 
         public void TileAseetCompleted(TileBase aseet)
         {
-            TileAsset.Add(aseet.name, aseet);
+            TileAssetDict.Add(aseet.name, aseet);
         }
 
         private void TileAssetDate_Completed(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<IList<TileBase>> obj)

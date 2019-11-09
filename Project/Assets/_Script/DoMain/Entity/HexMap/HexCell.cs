@@ -151,7 +151,6 @@ namespace OurGameName.DoMain.Entity.HexMap
                 }
             }
         }
-
         #endregion
     }
 

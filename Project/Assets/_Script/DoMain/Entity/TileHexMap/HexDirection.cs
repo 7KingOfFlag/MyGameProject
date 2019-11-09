@@ -1,9 +1,9 @@
-﻿namespace OurGameName.DoMain.Entity.HexMap
+﻿namespace OurGameName.DoMain.Entity.TileHexMap
 {
     /// <summary>
     /// 六边形方向
     /// </summary>
-    public enum HexDirection
+    internal enum HexDirection
     {
         /// <summary>
         /// 东北 ↗
@@ -31,7 +31,10 @@
         NW
     }
 
-    public static class HexExtensions
+    /// <summary>
+    /// 六边形枚举扩展方法
+    /// </summary>
+    internal static class HexDirectionEnumExtensions
     {
         /// <summary>
         /// 返回相对的方向
@@ -44,43 +47,19 @@
         }
 
         /// <summary>
-        /// 返回上一个方向上的节点
+        /// 返回上一个方向上顺时针方向上的上一个方向
         /// </summary>
         public static HexDirection Previous(this HexDirection dir)
         {
             return dir == HexDirection.NE ? HexDirection.NW : (dir - 1);
         }
+
         /// <summary>
-        /// 返回上一个方向顺时针方向下一个方向
+        /// 返回上一个方向顺时针方向上的下一个方向
         /// </summary>
         public static HexDirection Next(this HexDirection dir)
         {
             return dir == HexDirection.NW ? HexDirection.NE : (dir + 1);
-        }
-
-        public static string BeString(this Terrain terrain)
-        {
-            string result;
-            switch (terrain)
-            {
-                case Terrain.coast:
-                    result = "海洋";
-                    break;
-                case Terrain.grassland:
-                    result = "草原";
-                    break;
-                case Terrain.mountains:
-                    result = "山脉";
-                    break;
-                case Terrain.desert:
-                    result = "沙漠";
-                    break;
-                default:
-                    result = "特殊";
-                    break;
-            }
-
-            return result;
         }
     }
 }

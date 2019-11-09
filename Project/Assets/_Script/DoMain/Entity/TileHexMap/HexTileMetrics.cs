@@ -18,9 +18,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 因为是六边形网格单元格排序并不是像方形单元格一样完全规则的
         /// 所以以起始点的Y轴奇偶方便修正行坐标
         /// </remarks>
-        public static Vector3Int[] GetCellInRange(Vector3Int CenterCellPosition, int range)
+        public static Vector2Int[] GetCellInRange(Vector2Int CenterCellPosition, int range)
         {
-            Vector3Int[] cellTargetArrary = new Vector3Int[GetRangeEffectNumber(range)];
+            Vector2Int[] cellTargetArrary = new Vector2Int[GetRangeEffectNumber(range)];
             int count = 0;
 
             int centerX = CenterCellPosition.x;
@@ -33,7 +33,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 {
                     if (i == range)
                     {
-                        cellTargetArrary[count++] = new Vector3Int(startX + x, centerY, 0);
+                        cellTargetArrary[count++] = new Vector2Int(startX + x, centerY);
                     }
                     else
                     {
@@ -41,22 +41,21 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                         if (centerY % 2 == 0)
                         {
                             cellTargetArrary[count++] =
-                                new Vector3Int(startX + x - ((rangeOfCenter - 1) / 2 + 1), centerY + rangeOfCenter, 0);
+                                new Vector2Int(startX + x - ((rangeOfCenter - 1) / 2 + 1), centerY + rangeOfCenter);
                             cellTargetArrary[count++] =
-                                new Vector3Int(startX + x - ((rangeOfCenter - 1) / 2 + 1), centerY - rangeOfCenter, 0);
+                                new Vector2Int(startX + x - ((rangeOfCenter - 1) / 2 + 1), centerY - rangeOfCenter);
                         }
                         else
                         {
                             cellTargetArrary[count++] =
-                                new Vector3Int(startX + x - rangeOfCenter / 2, centerY + rangeOfCenter, 0);
+                                new Vector2Int(startX + x - rangeOfCenter / 2, centerY + rangeOfCenter);
                             cellTargetArrary[count++] =
-                                new Vector3Int(startX + x - rangeOfCenter / 2, centerY - rangeOfCenter, 0);
+                                new Vector2Int(startX + x - rangeOfCenter / 2, centerY - rangeOfCenter);
                         }
                     }
                 }
 
                 lineSize--;
-
             }
             return cellTargetArrary;
         }
@@ -64,7 +63,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <summary>
         /// 获取范围大小对应的影响单元格数量
         /// </summary>
-        /// <param name="brushSize"></param>
+        /// <param name="brushSize">笔刷大小</param>
         /// <returns></returns>
         public static int GetRangeEffectNumber(int brushSize)
         {
@@ -78,6 +77,17 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             return sun;
         }
 
-
+        /// <summary>
+        /// 计算起点到终点的距离
+        /// </summary>
+        /// <param name="startPoint">起点坐标</param>
+        /// <param name="endPoint">终点坐标</param>
+        /// <returns></returns>
+        public static int CalculateDistance(Vector2Int startPoint,Vector2Int endPoint)
+        {
+            int resultX = startPoint.x - endPoint.x;
+            int resultY = startPoint.y - endPoint.y;
+            return Mathf.Abs(resultX) + Mathf.Abs(resultY);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using OurGameName.DoMain.Entity.TileHexMap;
+﻿using OurGameName.DoMain.Attribute;
+using OurGameName.DoMain.Entity.TileHexMap;
+using OurGameName.DoMain.Entity.TileHexMap.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +40,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
                 {
                     SelectRoleEntity.MoveRole(e.ClickPosition);
                 }
-                if (e.ClickButtomCoed == MouseButton.LeftMouse && e.ClickPosition != SelectRoleEntity.MoveComponent.CurrentRolePosition)
+                if (e.ClickButtomCoed == MouseButton.LeftMouse && e.ClickPosition.ToVector3Int() != SelectRoleEntity.MoveComponent.CurrentRolePosition)
                 {
                     SelectRoleEntity.IsSelect = false;
                     SelectRoleEntity = null;
