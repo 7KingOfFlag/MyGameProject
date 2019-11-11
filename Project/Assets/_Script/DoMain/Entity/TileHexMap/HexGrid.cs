@@ -8,6 +8,10 @@ using UnityEngine;
 using OurGameName.DoMain.Attribute;
 using System.Runtime.CompilerServices;
 using OurGameName.DoMain.Entity.HexMap;
+using OurGameName.DoMain.Data;
+using UnityEngine.Tilemaps;
+using System.Web.Script.Serialization;
+using System.IO;
 
 [assembly:InternalsVisibleTo("UnitTest")]
 namespace OurGameName.DoMain.Entity.TileHexMap
@@ -21,23 +25,34 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 地图单元格数组 地图上数据的存储对象
         /// </summary>
         public HexCell[,] HexCells { get; private set; }
-
+        /// <summary>
+        /// Tile通过费用字典
+        /// </summary>
+        [ScriptIgnore]
+        private Dictionary<string, int> m_terrainThroughCostDict;
+        /// <summary>
+        /// 游戏数据中心
+        /// </summary>
+        private GameAssetDataHelper m_gameAssetData;
         public HexGrid()
         {}
 
         /// <summary>
         /// 六边形地图
         /// </summary>
-        /// <param name="sizeX">地图X轴大小</param>
-        /// <param name="sizeY">地图Y轴大小</param>
-        public HexGrid(HexMapCreateArgs agrs)
+        /// <param name="agrs">六边形地图创建参数</param>
+        /// <param name="terrainThroughCostDict">地形通过费用</param>
+        public HexGrid(HexMapCreateArgs agrs, Dictionary<string, int> terrainThroughCostDict, GameAssetDataHelper gameAssetData)
         {
+            m_terrainThroughCostDict = terrainThroughCostDict;
+            m_gameAssetData = gameAssetData;
             Init(agrs.MapSize.x, agrs.MapSize.y);
         }
 
         public void Init(int sizeX, int sizeY)
         {
             HexCells = new HexCell[sizeX, sizeY];
+            Debug.Log($"{typeof(HexCell[,])}");
             CreateCells(sizeX, sizeY);
         }
 
@@ -50,19 +65,12 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             {
                 for (int x = 0; x < sizeX; x++)
                 {
-                    HexCells[x, y] = new HexCell("hexPlains00", new Vector2Int(x, y));
+                    TileBase tileBase = m_gameAssetData.GetRandomTileAssetDict("Ocean");
+                    HexCells[x, y] = new HexCell(tileBase.name, new Vector2Int(x, y), throughCost: 1);
+                    HexCells[x, y].NeighborsPosition =
+                       FiltrationOutOfGridRangePosition(CalculateNeighbor(HexCells[x, y].CellPosition));
                 }
             }
-            
-            for (int y = 0; y < SizeY; y++)
-            {
-                for (int x = 0; x < sizeX; x++)
-                {
-                    HexCells[x, y].NeighborsPosition = 
-                        FiltrationOutOfGridRangePosition(CalculateNeighbor(HexCells[x, y].CellPosition));
-                }
-            }
-
         }
 
         /// <summary>

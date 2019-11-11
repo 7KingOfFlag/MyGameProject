@@ -71,12 +71,12 @@ namespace OurGameName.DoMain.Controller
         private bool IsMouseHold = false;
         private void DragMapEvent()
         {
-            if (currentMouse.leftButton.ReadValue() == 1 && IsMouseHold == false)
+            if (currentMouse.middleButton.ReadValue() == 1 && IsMouseHold == false)
             {
                 IsMouseHold = true;
                 MouseDownPosition = currentMouse.position.ReadValue();
             }
-            else if (currentMouse.leftButton.ReadValue() == 0)
+            else if (currentMouse.middleButton.ReadValue() == 0)
             {
                 IsMouseHold = false;
             }

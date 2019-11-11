@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using OurGameName.DoMain.Attribute;
+using UnityEditor.Experimental.GraphView;
+using OurGameName.DoMain.Entity.TileHexMap.AStar;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
@@ -15,6 +17,10 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         private string m_tileAssetName;
         /// <summary>
+        /// A*节点
+        /// </summary>
+        private AstartNode m_AStarNode;
+        /// <summary>
         /// 单元格位置
         /// </summary>
         private Vector2Int m_cellPosition;
@@ -24,10 +30,10 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         [SerializeField]
         private Vector2Int[] m_neighborsPosition;
-        public HexCell(string TileAssetName, Vector2Int CellPosition)
+        public HexCell(string tileAssetName, Vector2Int cellPosition, int throughCost)
         {
-            m_tileAssetName = TileAssetName;
-            m_cellPosition = CellPosition;
+            m_AStarNode = new AstartNode(cellPosition, throughCost);
+            m_tileAssetName = tileAssetName;
         }
 
         /// <summary>
@@ -42,7 +48,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             set
             {
                 m_tileAssetName = value;
-                RefreshTileAsset();
             }
         }
 
@@ -62,7 +67,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <summary>
         /// 单元格位置
         /// </summary>
-        public Vector2Int CellPosition { get { return m_cellPosition; } }
+        public Vector2Int CellPosition { get { return m_AStarNode.CellPosition; } }
+        /// <summary>
+        /// 通过成本
+        /// </summary>
+        public int ThroughCost { get { return m_AStarNode.ThroughCost; } }
 
         public void RefreshTileAsset()
         {

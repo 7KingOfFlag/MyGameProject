@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using OurGameName.DoMain.Attribute;
+using OurGameName.DoMain.Entity.TileHexMap.UI;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
@@ -15,6 +16,10 @@ namespace OurGameName.DoMain.Entity.TileHexMap
     /// </summary>
     internal class HexCellTxtCanvas : MonoBehaviour
     {
+        /// <summary>
+        /// 编辑器上下文
+        /// </summary>
+        public HexTileMapEditor context;
         /// <summary>
         /// 背景tileMap
         /// </summary>
@@ -46,10 +51,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 {
                     return;
                 }
-                if (value != TxtShowModeEnum.Blank)
-                {
-                    m_previousTxtShowMode = m_txtShowMode;
-                }
                 m_txtShowMode = value;
                 ShfitTxtShowMode(m_txtShowMode);
             }
@@ -62,7 +63,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             canvasGroup.alpha = 0;
         }
 
-        TxtShowModeEnum m_previousTxtShowMode;
         /// <summary>
         /// 切换文本显示模式
         /// </summary>
@@ -76,15 +76,16 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                     break;
                 case TxtShowModeEnum.ShowCoordinate:
                     canvasGroup.alpha = 1;
-                    if (m_previousTxtShowMode == TxtShowModeEnum.ShowCoordinate) return;
-
                     ShowCoordinate();
                     break;
                 case TxtShowModeEnum.ShowDistance:
                     canvasGroup.alpha = 1;
-                    if (m_previousTxtShowMode == TxtShowModeEnum.ShowDistance) return;
-
-                    ShowDistance();
+                    SingleMode();
+                    break;
+                case TxtShowModeEnum.ShowThroughCost:
+                    canvasGroup.alpha = 1;
+                    SingleMode();
+                    context.ThroughCostRefresh();
                     break;
                 default:
                     Debug.LogWarning($"In {gameObject.name} has undefined enum");
@@ -115,9 +116,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         }
 
         /// <summary>
-        /// 显示距离
+        /// 切换到显示单个数组模式
         /// </summary>
-        private void ShowDistance()
+        private void SingleMode()
         {
             foreach (var item in txtDict)
             {
@@ -205,7 +206,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         public void SetTxtShowMode(TMP_Dropdown dropdown)
         {
             TxtShowMode = (TxtShowModeEnum)dropdown.value;
-            Debug.Log($"TxtShowMode = {TxtShowMode}");
+            //Debug.Log($"TxtShowMode = {TxtShowMode}");
 
         }
 
@@ -225,7 +226,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             /// <summary>
             /// 显示距离
             /// </summary>
-            ShowDistance
+            ShowDistance,
+            /// <summary>
+            /// 显示通行成本
+            /// </summary>
+            ShowThroughCost
         }
     }
 }

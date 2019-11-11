@@ -9,6 +9,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using OurGameName.DoMain.Attribute;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace OurGameName.DoMain.Entity.TileHexMap.UI
 {
@@ -69,6 +71,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         /// 笔刷大小文本框
         /// </summary>
         public TextMeshProUGUI txtBrushSzieNumber;
+        public TMP_Dropdown dropdownTileAsset;
+        /// <summary>
+        /// 生成地图按钮
+        /// </summary>
+        public Button btnMake;
 
         /// <summary>
         /// 当前鼠标下面的单元格的位置信息
@@ -84,6 +91,8 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             mainCamera = Camera.main;
             GameDataCentre.AseetLoadStatusChang += GameDataCentre_AseetLoadStatusChang;
             MouseDetectionColliderInit();
+            btnMake.interactable = false;
+            dropdownTileAsset.interactable = false;
         }
 
         void Start()
@@ -111,12 +120,14 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             }
             Vector2Int cellPosition = tilemapBackground.WorldToCell(MouseWorldPosition).ToVector2Int();
 
-            EditCell(cellPosition);
+            if (activeTileAssetName.Equals("忽略") == false) EditCell(cellPosition);
             if (hexCellDebugTxtCanvas.TxtShowMode == HexCellTxtCanvas.TxtShowModeEnum.ShowDistance)
             {
                 CalculateDistance(cellPosition);
             }
         }
+
+
         #endregion
 
         #region UI操作
@@ -148,7 +159,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         {
             ClearAllMap();
             Debug.Log($"x:{args.MapSize.x} y:{args.MapSize.y}");
-            m_HexGrid = new HexGrid(args);
+            m_HexGrid = new HexGrid(args, GameDataCentre.TerrainThroughCostDict, GameDataCentre);
             Refresh();
             hexCellDebugTxtCanvas.BuildHexPosTxt(m_HexGrid.HexCells.GetLength(0), m_HexGrid.HexCells.GetLength(1));
             marginMeshTilemap.ResetSize(args.MapSize);
@@ -161,13 +172,30 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         {
             tilemapBackground.ClearAllTiles();
         }
+        /// <summary>
+        /// 刷新全部通过成本文本
+        /// </summary>
+        internal void ThroughCostRefresh()
+        {
+            foreach (var cell in m_HexGrid.HexCells)
+            {
+                ThroughCostRefresh(cell);
+            }
+        }
+        /// <summary>
+        /// 刷新输入的 cell 的通过成本
+        /// </summary>
+        /// <param name="cell"></param>
+        internal void ThroughCostRefresh(HexCell cell)
+        {
+            hexCellDebugTxtCanvas.SetTxt(cell.CellPosition, cell.ThroughCost.ToString());
+        }
         #endregion
 
         #region 刷新
 
         private void Refresh()
         {
-
             for (int x = 0; x < m_HexGrid.HexCells.GetLength(0); x++)
             {
                 for (int y = 0; y < m_HexGrid.HexCells.GetLength(1); y++)
@@ -175,18 +203,41 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
                     SetTile(m_HexGrid.HexCells[x, y]);
                 }
             }
+
         }
         #endregion
 
         #region 网格地图
         private void GameDataCentre_AseetLoadStatusChang(object sender, AseetLoadStatusArgs e)
         {
-            if (e.AseetType == typeof(TileBase) &&
-                e.AseetName == "TileAsset" &&
-                e.AseetLoadStatus == AseetLoadStatusArgs.LoadStatus.Completed)
+            Debug.Log($"{e.AseetType}");
+            if (e.AseetLoadStatus == AseetLoadStatusArgs.LoadStatus.Completed)
             {
-                TileBase tileBase = GameDataCentre.TileAssetDate.GetTileBaseAsset("border");
-                marginMeshTilemap.InitHexMeshTileMap(tilemapBackground.size, tileBase);
+
+                if (e.AseetType == typeof(TileBase) &&
+                    e.AseetName == "TileAsset")
+                {
+                    TileBase tileBase = GameDataCentre.TileAssetDict["border"];
+
+                    marginMeshTilemap.InitHexMeshTileMap(tilemapBackground.size, tileBase);
+                    dropdownTileAsset.interactable = true;
+                    List<string> options = new List<string>();
+                    foreach (var key in GameDataCentre.TileAssetDict.Keys)
+                    {
+                        string option = Regex.Replace(key, @"[0-9]", "");
+                        if (options.Contains(option) == false)
+                        {
+                            options.Add(option);
+                        }
+                    }
+                    dropdownTileAsset.AddOptions(options);
+                }
+
+                if (e.AseetType == typeof(Dictionary<string, int>) &&
+                    e.AseetName == "TerrainThroughCostDict")
+                {
+                    btnMake.interactable = true;
+                }
             }
         }
         public void SetEnabledOfMarginMeshTileMap(Toggle toggle)
@@ -263,15 +314,38 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         /// <param name="CalculayePosition"></param>
         private void CalculateDistance(Vector2Int calculayePosition)
         {
-            Vector2Int[] claculatTrget = HexTileMetrics.GetCellInRange(calculayePosition, brushSize);
-            string[] result = new string[claculatTrget.Length];
-            for (int i = 0; i < claculatTrget.Length; i++)
-            {
-                result[i] = HexTileMetrics.CalculateDistance(calculayePosition, claculatTrget[i]).ToString();
-            }
             hexCellDebugTxtCanvas.Clear();
-            claculatTrget = m_HexGrid.FiltrationOutOfGridRangePosition(claculatTrget);
-            hexCellDebugTxtCanvas.SetTxts(claculatTrget, result);
+
+            Vector2Int[] claculatTrget = HexTileMetrics.GetCellInRange(calculayePosition, brushSize);
+            bool[] doneArray = new bool[m_HexGrid.GridSizeX * m_HexGrid.GridSizeY].Select(item => item = false).ToArray();
+            doneArray[calculayePosition.x * m_HexGrid.GridSizeY + calculayePosition.y] = true;
+
+            List<Vector2Int>[] calculateList = new List<Vector2Int>[2]
+            {
+                new List<Vector2Int>(){calculayePosition},
+                new List<Vector2Int>()
+            };
+            int currentClaculatIndex = 0, nextClaculatIndex = 1;
+            for (int i = 0; i < brushSize; i++)
+            {
+                foreach (var item in calculateList[currentClaculatIndex])
+                {
+                    if (m_HexGrid.IsPositionOutOfGridRange(item)) continue;
+
+                    Vector2Int[] neighbors = m_HexGrid.HexCells[item.x, item.y].NeighborsPosition;
+                    calculateList[nextClaculatIndex].AddRange(neighbors);
+                    foreach (var neighbor in neighbors)
+                    {
+                        if (m_HexGrid.IsPositionOutOfGridRange(neighbor)) continue;
+                        if (doneArray[neighbor.x * m_HexGrid.GridSizeY + neighbor.y] == true) continue;
+
+                        doneArray[neighbor.x * m_HexGrid.GridSizeY + neighbor.y] = true;
+                        hexCellDebugTxtCanvas.SetTxt(neighbor, $"{i + 1}");
+                    }
+                }
+                calculateList[currentClaculatIndex].Clear();
+                Extension.Swop(ref currentClaculatIndex, ref nextClaculatIndex);
+            }
         }
 
         /// <summary>
@@ -322,11 +396,13 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         /// </summary>
         private void DrawPrevuewCell()
         {
+            if (GameDataCentre.IsAssetLoadCompleted == false) return;
             Vector2Int MouseCellPosition = GetMouseCellPosition();
             if (CurrentUnderCell != MouseCellPosition)
             {
                 CurrentUnderCell = MouseCellPosition;
-                TileBase tileBase = GameDataCentre.TileAssetDate.GetTileBaseAsset("border");
+                TileBase tileBase = GameDataCentre.TileAssetDict["border"];
+
                 if (tileBase == null)
                 {
                     Debug.LogWarning("TileAsset border didn't load");
@@ -340,9 +416,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         /// 设置活动Tile资源索引
         /// </summary>
         /// <param name="value"></param>
-        public void SetActiveTileAssetIndex(string value)
+        public void SetActiveTileAssetIndex(TMP_Dropdown dropdown)
         {
-            activeTileAssetName = value;
+            activeTileAssetName = dropdown.options[dropdown.value].text;
         }
         /// <summary>
         /// 设置笔刷大小
@@ -360,12 +436,10 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         /// <param name="postiton"></param>
         private void SetTileAsset(Vector2Int postiton,string TileAssetName)
         {
-            if (TileAssetName == "" || GameDataCentre.TileAssetDate.IsAssetLoadCompleted == false)
-            {
-                return;
-            }
+            if (TileAssetName == "" || GameDataCentre.IsAssetLoadCompleted == false) return;
 
-            var asset = GameDataCentre.TileAssetDate.GetTileBaseAsset(TileAssetName);
+            var asset = GameDataCentre.GetRandomTileAssetDict(TileAssetName);
+            m_HexGrid.HexCells[postiton.x, postiton.y].TileAssetName = asset.name;
             Vector3Int m_position = postiton.ToVector3Int();
             if (asset != null)
             {
@@ -373,7 +447,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             }
             else
             {
-                tilemapBackground.SetTile(m_position, GameDataCentre.TileAssetDate.GetTileBaseAsset("Null"));
+                tilemapBackground.SetTile(m_position, GameDataCentre.TileAssetDict["hexVoid00"]);
             }
         }
 

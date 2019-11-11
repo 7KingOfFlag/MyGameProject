@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 using Random = System.Random;
 
 namespace OurGameName.DoMain.Attribute
@@ -7,7 +8,7 @@ namespace OurGameName.DoMain.Attribute
     /// <summary>
     /// 扩展方法类
     /// </summary>
-    public static class Extension
+    internal static class Extension
     {
         private static Random selfRandom = new Random();
 
@@ -85,9 +86,18 @@ namespace OurGameName.DoMain.Attribute
                 return i;
             }
         }
-
-
-        
+        /// <summary>
+        /// 交换两个对象的值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        public static void Swop<T>(ref T a,ref T b)
+        {
+            T t = b;
+            b = a;
+            a = t;
+        }
     }
 
 }
