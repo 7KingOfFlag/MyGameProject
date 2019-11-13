@@ -17,7 +17,7 @@ using System.IO;
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
     /// <summary>
-    /// 六边形地图
+    /// 六边形地图-逻辑
     /// </summary>
     internal class HexGrid
     {
@@ -29,30 +29,50 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// Tile通过费用字典
         /// </summary>
         [ScriptIgnore]
-        private Dictionary<string, int> m_terrainThroughCostDict;
+        public Dictionary<string, int> TerrainThroughCostDict { get; private set; }
         /// <summary>
         /// 游戏数据中心
         /// </summary>
         private GameAssetDataHelper m_gameAssetData;
+        /// <summary>
+        /// 地图实例
+        /// </summary>
+        private HexTileMap m_map;
         public HexGrid()
-        {}
+        {
+        }
+
+        public HexGrid(HexCell[,] hexCells, Dictionary<string, int> terrainThroughCostDict = null,
+                       GameAssetDataHelper gameAssetData = null, HexTileMap hexTileMap = null)
+        {
+            HexCells = hexCells;
+            TerrainThroughCostDict = terrainThroughCostDict;
+            m_gameAssetData = gameAssetData;
+            m_map = hexTileMap;
+        }
 
         /// <summary>
         /// 六边形地图
         /// </summary>
         /// <param name="agrs">六边形地图创建参数</param>
         /// <param name="terrainThroughCostDict">地形通过费用</param>
-        public HexGrid(HexMapCreateArgs agrs, Dictionary<string, int> terrainThroughCostDict, GameAssetDataHelper gameAssetData)
+        public HexGrid(HexMapCreateArgs agrs, Dictionary<string, int> terrainThroughCostDict,
+                       GameAssetDataHelper gameAssetData, HexTileMap hexTileMap)
         {
-            m_terrainThroughCostDict = terrainThroughCostDict;
+            TerrainThroughCostDict = terrainThroughCostDict;
             m_gameAssetData = gameAssetData;
+            m_map = hexTileMap;
             Init(agrs.MapSize.x, agrs.MapSize.y);
+        }
+
+        public HexCell this[Vector2Int index]
+        {
+            get { return HexCells.GetItem(index); }
         }
 
         public void Init(int sizeX, int sizeY)
         {
             HexCells = new HexCell[sizeX, sizeY];
-            Debug.Log($"{typeof(HexCell[,])}");
             CreateCells(sizeX, sizeY);
         }
 
@@ -66,9 +86,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 for (int x = 0; x < sizeX; x++)
                 {
                     TileBase tileBase = m_gameAssetData.GetRandomTileAssetDict("Ocean");
-                    HexCells[x, y] = new HexCell(tileBase.name, new Vector2Int(x, y), throughCost: 1);
-                    HexCells[x, y].NeighborsPosition =
-                       FiltrationOutOfGridRangePosition(CalculateNeighbor(HexCells[x, y].CellPosition));
+                    var neighborsPosition = CalculateNeighbor(new Vector2Int(x,y));
+                    HexCells[x, y] = new HexCell(this, tileBase.name, new Vector2Int(x, y), neighborsPosition);
+
                 }
             }
         }
@@ -89,8 +109,8 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             Vector2Int[] result = new Vector2Int[6];
             int correction = 0;
             if (centrePosition.y % 2 == 0) //如果中心点在偶数行 增加修正值
-            {   
-                correction = -1; 
+            {
+                correction = -1;
             }
             result[(int)HexDirection.NE] = new Vector2Int(centrePosition.x + 1 + correction, centrePosition.y + 1);
             result[(int)HexDirection.E] = new Vector2Int(centrePosition.x + 1, centrePosition.y);
@@ -100,6 +120,28 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             result[(int)HexDirection.NW] = new Vector2Int(centrePosition.x + correction, centrePosition.y + 1);
 
             return result;
+        }
+        /// <summary>
+        /// 刷新所有单元格
+        /// <para>单元格需要刷新的内容依照其 NeedRefre 标志位</para>
+        /// </summary>
+        /// <param name="cell"></param>
+        internal void RefresAll()
+        {
+            foreach (var cell in HexCells)
+            {
+                m_map.Refresh(cell);
+            }
+        }
+
+        /// <summary>
+        /// 刷新对应单元格
+        /// <para>单元格需要刷新的内容依照其 NeedRefre 标志位</para>
+        /// </summary>
+        /// <param name="cell"></param>
+        internal void Refres(HexCell cell)
+        {
+            m_map.Refresh(cell);
         }
         #region 工具方法
         /// <summary>
@@ -114,6 +156,12 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 网格行数
         /// </summary>
         public int GridSizeY { get { return HexCells.GetLength(1); } }
+        /// <summary>
+        /// 获取指定坐标的单元格的通行成本
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int ThroughCost(Vector2Int index) => HexCells.GetItem(index).ThroughCost;
 
         /// <summary>
         /// 单元格坐标位置是否超出网格范围

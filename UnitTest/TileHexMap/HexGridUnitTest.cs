@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace UnitTest.HexGridTest
+namespace UnitTest.HexTileMap
 {
     [TestClass]
     public class HexGridUnitTest
@@ -17,7 +17,7 @@ namespace UnitTest.HexGridTest
         public void GridSizeTest()
         {
             Vector2Int gridSize = new Vector2Int(36, 27);
-            HexGrid hexGrid = new HexGrid(new HexMapCreateArgs(mapSize: gridSize));
+            HexGrid hexGrid = new HexGrid(new HexCell[gridSize.x, gridSize.y]);
             Assert.AreEqual(gridSize, hexGrid.GridSize);
             Assert.AreEqual(gridSize.x, hexGrid.GridSize.x);
             Assert.AreEqual(gridSize.y, hexGrid.GridSize.y);
@@ -62,5 +62,6 @@ namespace UnitTest.HexGridTest
             Vector2Int[] centreYisEvenNeighbor = HexGrid.CalculateNeighbor(centreYisEven);
             CollectionAssert.AreEqual(expected: centreYisEvenNeigborTesetData, actual: centreYisEvenNeighbor);
         }
+
     }
 }

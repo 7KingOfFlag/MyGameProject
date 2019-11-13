@@ -1,13 +1,15 @@
 ﻿using System;
 using UnityEngine;
 using OurGameName.DoMain.Attribute;
-using UnityEditor.Experimental.GraphView;
-using OurGameName.DoMain.Entity.TileHexMap.AStar;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
     internal class HexCell
     {
+        /// <summary>
+        /// 单元格所属的六边形网格
+        /// </summary>
+        private HexGrid m_HexGrid;
         /// <summary>
         /// 序列化用构造方法
         /// </summary>
@@ -17,27 +19,28 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// </summary>
         private string m_tileAssetName;
         /// <summary>
-        /// A*节点
-        /// </summary>
-        private AstartNode m_AStarNode;
-        /// <summary>
         /// 单元格位置
         /// </summary>
-        private Vector2Int m_cellPosition;
+        private Vector2Int m_position;
         private int m_distance;
+        private int m_throughCost;
         /// <summary>
         /// 邻近的单元格位置
         /// </summary>
         [SerializeField]
         private Vector2Int[] m_neighborsPosition;
-        public HexCell(string tileAssetName, Vector2Int cellPosition, int throughCost)
+
+        public HexCell(HexGrid hexGrid, string tileAssetName, Vector2Int cellPosition, Vector2Int[] neighborsPosition)
         {
-            m_AStarNode = new AstartNode(cellPosition, throughCost);
-            m_tileAssetName = tileAssetName;
+            m_HexGrid = hexGrid;
+            m_position = cellPosition;
+            m_neighborsPosition = neighborsPosition;
+            TileAssetName = tileAssetName;
         }
 
         /// <summary>
-        /// Tile单元格资源名称
+        /// Tile单元格资源名称 
+        /// <para>赋值时会附带将通行成本修改为符合Tile资源的值</para>
         /// </summary>
         public string TileAssetName
         {
@@ -47,35 +50,77 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             }
             set
             {
+                if (value  == m_tileAssetName)
+                {
+                    return;
+                }
                 m_tileAssetName = value;
+                NeedRefres |= NeedRefresCode.Asset;
+                try
+                {
+                    ThroughCost = m_HexGrid.TerrainThroughCostDict[m_tileAssetName];
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning(e.Message);
+                    ThroughCost = 1;
+
+                }
             }
         }
-
+        /// <summary>
+        /// 相邻单元格位置数组 
+        /// <para>以 HexDirection 枚举对应值所代表的方向排序</para>
+        /// </summary>
         public Vector2Int[] NeighborsPosition
         {
             get
             {
                 return m_neighborsPosition;
             }
-            set
+            private set
             {
                 m_neighborsPosition = value;
             }
         }
 
-
         /// <summary>
         /// 单元格位置
         /// </summary>
-        public Vector2Int CellPosition { get { return m_AStarNode.CellPosition; } }
+        public Vector2Int CellPosition { get { return m_position; } }
         /// <summary>
         /// 通过成本
         /// </summary>
-        public int ThroughCost { get { return m_AStarNode.ThroughCost; } }
-
-        public void RefreshTileAsset()
+        public int ThroughCost
         {
+            get { return m_throughCost; }
+            private set
+            {
+                if (value == m_throughCost)
+                {
+                    return;
+                }
+                m_throughCost = value;
+                NeedRefres |= NeedRefresCode.ThrougCost;
+            }
+        }
 
+        /// <summary>
+        /// 表明单元格各个组件是否需要刷新的位标志
+        /// </summary>
+        public NeedRefresCode NeedRefres { get; private set; }
+
+        public void Refres()
+        {
+            m_HexGrid.Refres(this);
+        }
+
+        [Flags]
+        public enum NeedRefresCode
+        {
+            None        = 0x0000,
+            Asset       = 0x0001,
+            ThrougCost  = 0x0002,
         }
     }
 }

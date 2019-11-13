@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 0
+    path: Assets/_Scenes/GridText.unity
+    guid: c0d047b9375eff14a89c810d7276a6e5
+  - enabled: 1
+    path: Assets/_Scenes/Water.unity
+    guid: 5d72b487f8c9be44fb20476b8f8ccc99
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 99089b00cf28d7741917066a87b0108e,
       type: 2}

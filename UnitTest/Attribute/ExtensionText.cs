@@ -14,5 +14,11 @@ namespace UnitTest.Attribute
             Extension.Swop(ref a, ref b);
             Assert.IsTrue(a == 3 && b == 2);
         }
+
+        [TestMethod]
+        public void RemoveNumberTest()
+        {
+            Assert.AreEqual("ABC", "74A5B12C".RemoveNumber());
+        }
     }
 }

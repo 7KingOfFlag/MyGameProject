@@ -16,6 +16,8 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         
         public RoleMoveComponent MoveComponent { get; private set; }
 
+        public Vector2Int RolePosition { get { return MoveComponent.CurrentRolePosition.ToVector2Int(); } }
+
         public RoleManager RoleManager;
 
         private bool m_isSelect;
@@ -77,6 +79,10 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         public void MoveRole(Vector2Int TargetCellPosition)
         {
             MoveComponent.Move(TargetCellPosition.ToVector3Int());
+        }
+        public void MoveRole(Vector2Int[] moveList)
+        {
+            MoveComponent.Move(moveList.ToList());
         }
         void OnMouseUpAsButton()
         {

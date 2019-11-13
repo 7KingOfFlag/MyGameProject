@@ -20,6 +20,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         public Tilemap BackgroundTileMap;
         public PlayerInput PlayerInput;
         public RoleEntity SelectRoleEntity { private get; set; }
+        public HexGrid hexGrid;
 
         void Awake()
         {
@@ -38,7 +39,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             {
                 if (e.ClickButtomCoed == MouseButton.RightMouse)
                 {
-                    SelectRoleEntity.MoveRole(e.ClickPosition);
+                    SelectRoleEntity.MoveRole(HexTileMetrics.ShortestPath(hexGrid,SelectRoleEntity.RolePosition,e.ClickPosition));
                 }
                 if (e.ClickButtomCoed == MouseButton.LeftMouse && e.ClickPosition.ToVector3Int() != SelectRoleEntity.MoveComponent.CurrentRolePosition)
                 {

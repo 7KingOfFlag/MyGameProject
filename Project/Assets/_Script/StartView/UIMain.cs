@@ -31,10 +31,10 @@ namespace OurGameName.StarView
 
         void Start()
         {
-            init();
+            Init();
         }
 
-        private void init()
+        private void Init()
         {
             EventTriggerListener.Get(btnStart.gameObject).onClick = OnButtonClick;
             EventTriggerListener.Get(btnOption.gameObject).onClick = OnButtonClick;

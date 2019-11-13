@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OurGameName.DoMain.Attribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,10 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         public int MoveSpeed;
 
         private Vector3Int m_targetRolePosition;
+        /// <summary>
+        /// 移动目标列表
+        /// </summary>
+        private List<Vector2Int> m_moveTargetList;
         private float m_moveCount;
         private bool m_onMove;
         private const float m_MaxMoveCount = 100f;
@@ -73,6 +78,12 @@ namespace OurGameName.DoMain.Entity.RoleSpace
                 context.transform.position = context.RoleManager.CellToWorld(CurrentRolePosition);
             }
         }
+        public void Move(List<Vector2Int> moveTargetList)
+        {
+            m_moveTargetList = moveTargetList;
+            m_targetRolePosition = moveTargetList[0].ToVector3Int();
+            SetMovePerform();
+        }
         /// <summary>
         /// 移动至指定位置
         /// </summary>
@@ -91,7 +102,8 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         {
             context.transform.position = context.RoleManager.CellToWorld(newPosition);
             CurrentRolePosition = newPosition;
-            
+            m_moveTargetList.RemoveAt(0);
+            m_targetRolePosition = m_moveTargetList[0].ToVector3Int();
         }
     }
 
