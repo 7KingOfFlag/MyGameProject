@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
+using OurGameName.DoMain.Attribute;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {
@@ -14,6 +15,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
     internal class RoleImageComponent : MonoBehaviour
     {
         private Material spriteMaterial;
+
         void Awake()
         {
             spriteMaterial = GetComponent<SpriteRenderer>().sharedMaterial;
@@ -25,11 +27,11 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             {
                 if (value == true)
                 {
-                    spriteMaterial.SetFloat("_Outline", 0.999f);
+                    spriteMaterial.SetFloat("_Outline", SharedMetrics.SharedTrue);
                 }
                 else
                 {
-                    spriteMaterial.SetFloat("_Outline", 0);
+                    spriteMaterial.SetFloat("_Outline", SharedMetrics.SharedTrue);
                 }
             }
         }
@@ -56,11 +58,11 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             {
                 if (value == true)
                 {
-                    spriteMaterial.SetFloat("_IsBlink", 1f);
+                    spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedTrue);
                 }
                 else
                 {
-                    spriteMaterial.SetFloat("_IsBlink", 0f);
+                    spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedFalse);
                 }
             }
         }
