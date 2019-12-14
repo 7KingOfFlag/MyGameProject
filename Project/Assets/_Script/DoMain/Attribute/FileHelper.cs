@@ -109,7 +109,7 @@ namespace OurGameName.DoMain.Attribute
         }
         */
         /// <summary>
-        /// 保存字符串到文件
+        /// 已覆盖的形式保存字符串到文件
         /// </summary>
         /// <param name="path">文件路径 包括文件名</param>
         /// <param name="str">文件字符串</param>
@@ -126,6 +126,11 @@ namespace OurGameName.DoMain.Attribute
             }
         }
 
+        /// <summary>
+        /// 以纯文本形式读取文件并返回字符串
+        /// </summary>
+        /// <param name="path">文件地址</param>
+        /// <returns></returns>
         public static string ReadStrToFile(string path)
         {
             string str = null;
@@ -136,7 +141,12 @@ namespace OurGameName.DoMain.Attribute
                     str = reader.ReadToEnd();
                 }
             }
+            else
+            {
+                throw new FileNotFoundException();
+            }
             return str;
         }
+
     }
 }

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine.EventSystems;
 using OurGameName.DoMain.Entity.RoleSpace;
+using UniRx;
 
 namespace OurGameName.DoMain.Entity.TileHexMap.UI
 {
@@ -86,12 +87,12 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         /// </summary>
         private Vector2Int CurrentUnderCell = Vector2Int.zero;
 
-
         public AssetReference HexMapMakeBoxAsset;
 
         #region Unity实体方法
         void Awake()
         {
+
             mainCamera = Camera.main;
             GameDataCentre.AseetLoadStatusChang += GameDataCentre_AseetLoadStatusChang;
             MouseDetectionColliderInit();

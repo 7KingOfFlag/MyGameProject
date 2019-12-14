@@ -1,9 +1,10 @@
 Project/[Ll]ibrary/
-ProjectLibrary
+Project/Library
 Project/[Tt]emp/
 Project/[Oo]bj/
 Project/[Bb]uild/
 Project/[Bb]uilds/
+Project/Packages/
 Project/Assets/AssetStoreTools*
 UnitTest/bin/
 UnitTest/obj/
