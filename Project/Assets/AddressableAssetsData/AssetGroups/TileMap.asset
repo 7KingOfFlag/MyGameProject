@@ -17,6 +17,10 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 99b3e76073ed5964080c9f426755b92e
   m_SerializeEntries:
+  - m_GUID: 272bbe4e7f48481469fc7051f024a164
+    m_Address: Assets/Prefab/UI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   - m_GUID: 59ef6b22e355dbc4ba617cdb50876f00
     m_Address: Assets/Data/TileMap
     m_ReadOnly: 0

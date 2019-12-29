@@ -137,13 +137,13 @@ namespace OurGameName.DoMain.Data
             }
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             string json = serializer.Serialize(TerrainThroughCostDict);
-            FileHelper.SaveStrFile(m_terrainThroughCostDictJsonFilePath, json);
+            FileHelper.SaveStringToFile(m_terrainThroughCostDictJsonFilePath, json);
             
         }
 
         private Dictionary<string,int> LoadTileThrougCostDictOnJson(string jsonFilePath)
         {
-            string json = FileHelper.ReadStrToFile(jsonFilePath);
+            string json = FileHelper.ReadFileToString(jsonFilePath);
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             return serializer.Deserialize<Dictionary<string, int>>(json);
         }
