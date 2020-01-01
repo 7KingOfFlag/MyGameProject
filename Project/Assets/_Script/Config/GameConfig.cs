@@ -13,11 +13,6 @@ namespace OurGameName.Config
     internal class GameConfig
     {
         /// <summary>
-        /// 私有化构造函数
-        /// </summary>
-        private GameConfig() { }
-
-        /// <summary>
         /// 获取游戏设置实例
         /// </summary>
         /// <returns>设置单例</returns>
@@ -91,8 +86,21 @@ namespace OurGameName.Config
                 PathConfig = new PathConfig()
                 {
                     ArchivePath = Environment.CurrentDirectory + "/Save/",
+                },
+                AudioConfig = new AudioConfig()
+                {
+                    GlobalVolume = 1,
+                    MusicVolume = 1,
+                    EffectVolume = 1,
+                },
+                VideoConfig = new VideoConfig()
+                {
+                    ScreenMode = Screen.fullScreenMode,
+                    Height = Screen.height,
+                    Width = Screen.width,
                 }
             };
+
             return result;
         }
 
@@ -141,11 +149,6 @@ namespace OurGameName.Config
         /// 效果音量
         /// </summary>
         public float EffectVolume { get; set; }
-
-        /// <summary>
-        /// 背景音量
-        /// </summary>
-        public float BackgroundVolume { get; set; }
     }
 
     /// <summary>
