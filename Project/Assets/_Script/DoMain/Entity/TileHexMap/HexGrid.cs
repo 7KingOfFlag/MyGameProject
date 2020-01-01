@@ -1,19 +1,15 @@
-﻿using OurGameName.DoMain.Entity.TileHexMap.UI;
-using System;
+﻿using OurGameName.DoMain.Attribute;
+using OurGameName.DoMain.Data;
+using OurGameName.DoMain.Entity.TileHexMap.UI;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using OurGameName.DoMain.Attribute;
 using System.Runtime.CompilerServices;
-using OurGameName.DoMain.Entity.HexMap;
-using OurGameName.DoMain.Data;
-using UnityEngine.Tilemaps;
 using System.Web.Script.Serialization;
-using System.IO;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
-[assembly:InternalsVisibleTo("UnitTest")]
+[assembly: InternalsVisibleTo("UnitTest")]
+
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
     /// <summary>
@@ -25,19 +21,23 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 地图单元格数组 地图上数据的存储对象
         /// </summary>
         public HexCell[,] HexCells { get; private set; }
+
         /// <summary>
         /// Tile通过费用字典
         /// </summary>
         [ScriptIgnore]
         public Dictionary<string, int> TerrainThroughCostDict { get; private set; }
+
         /// <summary>
         /// 游戏数据中心
         /// </summary>
         private GameAssetDataHelper m_gameAssetData;
+
         /// <summary>
         /// 地图实例
         /// </summary>
         private HexTileMap m_map;
+
         public HexGrid()
         {
         }
@@ -86,9 +86,8 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 for (int x = 0; x < sizeX; x++)
                 {
                     TileBase tileBase = m_gameAssetData.GetRandomTileAssetDict("Ocean");
-                    var neighborsPosition = CalculateNeighbor(new Vector2Int(x,y));
+                    var neighborsPosition = CalculateNeighbor(new Vector2Int(x, y));
                     HexCells[x, y] = new HexCell(this, tileBase.name, new Vector2Int(x, y), neighborsPosition);
-
                 }
             }
         }
@@ -121,6 +120,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
 
             return result;
         }
+
         /// <summary>
         /// 刷新所有单元格
         /// <para>单元格需要刷新的内容依照其 NeedRefre 标志位</para>
@@ -143,19 +143,24 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         {
             m_map.Refresh(cell);
         }
+
         #region 工具方法
+
         /// <summary>
         /// 网格大小
         /// </summary>
         public Vector2Int GridSize { get { return new Vector2Int(HexCells.GetLength(0), HexCells.GetLength(1)); } }
+
         /// <summary>
         /// 网格列数
         /// </summary>
         public int GridSizeX { get { return HexCells.GetLength(0); } }
+
         /// <summary>
         /// 网格行数
         /// </summary>
         public int GridSizeY { get { return HexCells.GetLength(1); } }
+
         /// <summary>
         /// 获取指定坐标的单元格的通行成本
         /// </summary>
@@ -172,7 +177,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         {
             return cellPosition.x < 0 || cellPosition.y < 0 || cellPosition.x >= GridSizeX || cellPosition.y >= GridSizeY;
         }
-        
+
         /// <summary>
         /// 过滤超出网格坐标的单元格
         /// </summary>
@@ -192,6 +197,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         {
             return Positions.Select(position => FiltrationOutOfGridRangePosition(position)).ToArray();
         }
-        #endregion
+
+        #endregion 工具方法
     }
 }

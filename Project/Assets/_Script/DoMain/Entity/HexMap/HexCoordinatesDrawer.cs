@@ -1,7 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
-
-namespace OurGameName.DoMain.Entity.HexMap
+﻿namespace OurGameName.DoMain.Entity.HexMap
 {
 #if false
 
@@ -16,7 +13,6 @@ namespace OurGameName.DoMain.Entity.HexMap
             position = EditorGUI.PrefixLabel(position, label);
             GUI.Label(position, coordinates.ToString());
         }
-
     }
 
 #endif

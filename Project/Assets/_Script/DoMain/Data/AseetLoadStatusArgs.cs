@@ -21,10 +21,12 @@ namespace OurGameName.DoMain.Data
             /// 载入完成
             /// </summary>
             Completed,
+
             /// <summary>
             /// 卸载完成
             /// </summary>
             Destroyed,
+
             /// <summary>
             /// 无类型载入完成
             /// </summary>

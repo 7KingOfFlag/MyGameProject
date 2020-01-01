@@ -1,16 +1,12 @@
-﻿using System;
+﻿using OurGameName.DoMain.Attribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OurGameName.DoMain.Entity.RoleSpace;
-using OurGameName.DoMain.Attribute;
+using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Tilemaps;
-using System.IO;
-using System.Text.RegularExpressions;
 using Random = System.Random;
 
 namespace OurGameName.DoMain.Data
@@ -27,10 +23,12 @@ namespace OurGameName.DoMain.Data
 
         public AssetLabelReference TileAssetLabel;
         private Random m_random;
+
         /// <summary>
         /// Tile资源字典
         /// </summary>
-        public Dictionary<string, TileBase> TileAssetDict {get; private set; }
+        public Dictionary<string, TileBase> TileAssetDict { get; private set; }
+
         /// <summary>
         /// 随机从字典中符合 assetName 的项中选一项返回
         /// </summary>
@@ -43,28 +41,30 @@ namespace OurGameName.DoMain.Data
                 Select(item => item.Value).ToArray();
             return tileAsset[m_random.Next(0, tileAsset.Count() - 1)];
         }
+
         /// <summary>
         /// Tile通过费用字典
         /// </summary>
         public Dictionary<string, int> TerrainThroughCostDict { get; private set; }
+
         /// <summary>
         /// Tile通过费用字典Json文件的地址
         /// </summary>
         private string m_terrainThroughCostDictJsonFilePath;
-        
+
         /// <summary>
         /// Tiel资源是否全部加载完成
         /// </summary>
         public bool IsAssetLoadCompleted { get; private set; }
 
-        void Awake()
+        private void Awake()
         {
             m_random = new Random((int)DateTime.Now.Ticks);
             m_terrainThroughCostDictJsonFilePath = Application.dataPath + @"/Data/Save/TileThroughCostDict.Json";
             TileAssetLoadInit();
         }
 
-        void Start()
+        private void Start()
         {
             TerrainThroughCostDict = LoadTileThrougCostDictOnJson(m_terrainThroughCostDictJsonFilePath);
             OnAseetLoadStatusChang(
@@ -90,6 +90,7 @@ namespace OurGameName.DoMain.Data
         {
             TileAssetDict.Add(aseet.name, aseet);
         }
+
         /// <summary>
         /// Tiel全部资源加载完成
         /// </summary>
@@ -138,10 +139,9 @@ namespace OurGameName.DoMain.Data
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             string json = serializer.Serialize(TerrainThroughCostDict);
             FileHelper.SaveStringToFile(m_terrainThroughCostDictJsonFilePath, json);
-            
         }
 
-        private Dictionary<string,int> LoadTileThrougCostDictOnJson(string jsonFilePath)
+        private Dictionary<string, int> LoadTileThrougCostDictOnJson(string jsonFilePath)
         {
             string json = FileHelper.ReadFileToString(jsonFilePath);
             JavaScriptSerializer serializer = new JavaScriptSerializer();

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Web.Script.Serialization;
 using UnityEngine;
 
@@ -10,6 +8,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
     {
         public HexCell[] HexTileCells;
         private Vector2Int m_mapSize;
+
         public Vector2Int MapSize
         {
             get
@@ -17,17 +16,17 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 return m_mapSize;
             }
         }
-        public HexTileMapData(int x,int y)
+
+        public HexTileMapData(int x, int y)
         {
             HexTileCells = new HexCell[x * y];
             m_mapSize = new Vector2Int(x, y);
         }
-        
+
         public HexTileMapData()
         {
-
         }
-        
+
         public void SaveToFile(string SavePath)
         {
             if (File.Exists(SavePath))//检查文件是否存在
@@ -49,7 +48,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             {
                 using (StreamReader reader = File.OpenText(SavePath))
                 {
-
                     string DataJson = reader.ReadToEnd();
                     UnityEngine.Debug.Log(DataJson);
                     JavaScriptSerializer serializer = new JavaScriptSerializer();

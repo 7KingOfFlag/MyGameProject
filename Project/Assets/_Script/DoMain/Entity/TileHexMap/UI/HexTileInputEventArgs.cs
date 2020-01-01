@@ -19,6 +19,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 点击位置
         /// </summary>
         public Vector2Int ClickPosition { get { return m_ClickPosition; } }
+
         /// <summary>
         /// 点击按钮代码
         /// </summary>

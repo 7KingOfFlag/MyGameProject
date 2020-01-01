@@ -1,13 +1,10 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
-
+﻿using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.HexMap
 {
-    public class HexCellMesh:MonoBehaviour
+    public class HexCellMesh : MonoBehaviour
     {
-        HexCell cell;
+        private HexCell cell;
 
         public HexMesh terrain;
 
@@ -23,7 +20,6 @@ namespace OurGameName.DoMain.Entity.HexMap
             terrain = GetComponentInChildren<HexMesh>();
 
             cell = new HexCell();
-
         }
 
         private void Start()

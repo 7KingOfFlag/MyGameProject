@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.Mathematics;
+﻿using OurGameName.DoMain.Attribute;
 using UnityEngine;
-using OurGameName.DoMain.Attribute;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {
@@ -16,7 +10,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
     {
         private Material spriteMaterial;
 
-        void Awake()
+        private void Awake()
         {
             spriteMaterial = GetComponent<SpriteRenderer>().sharedMaterial;
         }

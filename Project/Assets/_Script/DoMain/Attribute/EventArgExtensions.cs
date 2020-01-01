@@ -18,6 +18,5 @@ namespace OurGameName.DoMain.Attribute
             EventHandler<TEventArgs> temp = Volatile.Read(ref eventDelegate);
             if (temp != null) temp(sender, e);
         }
-
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OurGameName.DoMain.Attribute
+﻿namespace OurGameName.DoMain.Attribute
 {
     /// <summary>
     /// Shared 标准量工具类
@@ -15,6 +9,7 @@ namespace OurGameName.DoMain.Attribute
         /// 真 Shared Bool使用的是C的标准
         /// </summary>
         public const float SharedTrue = 1f;
+
         /// <summary>
         /// 假 Shared Bool使用的是C的标准
         /// </summary>

@@ -2,17 +2,17 @@
 #define FLOW_INCLUDED
 
 float3 FlowUVW(
-	float2 uv,float2 flowVector, float2 jump, float flowOffset,
+	float2 uv, float2 flowVector, float2 jump, float flowOffset,
 	float tiling, float time, bool flowB
-	) {
+) {
 	float phassOffset = flowB ? 0.5 : 0;
 	float progress = frac(time + phassOffset);
 	float3 uvw;
-    uvw.xy = uv - flowVector * (progress + flowOffset);
+	uvw.xy = uv - flowVector * (progress + flowOffset);
 	uvw.xy *= tiling;
 	uvw.xy += phassOffset;
 	uvw.xy += (time - progress) * jump;
-    uvw.z = 1 - abs(1 - 2 * progress);
+	uvw.z = 1 - abs(1 - 2 * progress);
 	return uvw;
 }
 

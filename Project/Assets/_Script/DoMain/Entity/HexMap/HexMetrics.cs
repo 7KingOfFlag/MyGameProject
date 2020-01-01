@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.HexMap
 {
-   /// <summary>
-   /// 六边形常量
-   /// 定义六边形地图的基本量
-   /// </summary>
+    /// <summary>
+    /// 六边形常量
+    /// 定义六边形地图的基本量
+    /// </summary>
     public static class HexMetrics
     {
         /// <summary>
@@ -33,7 +33,6 @@ namespace OurGameName.DoMain.Entity.HexMap
             new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
             new Vector3(0f, 0f, outerRadius),
         };
-
 
         /// <summary>
         /// 噪声取样
@@ -76,7 +75,8 @@ namespace OurGameName.DoMain.Entity.HexMap
             offset.z = far.z - near.z;
             return offset.normalized * (wallThickness * 0.5f);
         }
-        #endregion
+
+        #endregion 城墙设置
 
         #region 随机数哈希表
 
@@ -109,13 +109,14 @@ namespace OurGameName.DoMain.Entity.HexMap
 
         public static Float2 SampleHashGrid(Vector3 position)
         {
-            int x = (int)(position.x * hashGridScale )% hashGridSize;
+            int x = (int)(position.x * hashGridScale) % hashGridSize;
             int z = (int)(position.z * hashGridScale) % hashGridSize;
 
             x = x < 0 ? x + hashGridSize : x;
             z = z < 0 ? z + hashGridSize : z;
             return hashGrid[x + z * hashGridSize];
         }
-        #endregion
+
+        #endregion 随机数哈希表
     }
 }

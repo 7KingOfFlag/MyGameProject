@@ -1,9 +1,5 @@
 ﻿using OurGameName.DoMain.Attribute;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +16,7 @@ namespace OurGameName.View
         public Button btnNo;
         public CanvasGroup canvasGroup;
 
-        void Start()
+        private void Start()
         {
             canvasGroup.alpha = 0;
             btnYes.onClick.AddListener(OnYes);
@@ -32,6 +28,7 @@ namespace OurGameName.View
             OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.Yes));
             Hide();
         }
+
         private void OnNo()
         {
             OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.No));
@@ -60,7 +57,7 @@ namespace OurGameName.View
     /// <summary>
     /// 对话框事件返回参数
     /// </summary>
-    internal class DialogBoxReturnArgs: EventArgs
+    internal class DialogBoxReturnArgs : EventArgs
     {
         /// <summary>
         /// 对话框选项返回结果

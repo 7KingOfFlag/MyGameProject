@@ -1,12 +1,9 @@
-﻿using System;
+﻿using OurGameName.DoMain.Attribute;
+using OurGameName.DoMain.Entity.RoleSpace;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using OurGameName.DoMain.Entity.RoleSpace;
 using UnityEngine;
-using OurGameName.DoMain.Attribute;
-
 
 namespace OurGameName.DoMain.Entity.Combat
 {
@@ -32,15 +29,15 @@ namespace OurGameName.DoMain.Entity.Combat
         private byte ActiveRoleIndex;
 
         /// <summary>
-        /// 回合分割标志 标记当前与下一个大回合结束的地方 
+        /// 回合分割标志 标记当前与下一个大回合结束的地方
         /// </summary>
         public int[] RoundEndIndex { get; private set; }
 
         /// <summary>
-        /// 战斗回合控制类 
+        /// 战斗回合控制类
         /// </summary>
         /// <param name="combatRoles">战斗人员数组</param>
-        public CombatRound( List<Role> combatRoles)
+        public CombatRound(List<Role> combatRoles)
         {
             CombatList = new List<Role>();
             CombatRoles = combatRoles;
@@ -67,8 +64,8 @@ namespace OurGameName.DoMain.Entity.Combat
         private List<Role> CombatSort(List<Role> list)
         {
             return (from role in list
-                   orderby role.Speed
-                   select role)
+                    orderby role.Speed
+                    select role)
                    .ToList();
         }
 
@@ -93,7 +90,7 @@ namespace OurGameName.DoMain.Entity.Combat
             builder.Append("战斗序列以刷新当前序列:\n");
             for (int i = 0; i < CombatList.Count; i++)
             {
-                builder.AppendFormat("{0}.{1}",i,CombatList[i].GetName());
+                builder.AppendFormat("{0}.{1}", i, CombatList[i].GetName());
                 if (isRoundLast(i) == true)
                 {
                     builder.AppendFormat("\t--大回合结束\n");

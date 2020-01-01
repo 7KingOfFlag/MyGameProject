@@ -3,16 +3,17 @@ using System.Linq;
 
 namespace OurGameName.DoMain.Attribute
 {
-    [AttributeUsage(AttributeTargets.Property,Inherited = true,AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class Introduction : System.Attribute
     {
         public string Msg;
+
         public Introduction(string msg)
         {
             Msg = msg;
         }
 
-        public static string getMsg(Type objType, AttributeTargets targets,string targetName)
+        public static string getMsg(Type objType, AttributeTargets targets, string targetName)
         {
             Object[] attributes = null;
             string msg = null;
@@ -25,6 +26,7 @@ namespace OurGameName.DoMain.Attribute
                     }
                     catch { }
                     break;
+
                 case AttributeTargets.Method:
                     try
                     {

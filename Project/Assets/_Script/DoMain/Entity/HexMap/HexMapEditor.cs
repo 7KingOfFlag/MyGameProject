@@ -1,7 +1,7 @@
-﻿using UnityEngine.EventSystems;
+﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System;
 
 namespace OurGameName.DoMain.Entity.HexMap
 {
@@ -44,6 +44,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// 城市等级
         /// </summary>
         private int activeUrbanLevel;
+
         /// <summary>
         /// 是否设置城市等级
         /// </summary>
@@ -52,7 +53,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <summary>
         /// 城墙设置触发器
         /// </summary>
-        OptionToggle wallMode;
+        private OptionToggle wallMode;
 
         /// <summary>
         /// 刷子大小
@@ -63,14 +64,16 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// 鼠标是否拖拽
         /// </summary>
         private bool isDrag;
+
         /// <summary>
         /// 鼠标拖住方向
         /// </summary>
         private HexDirection DragDir;
+
         /// <summary>
         /// 拖拽的初始单元格
         /// </summary>
-        HexCell previousCell;
+        private HexCell previousCell;
 
         private void Awake()
         {
@@ -229,7 +232,7 @@ namespace OurGameName.DoMain.Entity.HexMap
 
         #region 鼠标悬浮
 
-        HexCellMsgBox msgBox;
+        private HexCellMsgBox msgBox;
 
         /// <summary>
         /// 悬浮时所执行的函数
@@ -297,23 +300,23 @@ namespace OurGameName.DoMain.Entity.HexMap
             }
         }
 
-
-
-        #endregion
+        #endregion 鼠标悬浮
 
         /// <summary>
         /// 设置触发器
         /// </summary>
-        enum OptionToggle
+        private enum OptionToggle
         {
             /// <summary>
             /// 忽略
             /// </summary>
             Ignore,
+
             /// <summary>
             /// 是
             /// </summary>
             Yes,
+
             /// <summary>
             /// 否
             /// </summary>

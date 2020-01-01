@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
-using System.IO;
 
 namespace OurGameName.DoMain.Attribute
 {
-
     /// <summary>
     /// 文件导入工具类
     /// </summary>
@@ -24,7 +16,7 @@ namespace OurGameName.DoMain.Attribute
         /// <param name="width">图片宽度</param>
         /// <param name="height">图片高度</param>
         /// <returns>Texture2D<returns>
-        public static Texture2D LoadTexture2D(string path,int width, int height)
+        public static Texture2D LoadTexture2D(string path, int width, int height)
         {
             byte[] bytes = ReadFileToByteArray(path);
 
@@ -56,7 +48,7 @@ namespace OurGameName.DoMain.Attribute
         /// </summary>
         /// <param name="path">文件路径 包括文件名</param>
         /// <param name="context">文件字符串</param>
-        public static void SaveStringToFile(string path,string context)
+        public static void SaveStringToFile(string path, string context)
         {
             if (File.Exists(path))
             {
@@ -90,6 +82,5 @@ namespace OurGameName.DoMain.Attribute
             }
             return result;
         }
-
     }
 }

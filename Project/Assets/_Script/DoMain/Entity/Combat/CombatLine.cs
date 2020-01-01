@@ -1,11 +1,7 @@
-﻿using System;
+﻿using OurGameName.DoMain.Entity.RoleSpace;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
-using OurGameName.DoMain.Entity.RoleSpace;
 
 namespace OurGameName.DoMain.Entity.Combat
 {
@@ -19,6 +15,7 @@ namespace OurGameName.DoMain.Entity.Combat
         /// 人物头像生成位置参考点
         /// </summary>
         public Transform RoleBuilder;
+
         /// <summary>
         /// 战斗行角色头像预制体
         /// </summary>
@@ -68,7 +65,6 @@ namespace OurGameName.DoMain.Entity.Combat
                     if (i == 1)
                     {
                         positionCountX += 95;
-                        
                     }
                     else if (i > 1)
                     {

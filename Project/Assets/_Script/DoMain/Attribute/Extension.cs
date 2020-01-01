@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Rendering;
-using Random = System.Random;
-using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
+using Random = System.Random;
 
 namespace OurGameName.DoMain.Attribute
 {
@@ -22,7 +20,7 @@ namespace OurGameName.DoMain.Attribute
         /// <param name="list">扩展方法的实例对象</param>
         /// <param name="random">随机数生成器</param>
         /// <returns>列表中的随机项</returns>
-        public static T GetRandomItem<T>(this List<T> list,Random random = null)
+        public static T GetRandomItem<T>(this List<T> list, Random random = null)
         {
             if (random == null)
             {
@@ -89,18 +87,20 @@ namespace OurGameName.DoMain.Attribute
                 return i;
             }
         }
+
         /// <summary>
         /// 交换两个对象的值
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        public static void Swop<T>(ref T a,ref T b)
+        public static void Swop<T>(ref T a, ref T b)
         {
             T t = b;
             b = a;
             a = t;
         }
+
         /// <summary>
         /// 索引 使用二维整型向量索引二维数组
         /// </summary>
@@ -108,7 +108,7 @@ namespace OurGameName.DoMain.Attribute
         /// <param name="array"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static T GetItem<T>(this T[,] array,Vector2Int index)
+        public static T GetItem<T>(this T[,] array, Vector2Int index)
         {
             return array[index.x, index.y];
         }
@@ -124,6 +124,7 @@ namespace OurGameName.DoMain.Attribute
         {
             array[index.x, index.y] = value;
         }
+
         /// <summary>
         /// 移除字符串中的数字
         /// </summary>
@@ -149,7 +150,7 @@ namespace OurGameName.DoMain.Attribute
             {
                 for (int y = 0; y < source.GetLength(1); y++)
                 {
-                    result[x, y] = selector(source[x,y]);
+                    result[x, y] = selector(source[x, y]);
                 }
             }
             return result;

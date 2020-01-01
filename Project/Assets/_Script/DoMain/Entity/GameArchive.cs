@@ -1,8 +1,8 @@
 ﻿using OurGameName.DoMain.Entity.HexMap;
+using OurGameName.DoMain.Entity.RoleSpace;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Script.Serialization;
-using OurGameName.DoMain.Entity.RoleSpace;
 
 namespace OurGameName.DoMain.Entity
 {
@@ -15,6 +15,7 @@ namespace OurGameName.DoMain.Entity
         /// 人物列表
         /// </summary>
         public List<Role> RoleList { get; set; }
+
         /// <summary>
         /// 地图文件序列化类
         /// 是精简版的地图类
@@ -22,7 +23,7 @@ namespace OurGameName.DoMain.Entity
         public HexCellSerialization[] HexCellSerialization;
 
         /// <summary>
-        /// 地图大小 
+        /// 地图大小
         /// </summary>
         public int X, Z;
 
@@ -41,7 +42,6 @@ namespace OurGameName.DoMain.Entity
 
         public GameArchive()
         {
-
         }
 
         /// <summary>
@@ -78,11 +78,10 @@ namespace OurGameName.DoMain.Entity
             {
                 using (StreamReader reader = File.OpenText(sevePath))
                 {
-
                     string ArchiveJson = reader.ReadToEnd();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
 
-                    GameArchive archive =  serializer.Deserialize<GameArchive>(ArchiveJson);
+                    GameArchive archive = serializer.Deserialize<GameArchive>(ArchiveJson);
 
                     return archive;
                 }

@@ -1,16 +1,10 @@
 ﻿using OurGameName.DoMain.Attribute;
 using OurGameName.DoMain.Entity.TileHexMap;
 using OurGameName.DoMain.Entity.TileHexMap.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
-
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {
@@ -22,7 +16,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         public RoleEntity SelectRoleEntity { private get; set; }
         public HexGrid hexGrid;
 
-        void Awake()
+        private void Awake()
         {
             SelectRoleEntity = null;
         }
@@ -39,7 +33,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             {
                 if (e.ClickButtomCoed == MouseButton.RightMouse)
                 {
-                    SelectRoleEntity.MoveRole(HexTileMetrics.ShortestPath(hexGrid,SelectRoleEntity.RolePosition,e.ClickPosition));
+                    SelectRoleEntity.MoveRole(HexTileMetrics.ShortestPath(hexGrid, SelectRoleEntity.RolePosition, e.ClickPosition));
                 }
                 if (e.ClickButtomCoed == MouseButton.LeftMouse && e.ClickPosition.ToVector3Int() != SelectRoleEntity.MoveComponent.CurrentRolePosition)
                 {
@@ -59,5 +53,4 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             return BackgroundTileMap.CellToWorld(cellPosition);
         }
     }
-
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.TileHexMap.UI
@@ -24,15 +19,19 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
                 case 0:
                     mapSize = new Vector2Int(16, 9);
                     break;
+
                 case 1:
                     mapSize = new Vector2Int(32, 18);
                     break;
+
                 case 2:
                     mapSize = new Vector2Int(64, 36);
                     break;
+
                 case 3:
                     mapSize = new Vector2Int(128, 72);
                     break;
+
                 default:
                     mapSize = new Vector2Int(16, 9);
                     Debug.LogWarning("地图创建参数 - 地图大小下拉列表框出现未设定选项");
@@ -47,7 +46,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         {
             Exit();
         }
-        
+
         private void Exit()
         {
             Destroy(this.gameObject);
@@ -60,6 +59,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
     internal class HexMapCreateArgs
     {
         public Vector2Int MapSize { get; private set; }
+
         public HexMapCreateArgs(Vector2Int mapSize)
         {
             MapSize = mapSize;

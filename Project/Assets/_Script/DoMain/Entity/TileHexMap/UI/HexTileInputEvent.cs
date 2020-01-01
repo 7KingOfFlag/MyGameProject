@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OurGameName.DoMain.Attribute;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using OurGameName.DoMain.Attribute;
 using UnityEngine.UIElements;
 
 namespace OurGameName.DoMain.Entity.TileHexMap.UI
@@ -14,6 +10,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
     {
         public HexTileMapEditor context;
         public PlayerInput PlayerInput;
+
         public event EventHandler<HexTileInputEventArgs> NewClick;
 
         private void Awake()

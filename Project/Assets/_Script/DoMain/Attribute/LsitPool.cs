@@ -9,7 +9,7 @@ namespace OurGameName.DoMain.Attribute
     /// <typeparam name="T">泛型</typeparam>
     public static class ListPool<T>
     {
-        static Stack<List<T>> stack = new Stack<List<T>>();
+        private static Stack<List<T>> stack = new Stack<List<T>>();
 
         /// <summary>
         /// Get 出栈

@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using OurGameName.DoMain.Attribute;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
@@ -10,20 +9,25 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 单元格所属的六边形网格
         /// </summary>
         private HexGrid m_HexGrid;
+
         /// <summary>
         /// 序列化用构造方法
         /// </summary>
         public HexCell() { }
+
         /// <summary>
         /// 单元格地图资源名
         /// </summary>
         private string m_tileAssetName;
+
         /// <summary>
         /// 单元格位置
         /// </summary>
         private Vector2Int m_position;
+
         private int m_distance;
         private int m_throughCost;
+
         /// <summary>
         /// 邻近的单元格位置
         /// </summary>
@@ -39,7 +43,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         }
 
         /// <summary>
-        /// Tile单元格资源名称 
+        /// Tile单元格资源名称
         /// <para>赋值时会附带将通行成本修改为符合Tile资源的值</para>
         /// </summary>
         public string TileAssetName
@@ -50,7 +54,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             }
             set
             {
-                if (value  == m_tileAssetName)
+                if (value == m_tileAssetName)
                 {
                     return;
                 }
@@ -64,12 +68,12 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 {
                     Debug.LogWarning(e.Message);
                     ThroughCost = 1;
-
                 }
             }
         }
+
         /// <summary>
-        /// 相邻单元格位置数组 
+        /// 相邻单元格位置数组
         /// <para>以 HexDirection 枚举对应值所代表的方向排序</para>
         /// </summary>
         public Vector2Int[] NeighborsPosition
@@ -88,6 +92,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 单元格位置
         /// </summary>
         public Vector2Int CellPosition { get { return m_position; } }
+
         /// <summary>
         /// 通过成本
         /// </summary>
@@ -118,9 +123,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         [Flags]
         public enum NeedRefresCode
         {
-            None        = 0x0000,
-            Asset       = 0x0001,
-            ThrougCost  = 0x0002,
+            None = 0x0000,
+            Asset = 0x0001,
+            ThrougCost = 0x0002,
         }
     }
 }

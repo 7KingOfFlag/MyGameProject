@@ -9,22 +9,27 @@
         /// 东北 ↗
         /// </summary>
         NE,
+
         /// <summary>
         /// 东 →
         /// </summary>
         E,
+
         /// <summary>
         /// 东南 ↘
         /// </summary>
         SE,
+
         /// <summary>
         /// 西南 ↙
         /// </summary>
         SW,
+
         /// <summary>
         /// 西 ←
         /// </summary>
         W,
+
         /// <summary>
         /// 西北 ↖
         /// </summary>
@@ -50,6 +55,7 @@
         {
             return dir == HexDirection.NE ? HexDirection.NW : (dir - 1);
         }
+
         /// <summary>
         /// 返回上一个方向顺时针方向下一个方向
         /// </summary>
@@ -66,15 +72,19 @@
                 case Terrain.coast:
                     result = "海洋";
                     break;
+
                 case Terrain.grassland:
                     result = "草原";
                     break;
+
                 case Terrain.mountains:
                     result = "山脉";
                     break;
+
                 case Terrain.desert:
                     result = "沙漠";
                     break;
+
                 default:
                     result = "特殊";
                     break;

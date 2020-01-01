@@ -1,6 +1,5 @@
-﻿using System.Web.Script.Serialization;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Web.Script.Serialization;
 
 namespace OurGameName.DoMain.Entity
 {

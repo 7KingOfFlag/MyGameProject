@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OurGameName.DoMain.Entity.HexMap
 {
@@ -15,6 +11,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// 地形名字
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// 地形会从什么条件的单元格上生成的断言
         /// True    可以生成
@@ -41,6 +38,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// 单个增殖块的大小的最大值
         /// </summary>
         public int MaxSize { get; set; }
+
         /// <summary>
         /// 单个增殖块的大小的最大值
         /// </summary>
@@ -53,7 +51,6 @@ namespace OurGameName.DoMain.Entity.HexMap
 
         public HexTerrain()
         {
-            
         }
 
         public HexTerrain(string name, Terrain terrain, Predicate<HexCell> canPlace = null, byte layer = 0, int chunkSize = 12, int wave = 0, int maxSize = 0, int minSize = 0)
@@ -85,14 +82,17 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// 海岸 近海
         /// </summary>
         coast,
+
         /// <summary>
         /// 草原
         /// </summary>
         grassland,
+
         /// <summary>
         /// 山脉
         /// </summary>
         mountains,
+
         /// <summary>
         /// 沙漠
         /// </summary>

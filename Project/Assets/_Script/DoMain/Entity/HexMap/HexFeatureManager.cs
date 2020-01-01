@@ -1,9 +1,4 @@
 ﻿using OurGameName.DoMain.Attribute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.HexMap
@@ -43,7 +38,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                 Destroy(container.gameObject);
             }
             container = new GameObject("特征物体容器").transform;
-            container.SetParent(transform.parent,false);
+            container.SetParent(transform.parent, false);
 
             wall.Clear();
         }
@@ -87,8 +82,8 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <param name="farRight">远端右->坐标</param>
         /// <param name="farCell">远端单元格</param>
         public void AddWall(
-            Vector3 nearLeft,Vector3 nearRight, HexCell nearCell,
-            Vector3 farLeft,Vector3 farRight,HexCell farCell
+            Vector3 nearLeft, Vector3 nearRight, HexCell nearCell,
+            Vector3 farLeft, Vector3 farRight, HexCell farCell
             )
         {
             //仅在有城墙的单元格与没有城墙的单元格相连时才添加城墙
@@ -100,9 +95,9 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         public void AddWall(
-            Vector3 c1,HexCell cell1,
-            Vector3 c2,HexCell cell2,
-            Vector3 c3,HexCell cell3
+            Vector3 c1, HexCell cell1,
+            Vector3 c2, HexCell cell2,
+            Vector3 c3, HexCell cell3
             )
         {
             if (cell1.Wall == true)
@@ -114,7 +109,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                         AddWallSegment(c3, cell3, c1, cell1, c2, cell2);
                     }
                 }
-                else if(cell3.Wall == true)
+                else if (cell3.Wall == true)
                 {
                     AddWallSegment(c2, cell2, c3, cell3, c1, cell1);
                 }
@@ -123,7 +118,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                     AddWallSegment(c1, cell1, c2, cell2, c3, cell3);
                 }
             }
-            else if(cell2.Wall)
+            else if (cell2.Wall)
             {
                 if (cell3.Wall)
                 {
@@ -134,7 +129,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                     AddWallSegment(c2, cell2, c3, cell3, c1, cell1);
                 }
             }
-            else if(cell3.Wall)
+            else if (cell3.Wall)
             {
                 AddWallSegment(c3, cell3, c1, cell1, c2, cell2);
             }
@@ -158,7 +153,7 @@ namespace OurGameName.DoMain.Entity.HexMap
             Vector3 rightThicknessOffset =
                 HexMetrics.WallThicknessOffset(nearRight, farRight);
 
-            float leftTop = left.y +HexMetrics.wallHeight;
+            float leftTop = left.y + HexMetrics.wallHeight;
             float rightTop = right.y + HexMetrics.wallHeight;
 
             Vector3 v1, v2, v3, v4;

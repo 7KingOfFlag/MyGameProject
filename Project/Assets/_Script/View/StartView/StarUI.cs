@@ -1,12 +1,10 @@
-﻿using System;
-using OurGameName.Config;
-using OurGameName.DoMain;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using OurGameName.Config;
+using System;
 using System.IO;
-using OurGameName.View;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using DialogBoxReturn = OurGameName.View.DialogBoxReturnArgs.DialogBoxReturnArgsCode;
 
 namespace OurGameName.View.StarView
@@ -30,7 +28,7 @@ namespace OurGameName.View.StarView
 
         /// <summary>
         /// 游戏设置
-        /// </summary> 
+        /// </summary>
         public Button btnOption;
 
         /// <summary>
@@ -48,7 +46,7 @@ namespace OurGameName.View.StarView
         /// </summary>
         private DialogBox dialogBox;
 
-        void Start()
+        private void Start()
         {
             BtnInit();
             AssetLoad();
@@ -64,7 +62,6 @@ namespace OurGameName.View.StarView
         {
             BtnExitAssetLoad();
         }
-
 
         /// <summary>
         /// 按钮初始化
@@ -83,7 +80,7 @@ namespace OurGameName.View.StarView
         /// </summary>
         public void LoadGame()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace OurGameName.View.StarView
         /// </summary>
         public void NewGame()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -154,6 +151,5 @@ namespace OurGameName.View.StarView
                     btnExitGame.enabled = true;
                 };
         }
-
     }
 }

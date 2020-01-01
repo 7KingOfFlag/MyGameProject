@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.HexMap
@@ -29,7 +26,6 @@ namespace OurGameName.DoMain.Entity.HexMap
 
         public HexCellSerialization()
         {
-
         }
 
         public void Serialization(HexCell cell)
@@ -47,7 +43,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <returns>HexCellSerialization实例数组</returns>
         public static HexCellSerialization[] ShiftCells(HexCell[,] cells)
         {
-            HexCellSerialization[] result = new HexCellSerialization[cells.GetLength(0)*cells.GetLength(1)];
+            HexCellSerialization[] result = new HexCellSerialization[cells.GetLength(0) * cells.GetLength(1)];
             int i = 0;
             for (int z = 0; z < cells.GetLength(1); z++)
             {
@@ -70,11 +66,11 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// </summary>
         /// <param name="cells">游戏场景中使用的地图的实例</param>
         /// <param name="serializations">需要载入的序列化地图</param>
-        public static void CoverageHexMap(HexCell[,] cells,HexCellSerialization[] serializations)
+        public static void CoverageHexMap(HexCell[,] cells, HexCellSerialization[] serializations)
         {
-            for (int z = 0,i = 0; z < cells.GetLength(1); z++)
+            for (int z = 0, i = 0; z < cells.GetLength(1); z++)
             {
-                for (int x = 0; x < cells.GetLength(0); x++,i++)
+                for (int x = 0; x < cells.GetLength(0); x++, i++)
                 {
                     try
                     {

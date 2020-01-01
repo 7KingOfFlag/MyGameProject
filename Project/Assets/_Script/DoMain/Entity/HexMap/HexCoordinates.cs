@@ -12,7 +12,9 @@ namespace OurGameName.DoMain.Entity.HexMap
         [SerializeField]
         private int x, z;
 
-        public int X { get
+        public int X
+        {
+            get
             {
                 return x;
             }
@@ -25,6 +27,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                 return z;
             }
         }
+
         public int Y
         {
             get
@@ -33,7 +36,7 @@ namespace OurGameName.DoMain.Entity.HexMap
             }
         }
 
-        public HexCoordinates(int x,int z)
+        public HexCoordinates(int x, int z)
         {
             this.x = x;
             this.z = z;
@@ -45,9 +48,9 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <param name="x"></param>
         /// <param name="z"></param>
         /// <returns>六边形坐标</returns>
-        public static HexCoordinates FromOffSetCoordinates(int x,int z)
+        public static HexCoordinates FromOffSetCoordinates(int x, int z)
         {
-            return new HexCoordinates(x-z/2,z);
+            return new HexCoordinates(x - z / 2, z);
         }
 
         /// <summary>
@@ -74,8 +77,8 @@ namespace OurGameName.DoMain.Entity.HexMap
             y -= offset;
 
             int iX = Mathf.RoundToInt(x);
-            int iY= Mathf.RoundToInt(y);
-            int iZ = Mathf.RoundToInt(-x-y);
+            int iY = Mathf.RoundToInt(y);
+            int iZ = Mathf.RoundToInt(-x - y);
 
             if (iX + iY + iZ != 0)
             {
@@ -83,7 +86,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                 float fy = Mathf.Abs(y - iY);
                 float fz = Mathf.Abs(-x - y - iZ);
 
-                if (fx > fy && fx >fz)
+                if (fx > fy && fx > fz)
                 {
                     iX = -iY - iZ;
                 }
@@ -92,7 +95,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                     iZ = -iX - iY;
                 }
             }
-            return new HexCoordinates(iX,iZ);
+            return new HexCoordinates(iX, iZ);
         }
 
         public override string ToString()
@@ -101,7 +104,8 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
     }
 
-    public struct Point {
+    public struct Point
+    {
         public int X { get; }
         public int Y { get; }
 
@@ -124,7 +128,7 @@ namespace OurGameName.DoMain.Entity.HexMap
             {
                 result = false;
             }
-              return result;
+            return result;
         }
 
         public override int GetHashCode()
@@ -132,5 +136,4 @@ namespace OurGameName.DoMain.Entity.HexMap
             return base.GetHashCode();
         }
     }
-
 }

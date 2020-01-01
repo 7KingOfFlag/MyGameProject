@@ -7,33 +7,42 @@ namespace OurGameName.DoMain.Controller
     internal class CameraMove : MonoBehaviour
     {
         public PlayerInput PlayerInput;
+
         /// <summary>
         /// 键盘移动速度
         /// </summary>
         public float KeyboardMovespeed = 10f;
+
         /// <summary>
         /// 鼠标俯仰速度
         /// </summary>
         public float MouseTiltSpeed = 5f;
+
         /// <summary>
         /// 鼠标拖曳速度
         /// </summary>
         public float MouseDragSpeed = 12f;
+
         public Tilemap BackGroundTilemap;
         public Cinemachine.CinemachineVirtualCamera CinemachineCamera;
+
         /// <summary>
         /// 最小视野距离
         /// </summary>
         public int MinFieldOfView = -3;
+
         /// <summary>
         /// 最大视野距离
         /// </summary>
         public int MaxFieldOfView = 4;
+
         private Camera mainCamera;
+
         /// <summary>
         /// 当前鼠标
         /// </summary>
         private Mouse currentMouse;
+
         private InputAction MoveAction;
 
         private void Awake()
@@ -42,10 +51,9 @@ namespace OurGameName.DoMain.Controller
             currentMouse = Mouse.current;
             PlayerInput.actions["ScrollWheel"].performed += ScrollWheelEvent;
             MoveAction = PlayerInput.actions["Move"];
-            
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             DragMapEvent();
             KeyMoveEvent();
@@ -66,9 +74,11 @@ namespace OurGameName.DoMain.Controller
         }
 
         #region 鼠标拖拽
+
         private Vector2 MouseDownPosition;
         private Vector2 MouseUpPosition;
         private bool IsMouseHold = false;
+
         private void DragMapEvent()
         {
             if (currentMouse.middleButton.ReadValue() == 1 && IsMouseHold == false)
@@ -85,18 +95,18 @@ namespace OurGameName.DoMain.Controller
             {
                 MouseUpPosition = currentMouse.position.ReadValue();
                 var moveVector = (MouseDownPosition - MouseUpPosition).normalized;
-                transform.position += new Vector3(moveVector.x, moveVector.y) * MouseDragSpeed * Time.deltaTime; 
+                transform.position += new Vector3(moveVector.x, moveVector.y) * MouseDragSpeed * Time.deltaTime;
                 MouseDownPosition = MouseUpPosition;
             }
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             var FontStyle = new GUIStyle();
             FontStyle.fontSize = 24;
-            GUI.Label(new Rect(mainCamera.pixelWidth - 200,20,100,30), $"IsMouseHold:{currentMouse.leftButton.ReadValue()}",FontStyle);
+            GUI.Label(new Rect(mainCamera.pixelWidth - 200, 20, 100, 30), $"IsMouseHold:{currentMouse.leftButton.ReadValue()}", FontStyle);
         }
-        #endregion
 
+        #endregion 鼠标拖拽
     }
 }

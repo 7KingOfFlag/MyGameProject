@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static OurGameName.DoMain.Entity.GameAction.ActionID;
+﻿using static OurGameName.DoMain.Entity.GameAction.ActionID;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("UnitTest")]
+
 namespace OurGameName.DoMain.Entity.GameAction
 {
     /// <summary>
@@ -17,12 +14,14 @@ namespace OurGameName.DoMain.Entity.GameAction
         /// 游戏动作ID
         /// </summary>
         ActionID ID { get; }
+
         /// <summary>
         /// 执行动作
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         ActionError Excute(ActionInput input);
+
         /// <summary>
         /// 读取动作需要的数据
         /// </summary>
@@ -44,12 +43,12 @@ namespace OurGameName.DoMain.Entity.GameAction
         public uint UID { get => ID.UID; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="actionType">游戏动作类型</param>
         /// <param name="runType">游戏动作子类</param>
         /// <param name="id">游戏动作ID</param>
-        public BaseAction(ushort id, ActionTypeCode actionType,byte runType)
+        public BaseAction(ushort id, ActionTypeCode actionType, byte runType)
         {
             ID = new ActionID(actionType, runType, id);
         }

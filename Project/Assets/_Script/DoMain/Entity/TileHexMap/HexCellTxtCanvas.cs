@@ -1,13 +1,10 @@
-﻿using System;
+﻿using OurGameName.DoMain.Attribute;
+using OurGameName.DoMain.Entity.TileHexMap.UI;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
-using OurGameName.DoMain.Attribute;
-using OurGameName.DoMain.Entity.TileHexMap.UI;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
 {
@@ -20,6 +17,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// 编辑器上下文
         /// </summary>
         public HexTileMapEditor context;
+
         /// <summary>
         /// 背景tileMap
         /// </summary>
@@ -31,14 +29,17 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         public AssetReference hexPosTxtPrefab;
 
         private CanvasGroup canvasGroup;
+
         /// <summary>
         /// 文本框实例字典
         /// </summary>
         private Dictionary<Vector2Int, TextMeshProUGUI> txtDict;
+
         /// <summary>
         /// 文本显示模式
         /// </summary>
         private TxtShowModeEnum m_txtShowMode = TxtShowModeEnum.Blank;
+
         public TxtShowModeEnum TxtShowMode
         {
             get
@@ -56,7 +57,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
             txtDict = new Dictionary<Vector2Int, TextMeshProUGUI>();
@@ -74,19 +75,23 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 case TxtShowModeEnum.Blank:
                     canvasGroup.alpha = 0;
                     break;
+
                 case TxtShowModeEnum.ShowCoordinate:
                     canvasGroup.alpha = 1;
                     ShowCoordinate();
                     break;
+
                 case TxtShowModeEnum.ShowDistance:
                     canvasGroup.alpha = 1;
                     SingleMode();
                     break;
+
                 case TxtShowModeEnum.ShowThroughCost:
                     canvasGroup.alpha = 1;
                     SingleMode();
                     context.ThroughCostRefresh();
                     break;
+
                 default:
                     Debug.LogWarning($"In {gameObject.name} has undefined enum");
                     break;
@@ -127,6 +132,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 txt.fontSize = 0.4f;
             }
         }
+
         /// <summary>
         /// 显示坐标
         /// </summary>
@@ -155,6 +161,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 }
             }
         }
+
         /// <summary>
         /// 清除生成的实例文本框
         /// </summary>
@@ -207,7 +214,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         {
             TxtShowMode = (TxtShowModeEnum)dropdown.value;
             //Debug.Log($"TxtShowMode = {TxtShowMode}");
-
         }
 
         /// <summary>
@@ -219,14 +225,17 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             /// 不显示
             /// </summary>
             Blank,
+
             /// <summary>
             /// 显示坐标
             /// </summary>
             ShowCoordinate,
+
             /// <summary>
             /// 显示距离
             /// </summary>
             ShowDistance,
+
             /// <summary>
             /// 显示通行成本
             /// </summary>

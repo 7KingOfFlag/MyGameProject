@@ -1,7 +1,5 @@
-﻿using OurGameName.DoMain.Attribute;
-using OurGameName.DoMain.Entity.Combat;
+﻿using OurGameName.DoMain.Entity.Combat;
 using System.Collections.Generic;
-using System;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {
@@ -18,18 +16,22 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// 姓氏
         /// </summary>
         public string FamilyName { get; set; }
+
         /// <summary>
         /// 名
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// 出生时间 格式####.##.##
         /// </summary>
         public string Birthday { get; private set; }
+
         /// <summary>
         /// 气海
         /// </summary>
         public int Qi { get; set; }
+
         /// <summary>
         /// 根骨
         /// </summary>
@@ -96,7 +98,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// <param name="status">势力地位</param>
         /// <param name="PicturePath">角色肖像图片相对地址，基于Assets文件夹</param>
         public Role(string familyName, string name, string birthday, int qi, int bone, int understanding, int charm,
-                    int luck, int position, string forces, string status, string PicturePath = null ,RoleType roleType = RoleType.neutrality)
+                    int luck, int position, string forces, string status, string PicturePath = null, RoleType roleType = RoleType.neutrality)
         {
             ID = IDCount++;
             FamilyName = familyName;
@@ -143,7 +145,6 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// </summary>
         public Role()
         {
-
         }
 
         /// <summary>
@@ -163,12 +164,14 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         }
 
         #region 战斗相关
+
         /// <summary>
         /// 最大生命值
         /// </summary>
         public int MaxHP { get; set; }
 
         private int currentHP;
+
         /// <summary>
         /// 当前生命值
         /// </summary>
@@ -180,11 +183,11 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             }
             set
             {
-                if ( value <= MaxHP )
+                if (value <= MaxHP)
                 {
                     currentHP = value;
                 }
-                else if(value > MaxHP)
+                else if (value > MaxHP)
                 {
                     currentHP = MaxHP;
                 }
@@ -222,8 +225,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             Shield = (int)(Qi * 0.5);
         }
 
-
-        #endregion
+        #endregion 战斗相关
     }
 
     /// <summary>
@@ -235,14 +237,17 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// 中立
         /// </summary>
         neutrality,
+
         /// <summary>
         /// 盟友
         /// </summary>
         ally,
+
         /// <summary>
         /// 敌人
         /// </summary>
         enemy,
+
         /// <summary>
         /// 玩家
         /// </summary>

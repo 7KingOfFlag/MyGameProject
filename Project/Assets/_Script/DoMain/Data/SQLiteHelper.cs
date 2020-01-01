@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Mono.Data.Sqlite;
+using System;
 using UnityEngine;
-using System.Collections;
-using System.Data;
-using Mono.Data.Sqlite;
-using System.IO;
-using System.Security.Cryptography;
 
 namespace OurGameName.DoMain.Data
 {
@@ -18,10 +10,12 @@ namespace OurGameName.DoMain.Data
         /// 数据库连接定义
         /// </summary>
         private SqliteConnection dbConnection;
+
         /// <summary>
         /// SQL命令定义
         /// </summary>
         private SqliteCommand dbCommand;
+
         /// <summary>
         /// 数据库读取定义
         /// </summary>
@@ -143,6 +137,7 @@ namespace OurGameName.DoMain.Data
             queryString += $" Where {key}{operation}{value}";
             return ExecuteQuery(queryString);
         }
+
         /// <summary>
         /// 删除指定数据表内的数据
         /// </summary>
@@ -167,6 +162,7 @@ namespace OurGameName.DoMain.Data
             }
             return ExecuteQuery(queryString);
         }
+
         /// <summary>
         /// 删除指定数据表内的数据
         /// </summary>
@@ -191,6 +187,7 @@ namespace OurGameName.DoMain.Data
             }
             return ExecuteQuery(queryString);
         }
+
         /// <summary>
         /// 创建数据表
         /// </summary> +

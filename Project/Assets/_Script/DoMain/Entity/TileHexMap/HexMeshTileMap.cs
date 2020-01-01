@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
@@ -11,8 +6,8 @@ namespace OurGameName.DoMain.Entity.TileHexMap
     internal class HexMeshTileMap : MonoBehaviour
     {
         private Tilemap m_meshTilemap;
-        
-        void Awake()
+
+        private void Awake()
         {
             m_meshTilemap = GetComponent<Tilemap>();
             enabled = true;
@@ -81,6 +76,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         }
 
         private bool m_enabled = false;
+
         public new bool enabled
         {
             get
@@ -109,5 +105,4 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             }
         }
     }
-    
 }

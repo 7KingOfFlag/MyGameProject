@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {
     public class Picture
     {
-        public Picture() {
+        public Picture()
+        {
             ID = Count++;
         }
 
@@ -31,6 +28,5 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// 图片类型
         /// </summary>
         public string ImageType { get; set; }
-
     }
 }

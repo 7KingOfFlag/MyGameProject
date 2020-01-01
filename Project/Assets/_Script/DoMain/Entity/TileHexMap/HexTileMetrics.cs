@@ -1,8 +1,6 @@
 ﻿using OurGameName.DoMain.Attribute;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.TileHexMap
@@ -118,7 +116,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <param name="startPoint">起点坐标</param>
         /// <param name="endPoint">终点坐标</param>
         /// <returns></returns>
-        public static int CalculateDistance(Vector2Int startPoint,Vector2Int endPoint)
+        public static int CalculateDistance(Vector2Int startPoint, Vector2Int endPoint)
         {
             int resultX = startPoint.x - endPoint.x;
             int resultY = startPoint.y - endPoint.y;
@@ -161,7 +159,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                         if (doneArray.GetItem(neighbor) == true) continue;
 
                         doneArray.SetItem(neighbor, true);
-                        int minThroughCostOfNeighbor = 
+                        int minThroughCostOfNeighbor =
                             GetMinThroughCostOfNeighbor(hexGrid.HexCells.GetItem(neighbor).NeighborsPosition, doneArray, result);
                         result.Add(neighbor, minThroughCostOfNeighbor + hexGrid.ThroughCost(neighbor));
                     }
@@ -209,7 +207,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
                 {
                     isOver &= doneArray.GetItem(item);
                 }
-                if (isOver == true )
+                if (isOver == true)
                 {
                     break;
                 }
@@ -243,7 +241,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
             {
                 for (int y = 0; y < dist.GetLength(1); y++)
                 {
-                    if (doneArray[x,y] == false && dist[x,y] < min)
+                    if (doneArray[x, y] == false && dist[x, y] < min)
                     {
                         min = dist[x, y];
                         minIndex = new Vector2Int(x, y);

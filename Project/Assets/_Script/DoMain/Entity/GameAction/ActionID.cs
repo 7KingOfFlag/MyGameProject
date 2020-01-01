@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("UnitTest")]
+
 namespace OurGameName.DoMain.Entity.GameAction
 {
     [StructLayout(LayoutKind.Explicit)]
@@ -17,11 +18,13 @@ namespace OurGameName.DoMain.Entity.GameAction
         /// </summary>
         [FieldOffset(0)]
         private readonly byte m_action;
+
         /// <summary>
         /// 游戏动作子类
         /// </summary>
         [FieldOffset(1)]
         internal readonly byte RunType;
+
         /// <summary>
         /// 游戏动作ID
         /// </summary>
@@ -46,7 +49,7 @@ namespace OurGameName.DoMain.Entity.GameAction
         /// </summary>
         internal ActionTypeCode ActionType
         {
-            get { return (ActionTypeCode) m_action; }
+            get { return (ActionTypeCode)m_action; }
         }
 
         public enum ActionTypeCode
@@ -55,6 +58,7 @@ namespace OurGameName.DoMain.Entity.GameAction
             /// 条件类动作
             /// </summary>
             Conditions,
+
             /// <summary>
             /// 执行类动作
             /// </summary>

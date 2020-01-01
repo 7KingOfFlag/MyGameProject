@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.UI;
-using UnityEngine;
 using TMPro;
-using System;
+using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.Log
 {
@@ -14,18 +11,18 @@ namespace OurGameName.DoMain.Entity.Log
     /// </summary>
     internal class GameLog : MonoBehaviour
     {
-        private Dictionary<string,SortedList<DateTime,string>> LogList;
+        private Dictionary<string, SortedList<DateTime, string>> LogList;
         public TextMeshProUGUI txtLog;
 
         private StringBuilder LogStringBuilder;
 
-        void Awake()
+        private void Awake()
         {
             LogList = new Dictionary<string, SortedList<DateTime, string>>();
             LogStringBuilder = new StringBuilder(2048);
         }
 
-        public void AddLog(string content,string Tag)
+        public void AddLog(string content, string Tag)
         {
             if (txtLog == null)
             {

@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace OurGameName.DoMain.Attribute
 {
     public static class VectorExtension
     {
         private static Vector3Int m_errorV3 = new Vector3Int(-1, -1, -1);
+
         /// <summary>
         /// 返回一个代表错误的三元整型向量
         /// </summary>
@@ -18,6 +19,7 @@ namespace OurGameName.DoMain.Attribute
         }
 
         private static Vector2Int m_errorV2 = new Vector2Int(-1, -1);
+
         /// <summary>
         /// 返回一个代表错误的二元整型向量
         /// </summary>
@@ -47,7 +49,5 @@ namespace OurGameName.DoMain.Attribute
         {
             return vectors.Select(item => item.ToVector3Int()).ToArray();
         }
-
     }
-
 }

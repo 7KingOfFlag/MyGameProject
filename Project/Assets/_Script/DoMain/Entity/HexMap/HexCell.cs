@@ -95,6 +95,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         }
 
         #region 刷新
+
         /// <summary>
         /// 刷新
         /// 刷新整个单元块
@@ -123,15 +124,15 @@ namespace OurGameName.DoMain.Entity.HexMap
         {
             chunk.Refresh();
         }
-        #endregion
 
+        #endregion 刷新
 
         #region 特征物体
 
         /// <summary>
         /// 城市等级
         /// </summary>
-        int urbanLevel;
+        private int urbanLevel;
 
         /// <summary>
         /// 城市等级
@@ -151,8 +152,7 @@ namespace OurGameName.DoMain.Entity.HexMap
                 }
             }
         }
-        #endregion
+
+        #endregion 特征物体
     }
-
-
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static OurGameName.DoMain.Entity.GameAction.ActionID;
 
 namespace OurGameName.DoMain.Entity.GameAction
@@ -16,6 +12,7 @@ namespace OurGameName.DoMain.Entity.GameAction
         /// 动作事件ID
         /// </summary>
         public ActionID ID { get; }
+
         /// <summary>
         /// 动作事件唯一识别码
         /// </summary>
@@ -25,6 +22,7 @@ namespace OurGameName.DoMain.Entity.GameAction
         /// 条件动作组
         /// </summary>
         public uint[] ConditionsActions { get; set; }
+
         /// <summary>
         /// 执行动作组
         /// </summary>

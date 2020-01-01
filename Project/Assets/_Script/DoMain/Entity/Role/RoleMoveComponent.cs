@@ -1,36 +1,60 @@
 ﻿using OurGameName.DoMain.Attribute;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {
     internal class RoleMoveComponent
     {
-
         public Vector3Int CurrentRolePosition = new Vector3Int();
         public int MoveSpeed;
 
-        private Vector3Int m_targetRolePosition;
+        private const float m_MaxMoveCount = 100f;
+        private readonly RoleEntity context;
+        private float m_moveCount;
         /// <summary>
         /// 移动目标列表
         /// </summary>
         private List<Vector2Int> m_moveTargetList;
-        private float m_moveCount;
-        private bool m_onMove;
-        private const float m_MaxMoveCount = 100f;
-        private readonly RoleEntity context;
 
-        public RoleMoveComponent(Vector3Int currentRolePosition, RoleEntity context,int moveSpeed)
+        private bool m_onMove;
+        private Vector3Int m_targetRolePosition;
+        public RoleMoveComponent(Vector3Int currentRolePosition, RoleEntity context, int moveSpeed)
         {
             CurrentRolePosition = currentRolePosition;
             m_targetRolePosition = currentRolePosition;
             MoveSpeed = moveSpeed;
             this.context = context;
             m_moveCount = 0;
+        }
+
+        public bool OnMove
+        {
+            get { return m_onMove; }
+            set
+            {
+                if (m_onMove != value)
+                {
+                    m_onMove = value;
+                }
+            }
+        }
+
+        public void Move(List<Vector2Int> moveTargetList)
+        {
+            m_moveTargetList = moveTargetList;
+            m_targetRolePosition = moveTargetList[0].ToVector3Int();
+            SetMovePerform();
+        }
+
+        /// <summary>
+        /// 移动至指定位置
+        /// </summary>
+        /// <param name="moveTargetPosition"></param>
+        public void Move(Vector3Int moveTargetPosition)
+        {
+            m_targetRolePosition = moveTargetPosition;
+            SetMovePerform();
         }
 
         public void Update()
@@ -50,19 +74,6 @@ namespace OurGameName.DoMain.Entity.RoleSpace
                 }
             }
         }
-
-        public bool OnMove
-        {
-            get { return m_onMove; }
-            set
-            {
-                if (m_onMove != value)
-                {
-                    m_onMove = value;
-                }
-            }
-        }
-
         /// <summary>
         /// 设置移动的演出
         /// </summary>
@@ -78,22 +89,6 @@ namespace OurGameName.DoMain.Entity.RoleSpace
                 context.transform.position = context.RoleManager.CellToWorld(CurrentRolePosition);
             }
         }
-        public void Move(List<Vector2Int> moveTargetList)
-        {
-            m_moveTargetList = moveTargetList;
-            m_targetRolePosition = moveTargetList[0].ToVector3Int();
-            SetMovePerform();
-        }
-        /// <summary>
-        /// 移动至指定位置
-        /// </summary>
-        /// <param name="moveTargetPosition"></param>
-        public void Move(Vector3Int moveTargetPosition)
-        {
-            m_targetRolePosition = moveTargetPosition;
-            SetMovePerform();
-        }
-
         /// <summary>
         /// 移动物理位置
         /// </summary>
@@ -106,5 +101,4 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             m_targetRolePosition = m_moveTargetList[0].ToVector3Int();
         }
     }
-
 }

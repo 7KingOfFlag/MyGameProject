@@ -1,19 +1,13 @@
 ﻿using OurGameName.DoMain.Attribute;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {
     internal class RoleEntity : MonoBehaviour
     {
         public RoleImageComponent roleImage;
-        
+
         public RoleMoveComponent MoveComponent { get; private set; }
 
         public Vector2Int RolePosition { get { return MoveComponent.CurrentRolePosition.ToVector2Int(); } }
@@ -22,7 +16,8 @@ namespace OurGameName.DoMain.Entity.RoleSpace
 
         private bool m_isSelect;
 
-        public bool IsSelect {
+        public bool IsSelect
+        {
             get
             {
                 return m_isSelect;
@@ -56,7 +51,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             if (RoleManager == null)
             {
@@ -67,7 +62,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             MoveComponent = new RoleMoveComponent(Vector3Int.zero, this, 20);
         }
 
-        void Update()
+        private void Update()
         {
             MoveComponent.Update();
         }
@@ -80,11 +75,13 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         {
             MoveComponent.Move(TargetCellPosition.ToVector3Int());
         }
+
         public void MoveRole(Vector2Int[] moveList)
         {
             MoveComponent.Move(moveList.ToList());
         }
-        void OnMouseUpAsButton()
+
+        private void OnMouseUpAsButton()
         {
             IsSelect = true;
             RoleManager.SelectRoleEntity = this;

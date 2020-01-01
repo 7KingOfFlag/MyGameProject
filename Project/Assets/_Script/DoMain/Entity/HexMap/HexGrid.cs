@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 namespace OurGameName.DoMain.Entity.HexMap
 {
-    public class HexGrid :MonoBehaviour
+    public class HexGrid : MonoBehaviour
     {
         /// <summary>
         /// 地图单元格总数
         /// </summary>
-        int cellCountX, cellCountZ;
+        private int cellCountX, cellCountZ;
 
         /// <summary>
         /// 地图单元格预制体
         /// </summary>
         public HexCell cellPrefab;
+
         /// <summary>
         /// 网格视图 用于显示信息
         /// </summary>
         private Canvas GridCanvas;
+
         public Text CellLabel;
         public Image CellImage;
 
@@ -63,7 +64,6 @@ namespace OurGameName.DoMain.Entity.HexMap
             if (HexMetrics.texture == null)
             {
                 HexMetrics.texture = texture;
-
             }
         }
 
@@ -72,7 +72,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// </summary>
         /// <param name="CellCountX">地图单元格数量</param>
         /// <param name="CellCountZ">地图单元格数量</param>
-        public void Init(int CellCountX,int CellCountZ)
+        public void Init(int CellCountX, int CellCountZ)
         {
             cellCountX = CellCountX;
             cellCountZ = CellCountZ;
@@ -109,7 +109,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// </summary>
         /// <param name="x"></param>
         /// <param name="z"></param>
-        private void CreateCell(int x,int z)
+        private void CreateCell(int x, int z)
         {
             HexCell cell = HexCells[x, z] = Instantiate(cellPrefab);
 
@@ -149,7 +149,6 @@ namespace OurGameName.DoMain.Entity.HexMap
             }
             if (z > 0)
             {
-
                 if ((z & 1) == 0) //行数是偶数
                 {
                     cell.SetNeighBor(HexDirection.SE, HexCells[x, z - 1]);
@@ -173,7 +172,6 @@ namespace OurGameName.DoMain.Entity.HexMap
                         cell.SetNeighBor(HexDirection.SE, HexCells[x + 1, z - 1]);
                     }
                 }
-
             }
         }
 
@@ -183,7 +181,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <param name="x"></param>
         /// <param name="z"></param>
         /// <param name="cell"></param>
-        private void AddCellToChunk(int x,int z,HexCell cell)
+        private void AddCellToChunk(int x, int z, HexCell cell)
         {
             cellMeshs[x, z].AddCell(cell);
         }
@@ -199,7 +197,7 @@ namespace OurGameName.DoMain.Entity.HexMap
             {
                 for (int x = 0; x < cellCountX; x++)
                 {
-                    HexCellMesh cellMesh = cellMeshs[x, z] = Instantiate(cellMeshPrefab,transform);
+                    HexCellMesh cellMesh = cellMeshs[x, z] = Instantiate(cellMeshPrefab, transform);
                 }
             }
         }
@@ -241,9 +239,9 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <param name="x">横坐标</param>
         /// <param name="z">纵坐标</param>
         /// <returns>在地图内返回:true 不在返回:false</returns>
-        private bool isSlopOver(int x,int z)
+        private bool isSlopOver(int x, int z)
         {
-            if (x * z < 0 )
+            if (x * z < 0)
             {
                 return false;
             }
@@ -263,15 +261,13 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// </summary>
         public void Empty()
         {
-
-            if (cellMeshs != null && cellMeshs[0,0] != null)
+            if (cellMeshs != null && cellMeshs[0, 0] != null)
             {
                 foreach (var item in cellMeshs)
                 {
                     Destroy(item.gameObject);
                 }
             }
-
         }
 
         /*

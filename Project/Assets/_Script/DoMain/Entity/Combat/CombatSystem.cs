@@ -1,8 +1,8 @@
 ﻿#define DebugMode
-using System.Collections.Generic;
+
 using OurGameName.DoMain.Entity.RoleSpace;
+using System.Collections.Generic;
 using UnityEngine;
-using OurGameName.DoMain.Data;
 
 namespace OurGameName.DoMain.Entity.Combat
 {
@@ -76,7 +76,6 @@ namespace OurGameName.DoMain.Entity.Combat
 
         private void Update()
         {
-            
         }
 
         /// <summary>
@@ -100,8 +99,8 @@ namespace OurGameName.DoMain.Entity.Combat
                 "EndTurn"
                 });
 
-            Role R1 = new Role("张", "三",roleType: RoleType.player);
-            Role R2 = new Role("李", "四",roleType: RoleType.enemy);
+            Role R1 = new Role("张", "三", roleType: RoleType.player);
+            Role R2 = new Role("李", "四", roleType: RoleType.enemy);
             Role R3 = new Role("王", "五", roleType: RoleType.ally);
             Role R4 = new Role("金", "杰", roleType: RoleType.ally);
             Role R5 = new Role("赵", "六", roleType: RoleType.ally);
@@ -171,8 +170,6 @@ namespace OurGameName.DoMain.Entity.Combat
         /// <param name="isActionRole"></param>
         private void SetPostion(RoleImage roleImageBox, int roleCount, bool isAlly, Role role, bool isActionRole)
         {
-            
-
             roleImageBox.RoleType = role.roleType;
 
             roleImageBox.txtName.text = role.FamilyName + role.Name;

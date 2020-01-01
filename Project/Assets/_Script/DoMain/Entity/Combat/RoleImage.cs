@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using OurGameName.DoMain.Entity.RoleSpace;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using OurGameName.DoMain.Attribute;
-using OurGameName.DoMain.Entity.RoleSpace;
 
 namespace OurGameName.DoMain.Entity.Combat
 {
-
     /// <summary>
     /// 战斗场景角色图像类
     /// </summary>
@@ -39,8 +36,6 @@ namespace OurGameName.DoMain.Entity.Combat
         public Text txtName;
 
         private int hp = 100;
-
-        
 
         /// <summary>
         /// 摄像头
@@ -82,7 +77,6 @@ namespace OurGameName.DoMain.Entity.Combat
                 {
                     HPLine.GetComponentInChildren<Text>().enabled = false;
                     HPLine.enabled = false;
-
                 }
                 else
                 {
@@ -108,6 +102,5 @@ namespace OurGameName.DoMain.Entity.Combat
                 ImageType = value.Split(".".ToCharArray()).Last().ToLower();
             }
         }
-
     }
 }

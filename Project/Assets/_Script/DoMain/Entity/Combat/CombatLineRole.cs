@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine;
-using OurGameName.DoMain.Attribute;
-using OurGameName.DoMain.Data;
 
 namespace OurGameName.DoMain.Entity.Combat
 {
@@ -16,7 +9,6 @@ namespace OurGameName.DoMain.Entity.Combat
         /// 角色立绘
         /// </summary>
         public RawImage RoleIocn;
-
 
         private bool isActionRole;
 
@@ -97,7 +89,7 @@ namespace OurGameName.DoMain.Entity.Combat
         }
 
         private void Refresh()
-        { 
+        {
             //string path;
             if (RoleState > 0)
             {
@@ -120,6 +112,5 @@ namespace OurGameName.DoMain.Entity.Combat
                 // TODO: 设置图片
             }
         }
-
     }
 }

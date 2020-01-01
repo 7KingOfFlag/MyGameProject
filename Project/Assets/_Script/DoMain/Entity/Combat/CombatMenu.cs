@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,7 +52,6 @@ namespace OurGameName.DoMain.Entity.Combat
 
         private void Update()
         {
-            
         }
 
         public bool Enabled
@@ -103,7 +100,7 @@ namespace OurGameName.DoMain.Entity.Combat
             else
             {
                 StringBuilder builder = new StringBuilder();
-                builder.AppendFormat("当前载入技能数 {0},具体技能如下:\n",SkillList.Count);
+                builder.AppendFormat("当前载入技能数 {0},具体技能如下:\n", SkillList.Count);
                 foreach (var item in SkillList)
                 {
                     builder.AppendFormat(item.Name + "\n");
@@ -158,7 +155,7 @@ namespace OurGameName.DoMain.Entity.Combat
             //计算b 因为是以菜单的中点为原点所以具体的值要分出正负来符合实际情况
             float height = (float)Math.Sin(K) * Len * 0.5f;
             Vector3 Postion = Vector3.zero;
-            
+
             for (int i = 0; i < sonBtnList.Count; i++)
             {
                 float y = height - (i * (btnHeight + btnMargin)) - btnStartMargin;//设置按钮高度
@@ -172,6 +169,5 @@ namespace OurGameName.DoMain.Entity.Combat
                 sonBtnList[i].transform.localPosition = Postion;
             }
         }
-
     }
 }

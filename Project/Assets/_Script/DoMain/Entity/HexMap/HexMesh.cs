@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using OurGameName.DoMain.Attribute;
 using System;
-using OurGameName.DoMain.Attribute;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.HexMap
 {
@@ -9,18 +9,21 @@ namespace OurGameName.DoMain.Entity.HexMap
     public class HexMesh : MonoBehaviour
     {
         public Mesh hexMesh;
+
         /// <summary>
         /// 网格顶点
         /// </summary>
-        [NonSerialized] List<Vector3> vertices;
+        [NonSerialized] private List<Vector3> vertices;
+
         /// <summary>
         /// 网格三角形
         /// </summary>
-        [NonSerialized] List<int> triangles;
+        [NonSerialized] private List<int> triangles;
+
         /// <summary>
         /// 网格顶点上的颜色
         /// </summary>
-        [NonSerialized] List<Color> colors;
+        [NonSerialized] private List<Color> colors;
 
         /// <summary>
         /// 颜色使能
@@ -30,7 +33,7 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// <summary>
         /// 网格碰撞体
         /// </summary>
-        MeshCollider meshCollider;
+        private MeshCollider meshCollider;
 
         /// <summary>
         /// 碰撞体使能
@@ -79,8 +82,6 @@ namespace OurGameName.DoMain.Entity.HexMap
             }
         }
 
-        
-
         /// <summary>
         /// 向网格中添加一个三角形
         /// </summary>
@@ -119,7 +120,6 @@ namespace OurGameName.DoMain.Entity.HexMap
             colors.Add(c1);
             colors.Add(c2);
             colors.Add(c3);
-
         }
 
         /// <summary>
