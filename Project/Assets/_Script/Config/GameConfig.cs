@@ -40,6 +40,11 @@ namespace OurGameName.Config
         }
 
         /// <summary>
+        /// 退出设置界面前的设置页
+        /// </summary>
+        public View.OptionView.OptionUI.ConfigPage ConfigPageOfExitConfigScreen { get; set; }
+
+        /// <summary>
         /// 地址设置
         /// </summary>
         public PathConfig PathConfig { get; set; }
@@ -96,9 +101,9 @@ namespace OurGameName.Config
                 VideoConfig = new VideoConfig()
                 {
                     ScreenMode = Screen.fullScreenMode,
-                    Height = Screen.height,
-                    Width = Screen.width,
-                }
+                    Resolution = Screen.currentResolution
+                },
+                ConfigPageOfExitConfigScreen = (View.OptionView.OptionUI.ConfigPage)0,
             };
 
             return result;
@@ -162,13 +167,35 @@ namespace OurGameName.Config
         public FullScreenMode ScreenMode { get; set; }
 
         /// <summary>
-        /// 屏幕高度
+        /// 屏幕分辨率
         /// </summary>
-        public int Height { get; set; }
+        public Resolution Resolution { get; set; }
 
         /// <summary>
-        /// 屏幕高度
+        /// 将字符串转换成分辨率
+        /// <para>要求字符串格式见 Resolution 的 ToSring 方法</para>
         /// </summary>
-        public int Width { get; set; }
+        /// <param name="value">被转换字符串</param>
+        /// <returns>分辨率实例</returns>
+        public static Resolution ToResolution(string value)
+        {
+            if (string.IsNullOrEmpty(value)) { throw new ArgumentException("Arge is null!"); }
+
+            var args = value.Replace(" ", "").Split(new char[] { 'x', '@' });
+            if (args.Length != 3) { throw new ArgumentException($"参数非法,分解错误:{value}"); }
+
+            Resolution result = new Resolution();
+            try
+            {
+                result.width = Convert.ToInt32(args[0]);
+                result.height = Convert.ToInt32(args[1]);
+                result.refreshRate = Convert.ToInt32(args[1].Replace("Hz", ""));
+            }
+            catch (FormatException e)
+            {
+                throw new ArgumentException($"参数非法,无法转换为数字:{value}\n{e.Message}");
+            }
+            return result;
+        }
     }
 }
