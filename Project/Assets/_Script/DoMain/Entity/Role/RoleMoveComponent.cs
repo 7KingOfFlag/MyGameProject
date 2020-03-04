@@ -1,5 +1,5 @@
-﻿using OurGameName.DoMain.Attribute;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using OurGameName.DoMain.Attribute;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
@@ -12,6 +12,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         private const float m_MaxMoveCount = 100f;
         private readonly RoleEntity context;
         private float m_moveCount;
+
         /// <summary>
         /// 移动目标列表
         /// </summary>
@@ -19,6 +20,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
 
         private bool m_onMove;
         private Vector3Int m_targetRolePosition;
+
         public RoleMoveComponent(Vector3Int currentRolePosition, RoleEntity context, int moveSpeed)
         {
             CurrentRolePosition = currentRolePosition;
@@ -74,6 +76,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
                 }
             }
         }
+
         /// <summary>
         /// 设置移动的演出
         /// </summary>
@@ -89,6 +92,7 @@ namespace OurGameName.DoMain.Entity.RoleSpace
                 context.transform.position = context.RoleManager.CellToWorld(CurrentRolePosition);
             }
         }
+
         /// <summary>
         /// 移动物理位置
         /// </summary>

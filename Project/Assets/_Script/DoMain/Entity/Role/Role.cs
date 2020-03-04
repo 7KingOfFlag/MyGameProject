@@ -1,5 +1,5 @@
-﻿using OurGameName.DoMain.Entity.Combat;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using OurGameName.DoMain.Entity.Combat;
 
 namespace OurGameName.DoMain.Entity.RoleSpace
 {

@@ -1,5 +1,5 @@
-﻿using OurGameName.DoMain.Attribute;
-using System;
+﻿using System;
+using OurGameName.DoMain.Attribute;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;

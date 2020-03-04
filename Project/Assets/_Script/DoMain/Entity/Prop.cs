@@ -21,7 +21,7 @@ namespace OurGameName.DoMain.Entity
         public Prop(int parentID, string name, string effect, string directory, int makerID)
         {
             ID = count++;
-            this.ParentID = parentID;
+            ParentID = parentID;
             Name = name;
             Effect = effect;
             Directory = directory;

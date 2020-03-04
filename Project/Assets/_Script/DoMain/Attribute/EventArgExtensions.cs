@@ -15,8 +15,7 @@ namespace OurGameName.DoMain.Attribute
         public static void Raise<TEventArgs>(this TEventArgs e,
             object sender, ref EventHandler<TEventArgs> eventDelegate)
         {
-            EventHandler<TEventArgs> temp = Volatile.Read(ref eventDelegate);
-            if (temp != null) temp(sender, e);
+            Volatile.Read(ref eventDelegate)?.Invoke(sender, e);
         }
     }
 }

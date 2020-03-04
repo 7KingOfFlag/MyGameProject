@@ -1,5 +1,5 @@
-﻿using OurGameName.DoMain.Attribute;
-using System.Linq;
+﻿using System.Linq;
+using OurGameName.DoMain.Attribute;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.RoleSpace

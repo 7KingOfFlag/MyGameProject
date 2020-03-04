@@ -1,6 +1,6 @@
-﻿using OurGameName.DoMain.Attribute;
+﻿using System.Collections.Generic;
+using OurGameName.DoMain.Attribute;
 using OurGameName.DoMain.Entity.TileHexMap.UI;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;

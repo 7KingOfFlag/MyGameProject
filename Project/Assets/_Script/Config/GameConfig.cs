@@ -1,7 +1,7 @@
-﻿using OurGameName.DoMain.Attribute;
-using System;
+﻿using System;
 using System.IO;
 using System.Web.Script.Serialization;
+using OurGameName.DoMain.Attribute;
 using UnityEngine;
 using JsonSerializer = System.Web.Script.Serialization.JavaScriptSerializer;
 

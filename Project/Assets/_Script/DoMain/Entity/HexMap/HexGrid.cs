@@ -229,7 +229,7 @@ namespace OurGameName.DoMain.Entity.HexMap
             }
             else
             {
-                return (HexCell)null;
+                return null;
             }
         }
 

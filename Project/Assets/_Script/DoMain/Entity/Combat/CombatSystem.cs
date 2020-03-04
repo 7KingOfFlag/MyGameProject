@@ -1,7 +1,7 @@
 ﻿#define DebugMode
 
-using OurGameName.DoMain.Entity.RoleSpace;
 using System.Collections.Generic;
+using OurGameName.DoMain.Entity.RoleSpace;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.Combat

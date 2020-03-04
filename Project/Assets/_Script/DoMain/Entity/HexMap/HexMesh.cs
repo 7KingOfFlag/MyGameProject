@@ -1,6 +1,6 @@
-﻿using OurGameName.DoMain.Attribute;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using OurGameName.DoMain.Attribute;
 using UnityEngine;
 
 namespace OurGameName.DoMain.Entity.HexMap
