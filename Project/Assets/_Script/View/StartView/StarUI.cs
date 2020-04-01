@@ -45,7 +45,6 @@ namespace OurGameName.View.StarView
         /// </summary>
         private DialogBox dialogBox;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("代码质量", "IDE0051:删除未使用的私有成员", Justification = "<挂起>")]
         private void Start()
         {
             BtnInit();

@@ -259,7 +259,7 @@ namespace OurGameName.DoMain.Entity.TileHexMap
         /// <returns></returns>
         private static int GetMinThroughCostOfNeighbor(Vector2Int[] neighbors, bool[,] doneArray, Dictionary<Vector2Int, int> doneThroughCost)
         {
-            int min = Int32.MaxValue;
+            int min = int.MaxValue;
             for (int i = 0; i < neighbors.Length; i++)
             {
                 try

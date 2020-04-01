@@ -2,13 +2,14 @@
 using UnityEngine;
 using System;
 using System.Linq;
+using OurGameName.DoMain.Attribute;
 
 namespace OurGameName.DoMain.Entity.Map
 {
     /// <summary>
     /// 游戏地图
     /// </summary>
-    internal class Map
+    internal class GameMap
     {
         /// <summary>
         /// 地图大小
@@ -18,16 +19,38 @@ namespace OurGameName.DoMain.Entity.Map
         /// <summary>
         /// 地图单元
         /// </summary>
-        public List<Element> Elements { get; set; }
+        public List<Element> Elements { get; private set; }
+
+        /// <summary>
+        /// 地图更新事件
+        /// </summary>
+        public event EventHandler<MapUpdateArgs> Update;
+
+        /// <summary>
+        /// 触发地图更新事件
+        /// </summary>
+        /// <param name="e"></param>
+        internal virtual void OnUpdate(MapUpdateArgs e)
+        {
+            e.Raise(this, ref Update);
+        }
 
         /// <summary>
         /// 游戏地图
         /// </summary>
         /// <param name="mapSzie">地图大小</param>
-        public Map(Vector2Int mapSzie)
+        public GameMap(Vector2Int mapSzie)
         {
-            MapSzie = mapSzie;
-            Elements = InitElements(MapSzie);
+            this.MapSzie = mapSzie;
+            this.Elements = InitElements(MapSzie);
+            this.Elements = GenerateTerrain(Elements);
+        }
+
+        private List<Element> GenerateTerrain(List<Element> elements)
+        {
+            System.Random random = new System.Random();
+            elements.ForEach(x => x.Terrain = (Terrain)random.Next(0, 3));
+            return elements;
         }
 
         /// <summary>
@@ -45,6 +68,7 @@ namespace OurGameName.DoMain.Entity.Map
                     result.Add(new Element(new Vector2Int(x, y)));
                 }
             }
+            return result;
         }
 
         /// <summary>
@@ -57,12 +81,12 @@ namespace OurGameName.DoMain.Entity.Map
         {
             get
             {
-                if (x < 0 || y < 0 || x + MapSzie.x * y > MapSzie.x * MapSzie.y)
+                if (x < 0 || y < 0 || x + this.MapSzie.x * y > this.MapSzie.x * this.MapSzie.y)
                 {
                     Debug.LogError($"地图索引({x},{y})错误,索引越界!");
                     return null;
                 }
-                return Elements[x + MapSzie.x * y];
+                return this.Elements[x + this.MapSzie.x * y];
             }
         }
     }

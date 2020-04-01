@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using OurGameName.DoMain.Entity.Map;
 
 namespace OurGameName.DoMain.Entity.GameWorld
 {
@@ -12,9 +13,15 @@ namespace OurGameName.DoMain.Entity.GameWorld
         /// </summary>
         public int WorldHash { get; set; }
 
+        /// <summary>
+        /// 游戏地图
+        /// </summary>
+        public GameMap GameMap { get; set; }
+
         private void Awake()
         {
-            WorldHash = GetHashCode();
+            this.WorldHash = this.GetHashCode();
+            this.GameMap = new GameMap(new Vector2Int(20, 20));
         }
     }
 }
