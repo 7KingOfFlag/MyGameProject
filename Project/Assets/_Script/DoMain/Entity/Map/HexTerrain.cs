@@ -87,23 +87,33 @@ namespace OurGameName.DoMain.Entity.Map
     public enum Terrain
     {
         /// <summary>
-        /// 海岸 近海
+        /// 基础
         /// </summary>
-        coast,
+        Base,
 
         /// <summary>
-        /// 草原
+        /// 沙漠沙丘
         /// </summary>
-        grassland,
+        DesertDunes,
+
+        /// <summary>
+        /// 泥地
+        /// </summary>
+        Dirt,
+
+        /// <summary>
+        /// 阔叶林
+        /// </summary>
+        ForestBroadleaf,
+
+        /// <summary>
+        /// 海洋
+        /// </summary>
+        Ocean,
 
         /// <summary>
         /// 山脉
         /// </summary>
-        mountains,
-
-        /// <summary>
-        /// 沙漠
-        /// </summary>
-        desert
+        Mountain
     }
 }

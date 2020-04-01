@@ -4,7 +4,7 @@
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.2d.tilemap.extras": "https://github.com/Unity-Technologies/2d-extras.git#master",
-    "com.unity.addressables": "1.6.2",
+    "com.unity.addressables": "1.7.5",
     "com.unity.cinemachine": "2.5.0",
     "com.unity.ide.vscode": "1.1.4",
     "com.unity.inputsystem": "1.0.0-preview.5",
