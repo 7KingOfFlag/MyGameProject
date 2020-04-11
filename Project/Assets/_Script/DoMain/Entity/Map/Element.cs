@@ -1,16 +1,17 @@
-﻿using UnityEngine;
-
-namespace OurGameName.DoMain.Entity.Map
+﻿namespace OurGameName.DoMain.Entity.Map
 {
+    using UnityEngine;
+
     /// <summary>
     /// 地图单元
     /// </summary>
     internal class Element
     {
         /// <summary>
-        /// 单元位置
+        /// 邻近的单元格
         /// </summary>
-        public Vector2Int Position { get; set; }
+        [SerializeField]
+        public Vector2Int[] neighbors;
 
         /// <summary>
         /// 地块类型索引
@@ -28,10 +29,9 @@ namespace OurGameName.DoMain.Entity.Map
         }
 
         /// <summary>
-        /// 邻近的单元格
+        /// 单元位置
         /// </summary>
-        [SerializeField]
-        public Vector2Int[] neighbors;
+        public Vector2Int Position { get; set; }
 
         /// <summary>
         /// 地形

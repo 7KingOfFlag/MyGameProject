@@ -1,17 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine;
-using Random = System.Random;
-
-namespace OurGameName.DoMain.Attribute
+﻿namespace OurGameName.DoMain.Attribute
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using UnityEngine;
+    using Random = System.Random;
+
     /// <summary>
     /// 扩展方法类
     /// </summary>
     internal static class Extension
     {
         private static Random selfRandom = new Random();
+
+        /// <summary>
+        /// 对 IEnumerable<T> 的每个元素执行指定操作。
+        /// </summary>
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (T item in source)
+            {
+                action.Invoke(item);
+            }
+        }
+
+        /// <summary>
+        /// 索引 使用二维整型向量索引二维数组
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static T GetItem<T>(this T[,] array, Vector2Int index)
+        {
+            return array[index.x, index.y];
+        }
 
         /// <summary>
         /// 从列表中随机返回一个项
@@ -42,6 +66,26 @@ namespace OurGameName.DoMain.Attribute
             else
             {
                 result = list[random.Next(0, list.Count - 1)];
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 使用指定值初始化一个二维数组
+        /// </summary>
+        /// <typeparam name="T">数组类型</typeparam>
+        /// <param name="size">数组大小</param>
+        /// <param name="initValue">初始化值</param>
+        /// <returns></returns>
+        public static T[,] Init<T>(Vector2Int size, T initValue)
+        {
+            T[,] result = new T[size.x, size.y];
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    result[x, y] = initValue;
+                }
             }
             return result;
         }
@@ -89,43 +133,6 @@ namespace OurGameName.DoMain.Attribute
         }
 
         /// <summary>
-        /// 交换两个对象的值
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        public static void Swop<T>(ref T a, ref T b)
-        {
-            T t = b;
-            b = a;
-            a = t;
-        }
-
-        /// <summary>
-        /// 索引 使用二维整型向量索引二维数组
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static T GetItem<T>(this T[,] array, Vector2Int index)
-        {
-            return array[index.x, index.y];
-        }
-
-        /// <summary>
-        /// 设置项 使用二维整型向量索引二维数组
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static void SetItem<T>(this T[,] array, Vector2Int index, T value)
-        {
-            array[index.x, index.y] = value;
-        }
-
-        /// <summary>
         /// 移除字符串中的数字
         /// </summary>
         /// <param name="str"></param>
@@ -157,23 +164,28 @@ namespace OurGameName.DoMain.Attribute
         }
 
         /// <summary>
-        /// 使用指定值初始化一个二维数组
+        /// 设置项 使用二维整型向量索引二维数组
         /// </summary>
-        /// <typeparam name="T">数组类型</typeparam>
-        /// <param name="size">数组大小</param>
-        /// <param name="initValue">初始化值</param>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
-        public static T[,] Init<T>(Vector2Int size, T initValue)
+        public static void SetItem<T>(this T[,] array, Vector2Int index, T value)
         {
-            T[,] result = new T[size.x, size.y];
-            for (int x = 0; x < size.x; x++)
-            {
-                for (int y = 0; y < size.y; y++)
-                {
-                    result[x, y] = initValue;
-                }
-            }
-            return result;
+            array[index.x, index.y] = value;
+        }
+
+        /// <summary>
+        /// 交换两个对象的值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        public static void Swop<T>(ref T a, ref T b)
+        {
+            T t = b;
+            b = a;
+            a = t;
         }
     }
 }

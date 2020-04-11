@@ -1,8 +1,8 @@
-﻿using OurGameName.DoMain.Attribute;
-using UnityEngine;
-
-namespace OurGameName.DoMain.Entity.RoleSpace
+﻿namespace OurGameName.DoMain.Entity.RoleSpace
 {
+    using OurGameName.DoMain.Attribute;
+    using UnityEngine;
+
     /// <summary>
     /// 角色图像
     /// </summary>
@@ -10,9 +10,23 @@ namespace OurGameName.DoMain.Entity.RoleSpace
     {
         private Material spriteMaterial;
 
-        private void Awake()
+        public bool IsBlink
         {
-            spriteMaterial = GetComponent<SpriteRenderer>().sharedMaterial;
+            get
+            {
+                return spriteMaterial.GetFloat("_IsBlink") > 0;
+            }
+            set
+            {
+                if (value == true)
+                {
+                    spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedTrue);
+                }
+                else
+                {
+                    spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedFalse);
+                }
+            }
         }
 
         public bool Outline
@@ -42,23 +56,9 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             }
         }
 
-        public bool IsBlink
+        private void Awake()
         {
-            get
-            {
-                return spriteMaterial.GetFloat("_IsBlink") > 0;
-            }
-            set
-            {
-                if (value == true)
-                {
-                    spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedTrue);
-                }
-                else
-                {
-                    spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedFalse);
-                }
-            }
+            spriteMaterial = GetComponent<SpriteRenderer>().sharedMaterial;
         }
     }
 }

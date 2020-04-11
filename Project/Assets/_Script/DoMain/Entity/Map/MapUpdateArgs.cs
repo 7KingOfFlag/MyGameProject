@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace OurGameName.DoMain.Entity.Map
+﻿namespace OurGameName.DoMain.Entity.Map
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// 地图更新参数
     /// </summary>

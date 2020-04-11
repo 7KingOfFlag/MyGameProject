@@ -1,86 +1,40 @@
-﻿using System.Collections.Generic;
-using OurGameName.DoMain.Entity.Combat;
-
-namespace OurGameName.DoMain.Entity.RoleSpace
+﻿namespace OurGameName.DoMain.Entity.RoleSpace
 {
+    using System.Collections.Generic;
+    using OurGameName.DoMain.Entity.Combat;
+
+    /// <summary>
+    /// 角色态度
+    /// </summary>
+    public enum RoleType
+    {
+        /// <summary>
+        /// 中立
+        /// </summary>
+        neutrality,
+
+        /// <summary>
+        /// 盟友
+        /// </summary>
+        ally,
+
+        /// <summary>
+        /// 敌人
+        /// </summary>
+        enemy,
+
+        /// <summary>
+        /// 玩家
+        /// </summary>
+        player
+    }
+
     /// <summary>
     /// 角色类
     /// </summary>
     public class Role
     {
         private static int IDCount = 0;
-
-        public int ID { get; private set; }
-
-        /// <summary>
-        /// 姓氏
-        /// </summary>
-        public string FamilyName { get; set; }
-
-        /// <summary>
-        /// 名
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 出生时间 格式####.##.##
-        /// </summary>
-        public string Birthday { get; private set; }
-
-        /// <summary>
-        /// 气海
-        /// </summary>
-        public int Qi { get; set; }
-
-        /// <summary>
-        /// 根骨
-        /// </summary>
-        public int Bone { get; set; }
-
-        /// <summary>
-        /// 悟性
-        /// </summary>
-        public int Understanding { get; set; }
-
-        /// <summary>
-        /// 魅力
-        /// </summary>
-        public int Charm { get; set; }
-
-        /// <summary>
-        /// 气运
-        /// </summary>
-        public int Luck { get; set; }
-
-        /// <summary>
-        /// 处事立场
-        /// </summary>
-        public int Position { get; set; }
-
-        /// <summary>
-        /// 所属势力
-        /// </summary>
-        public string Forces { get; set; }
-
-        /// <summary>
-        /// 势力地位
-        /// </summary>
-        public string Status { get; set; }
-
-        /// <summary>
-        /// 头像地址
-        /// </summary>
-        public string PicturePath { get; set; }
-
-        /// <summary>
-        /// 角色技能
-        /// </summary>
-        public List<Skill> Skills { get; set; }
-
-        /// <summary>
-        /// 角色立场
-        /// </summary>
-        public RoleType roleType { get; set; }
 
         /// <summary>
         /// 创建角色实例(详细)
@@ -148,6 +102,78 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         }
 
         /// <summary>
+        /// 出生时间 格式####.##.##
+        /// </summary>
+        public string Birthday { get; private set; }
+
+        /// <summary>
+        /// 根骨
+        /// </summary>
+        public int Bone { get; set; }
+
+        /// <summary>
+        /// 魅力
+        /// </summary>
+        public int Charm { get; set; }
+
+        /// <summary>
+        /// 姓氏
+        /// </summary>
+        public string FamilyName { get; set; }
+
+        /// <summary>
+        /// 所属势力
+        /// </summary>
+        public string Forces { get; set; }
+
+        public int ID { get; private set; }
+
+        /// <summary>
+        /// 气运
+        /// </summary>
+        public int Luck { get; set; }
+
+        /// <summary>
+        /// 名
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 头像地址
+        /// </summary>
+        public string PicturePath { get; set; }
+
+        /// <summary>
+        /// 处事立场
+        /// </summary>
+        public int Position { get; set; }
+
+        /// <summary>
+        /// 气海
+        /// </summary>
+        public int Qi { get; set; }
+
+        /// <summary>
+        /// 角色立场
+        /// </summary>
+        public RoleType roleType { get; set; }
+
+        /// <summary>
+        /// 角色技能
+        /// </summary>
+        public List<Skill> Skills { get; set; }
+
+        /// <summary>
+        /// 势力地位
+        /// </summary>
+        public string Status { get; set; }
+
+        /// <summary>
+        /// 悟性
+        /// </summary>
+        public int Understanding { get; set; }
+
+        /// <summary>
         /// 获取角色年龄
         /// </summary>
         /// <param name="nowYear">现在的年份</param>
@@ -165,12 +191,12 @@ namespace OurGameName.DoMain.Entity.RoleSpace
 
         #region 战斗相关
 
-        /// <summary>
-        /// 最大生命值
-        /// </summary>
-        public int MaxHP { get; set; }
-
         private int currentHP;
+
+        /// <summary>
+        /// 角色行动点
+        /// </summary>
+        public int ActionPoint { get; set; }
 
         /// <summary>
         /// 当前生命值
@@ -195,24 +221,24 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         }
 
         /// <summary>
+        /// 最大生命值
+        /// </summary>
+        public int MaxHP { get; set; }
+
+        /// <summary>
         /// 力量
         /// </summary>
         public int Power { get; set; }
 
         /// <summary>
-        /// 速度
-        /// </summary>
-        public int Speed { get; set; }
-
-        /// <summary>
-        /// 角色行动点
-        /// </summary>
-        public int ActionPoint { get; set; }
-
-        /// <summary>
         /// 护盾
         /// </summary>
         public int Shield { get; set; }
+
+        /// <summary>
+        /// 速度
+        /// </summary>
+        public int Speed { get; set; }
 
         /// <summary>
         /// 战斗初始化
@@ -226,31 +252,5 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         }
 
         #endregion 战斗相关
-    }
-
-    /// <summary>
-    /// 角色态度
-    /// </summary>
-    public enum RoleType
-    {
-        /// <summary>
-        /// 中立
-        /// </summary>
-        neutrality,
-
-        /// <summary>
-        /// 盟友
-        /// </summary>
-        ally,
-
-        /// <summary>
-        /// 敌人
-        /// </summary>
-        enemy,
-
-        /// <summary>
-        /// 玩家
-        /// </summary>
-        player
     }
 }

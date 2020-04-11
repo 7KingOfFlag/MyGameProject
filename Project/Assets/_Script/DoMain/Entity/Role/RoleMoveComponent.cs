@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using OurGameName.DoMain.Attribute;
-using UnityEngine;
-
-namespace OurGameName.DoMain.Entity.RoleSpace
+﻿namespace OurGameName.DoMain.Entity.RoleSpace
 {
+    using System.Collections.Generic;
+    using OurGameName.DoMain.Attribute;
+    using UnityEngine;
+
     internal class RoleMoveComponent
     {
         public Vector3Int CurrentRolePosition = new Vector3Int();
@@ -42,6 +42,10 @@ namespace OurGameName.DoMain.Entity.RoleSpace
             }
         }
 
+        /// <summary>
+        /// 移动至指定位置
+        /// </summary>
+        /// <param name="moveTargetList"></param>
         public void Move(List<Vector2Int> moveTargetList)
         {
             m_moveTargetList = moveTargetList;

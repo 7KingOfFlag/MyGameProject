@@ -1,27 +1,17 @@
-﻿using OurGameName.DoMain.Attribute;
-using OurGameName.DoMain.Data;
-using UnityEngine;
-using UnityEngine.Tilemaps;
-using static OurGameName.DoMain.Entity.TileHexMap.HexCell;
-
-namespace OurGameName.DoMain.Entity.TileHexMap.UI
+﻿namespace OurGameName.DoMain.Entity.TileHexMap.UI
 {
+    using OurGameName.DoMain.Attribute;
+    using OurGameName.DoMain.Data;
+    using UnityEngine;
+    using UnityEngine.Tilemaps;
+    using static OurGameName.DoMain.Entity.TileHexMap.HexCell;
+
     internal class HexTileMap : MonoBehaviour
     {
         /// <summary>
-        /// 背景地图
+        /// 编辑器所在的画布
         /// </summary>
-        public Tilemap tilemapBackground;
-
-        /// <summary>
-        /// 网格地图
-        /// </summary>
-        public HexMeshTileMap marginMeshTilemap;
-
-        /// <summary>
-        /// 信息地图
-        /// </summary>
-        public HexMeshTileMap infoTileMap;
+        public Canvas EditorCanvas;
 
         /// <summary>
         /// 游戏数据中心
@@ -29,14 +19,24 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         public GameAssetDataHelper GameDataCentre;
 
         /// <summary>
-        /// 编辑器所在的画布
-        /// </summary>
-        public Canvas EditorCanvas;
-
-        /// <summary>
         /// 六边形单元格表面画布
         /// </summary>
         public HexCellTxtCanvas hexCellDebugTxtCanvas;
+
+        /// <summary>
+        /// 信息地图
+        /// </summary>
+        public HexMeshTileMap infoTileMap;
+
+        /// <summary>
+        /// 网格地图
+        /// </summary>
+        public HexMeshTileMap marginMeshTilemap;
+
+        /// <summary>
+        /// 背景地图
+        /// </summary>
+        public Tilemap tilemapBackground;
 
         private void Awake()
         {

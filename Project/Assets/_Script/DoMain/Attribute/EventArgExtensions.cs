@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading;
-
-namespace OurGameName.DoMain.Attribute
+﻿namespace OurGameName.DoMain.Attribute
 {
+    using System;
+    using System.Threading;
+
     internal static class EventArgExtensions
     {
         /// <summary>

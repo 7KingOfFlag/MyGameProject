@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System;
-using System.Linq;
-using OurGameName.DoMain.Attribute;
-
-namespace OurGameName.DoMain.Entity.Map
+﻿namespace OurGameName.DoMain.Entity.Map
 {
+    using System.Collections.Generic;
+    using UnityEngine;
+    using System;
+    using System.Linq;
+    using OurGameName.DoMain.Attribute;
+    using System.Collections;
+
     /// <summary>
     /// 游戏地图
     /// </summary>
-    internal class GameMap
+    internal class GameMap : IEnumerable<Element>
     {
         /// <summary>
         /// 游戏地图
@@ -18,8 +19,8 @@ namespace OurGameName.DoMain.Entity.Map
         public GameMap(Vector2Int mapSzie)
         {
             this.MapSzie = mapSzie;
-            this.Elements = InitElements(MapSzie);
-            this.Elements = GenerateTerrain(Elements);
+            this.Elements = this.InitElements(this.MapSzie);
+            this.Elements = this.GenerateTerrain(this.Elements);
         }
 
         /// <summary>
@@ -55,6 +56,16 @@ namespace OurGameName.DoMain.Entity.Map
                 return this.Elements[x + this.MapSzie.x * y];
             }
         }
+
+        /// <summary>
+        /// 返回一个循环访问集合的枚举器。
+        /// </summary>
+        public IEnumerator<Element> GetEnumerator() => this.Elements.GetEnumerator();
+
+        /// <summary>
+        /// 返回一个循环访问集合的枚举器。
+        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator() => this.Elements.GetEnumerator();
 
         /// <summary>
         /// 触发地图更新事件
