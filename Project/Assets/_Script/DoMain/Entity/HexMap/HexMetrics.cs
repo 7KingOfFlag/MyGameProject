@@ -1,8 +1,8 @@
-﻿using OurGameName.DoMain.Attribute;
-using UnityEngine;
-
-namespace OurGameName.DoMain.Entity.HexMap
+﻿namespace OurGameName.DoMain.Entity.HexMap
 {
+    using OurGameName.DoMain.Attribute;
+    using UnityEngine;
+
     /// <summary>
     /// 六边形常量
     /// 定义六边形地图的基本量
@@ -10,15 +10,20 @@ namespace OurGameName.DoMain.Entity.HexMap
     public static class HexMetrics
     {
         /// <summary>
-        /// 六边形的外径与边长
+        /// 噪声扰动倍率
         /// </summary>
-        public const float outerRadius = 10f;
+        public const float cellPreturbStrength = 5f;
 
         /// <summary>
         /// 六边形的内径
         /// </summary>
         /// 0.8660254038f = 二分根号3 是六边形内外径的比值
         public const float innerRadius = outerRadius * 0.8660254038f;
+
+        /// <summary>
+        /// 六边形的外径与边长
+        /// </summary>
+        public const float outerRadius = 10f;
 
         /// <summary>
         /// 六边形顶点常量数组
@@ -38,11 +43,6 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// 噪声取样
         /// </summary>
         public static Texture2D noiseSource;
-
-        /// <summary>
-        /// 噪声扰动倍率
-        /// </summary>
-        public const float cellPreturbStrength = 5f;
 
         /// <summary>
         /// 地图颜色数组
@@ -81,6 +81,11 @@ namespace OurGameName.DoMain.Entity.HexMap
         #region 随机数哈希表
 
         /// <summary>
+        /// 随机数选择缩放值
+        /// </summary>
+        public const float hashGridScale = 0.25f;
+
+        /// <summary>
         /// 随机哈希表大小
         /// </summary>
         public const int hashGridSize = 256;
@@ -89,11 +94,6 @@ namespace OurGameName.DoMain.Entity.HexMap
         /// 随机哈希表
         /// </summary>
         private static Float2[] hashGrid;
-
-        /// <summary>
-        /// 随机数选择缩放值
-        /// </summary>
-        public const float hashGridScale = 0.25f;
 
         public static void InitHashGrid(int seed)
         {

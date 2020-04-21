@@ -6,6 +6,8 @@
     using System.Linq;
     using OurGameName.DoMain.Attribute;
     using System.Collections;
+    using OurGameName.DoMain.Entity.Map.Args;
+    using Terrain = Args.Terrain;
 
     /// <summary>
     /// 游戏地图

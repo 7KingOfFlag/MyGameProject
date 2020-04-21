@@ -1,19 +1,24 @@
-﻿namespace OurGameName.DoMain.Entity.TileHexMap.UI
+﻿namespace OurGameName.DoMain.Entity.Map
 {
     using System;
-    using OurGameName.DoMain.Attribute;
     using UnityEngine;
     using UnityEngine.InputSystem;
+    using OurGameName.DoMain.Entity.Map.Args;
+    using OurGameName.DoMain.Attribute;
     using UnityEngine.UIElements;
+    using OurGameName.DoMain.Entity.Map._2DMap;
 
-    internal class HexTileInputEvent : MonoBehaviour
+    /// <summary>
+    /// 地图输入事件
+    /// </summary>
+    internal class MapInputEvent : MonoBehaviour
     {
-        public HexTileMapEditor context;
+        public HexGrid context;
         public PlayerInput PlayerInput;
 
-        public event EventHandler<HexTileInputEventArgs> NewClick;
+        public event EventHandler<MapInputEventArgs> NewClick;
 
-        protected virtual void OnNewClick(HexTileInputEventArgs e)
+        protected virtual void OnNewClick(MapInputEventArgs e)
         {
             e.Raise(this, ref NewClick);
         }
@@ -27,17 +32,17 @@
 
         private void OnLeftClick(InputAction.CallbackContext obj)
         {
-            OnNewClick(new HexTileInputEventArgs(context.GetMouseCellPosition(), MouseButton.LeftMouse));
+            OnNewClick(new MapInputEventArgs(context.GetMouseCellPosition(), MouseButton.LeftMouse));
         }
 
         private void OnMiddleClick(InputAction.CallbackContext obj)
         {
-            OnNewClick(new HexTileInputEventArgs(context.GetMouseCellPosition(), MouseButton.MiddleMouse));
+            OnNewClick(new MapInputEventArgs(context.GetMouseCellPosition(), MouseButton.MiddleMouse));
         }
 
         private void OnRighTClick(InputAction.CallbackContext obj)
         {
-            OnNewClick(new HexTileInputEventArgs(context.GetMouseCellPosition(), MouseButton.RightMouse));
+            OnNewClick(new MapInputEventArgs(context.GetMouseCellPosition(), MouseButton.RightMouse));
         }
     }
 }

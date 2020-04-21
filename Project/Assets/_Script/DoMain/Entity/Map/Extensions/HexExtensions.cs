@@ -1,7 +1,17 @@
 ﻿namespace OurGameName.DoMain.Entity.Map
 {
+    using OurGameName.DoMain.Entity.Map.Args;
+
     public static class HexExtensions
     {
+        /// <summary>
+        /// 返回上一个方向顺时针方向下一个方向
+        /// </summary>
+        public static HexDirection Next(this HexDirection dir)
+        {
+            return dir == HexDirection.NW ? HexDirection.NE : (dir + 1);
+        }
+
         /// <summary>
         /// 返回相对的方向
         /// </summary>
@@ -18,14 +28,6 @@
         public static HexDirection Previous(this HexDirection dir)
         {
             return dir == HexDirection.NE ? HexDirection.NW : (dir - 1);
-        }
-
-        /// <summary>
-        /// 返回上一个方向顺时针方向下一个方向
-        /// </summary>
-        public static HexDirection Next(this HexDirection dir)
-        {
-            return dir == HexDirection.NW ? HexDirection.NE : (dir + 1);
         }
     }
 }

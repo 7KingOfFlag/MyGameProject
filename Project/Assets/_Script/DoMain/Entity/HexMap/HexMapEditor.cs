@@ -270,20 +270,18 @@
 
         private HexCellMsgBox msgBox;
 
-        private event Action onHover, onUnhover;
+        private event Action OnHover, OnUnhover;
 
         public void HoverInit()
         {
             hoverTimer = 0;
             CellUnderMouse = null;
-            onHover += OnHover;
-            onUnhover += OnUnhover;
-            msgBox = GetComponentInChildren<HexCellMsgBox>();
-        }
 
-        public void OnUnhover()
-        {
-            msgBox.Hidden();
+            // 悬浮时所执行的函数
+            OnHover += () => msgBox.Show(CellUnderMouse, Input.mousePosition);
+
+            OnUnhover += () => msgBox.Hidden();
+            msgBox = GetComponentInChildren<HexCellMsgBox>();
         }
 
         /// <summary>
@@ -305,20 +303,12 @@
 
             if (hoverTimer > MouseHoverOverTime)
             {
-                onHover();
+                OnHover();
             }
             else
             {
-                onUnhover();
+                OnUnhover();
             }
-        }
-
-        /// <summary>
-        /// 悬浮时所执行的函数
-        /// </summary>
-        private void OnHover()
-        {
-            msgBox.Show(CellUnderMouse, Input.mousePosition);
         }
 
         #endregion 鼠标悬浮

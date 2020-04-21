@@ -1,6 +1,8 @@
 ﻿namespace OurGameName.DoMain.Entity.Map
 {
+    using OurGameName.DoMain.Entity.Map.Args;
     using UnityEngine;
+    using Terrain = Args.Terrain;
 
     /// <summary>
     /// 地图单元

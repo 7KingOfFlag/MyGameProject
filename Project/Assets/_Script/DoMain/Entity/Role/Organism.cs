@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-
-namespace OurGameName.DoMain.Entity.RoleSpace
+﻿namespace OurGameName.DoMain.Entity.RoleSpace
 {
+    using UnityEngine;
+
     /// <summary>
     /// 生物类 所有生命体的基类
     /// </summary>
@@ -20,10 +20,33 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// <param name="position">位置</param>
         public Organism(long id, int maxHP, Vector3Int position)
         {
-            ID = id;
-            MaxHP = maxHP;
-            currentHP = MaxHP;
-            Position = position;
+            this.ID = id;
+            this.MaxHP = maxHP;
+            this.currentHP = this.MaxHP;
+            this.Position = position;
+        }
+
+        /// <summary>
+        /// 当前生命值
+        /// </summary>
+        public int HP
+        {
+            get { return this.currentHP; }
+            set
+            {
+                if (value <= 0)
+                {
+                    this.currentHP = 0;
+                }
+                else if (value >= this.MaxHP)
+                {
+                    this.currentHP = this.MaxHP;
+                }
+                else
+                {
+                    this.currentHP = value;
+                }
+            }
         }
 
         /// <summary>
@@ -35,29 +58,6 @@ namespace OurGameName.DoMain.Entity.RoleSpace
         /// 最大生命值
         /// </summary>
         public int MaxHP { get; set; }
-
-        /// <summary>
-        /// 当前生命值
-        /// </summary>
-        public int HP
-        {
-            get { return currentHP; }
-            set
-            {
-                if (value <= 0)
-                {
-                    currentHP = 0;
-                }
-                else if (value >= MaxHP)
-                {
-                    currentHP = MaxHP;
-                }
-                else
-                {
-                    currentHP = value;
-                }
-            }
-        }
 
         /// <summary>
         /// 位置

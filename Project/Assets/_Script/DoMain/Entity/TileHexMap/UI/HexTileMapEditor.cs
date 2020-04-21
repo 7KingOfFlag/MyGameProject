@@ -1,56 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OurGameName.DoMain.Attribute;
-using OurGameName.DoMain.Data;
-using OurGameName.DoMain.Entity.RoleSpace;
-using TMPro;
-using UniRx;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.EventSystems;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.Tilemaps;
-using UnityEngine.UI;
-
-namespace OurGameName.DoMain.Entity.TileHexMap.UI
+﻿namespace OurGameName.DoMain.Entity.TileHexMap.UI
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using OurGameName.DoMain.Attribute;
+    using OurGameName.DoMain.Data;
+    using OurGameName.DoMain.Entity.RoleSpace;
+    using TMPro;
+    using UniRx;
+    using UnityEngine;
+    using UnityEngine.AddressableAssets;
+    using UnityEngine.EventSystems;
+    using UnityEngine.ResourceManagement.AsyncOperations;
+    using UnityEngine.Tilemaps;
+    using UnityEngine.UI;
+
     /// <summary>
     /// 六边形tile地图编辑器
     /// </summary>
     internal class HexTileMapEditor : MonoBehaviour
     {
-        public GameObject InputController;
-
         /// <summary>
-        /// 六边形地图
+        /// 生成地图按钮
         /// </summary>
-        private HexGrid m_HexGrid;
+        public Button btnMake;
 
-        /// <summary>
-        /// 背景地图
-        /// </summary>
-        public Tilemap tilemapBackground;
-
-        /// <summary>
-        /// 网格地图
-        /// </summary>
-        public HexMeshTileMap marginMeshTilemap;
-
-        /// <summary>
-        /// 信息地图
-        /// </summary>
-        public HexMeshTileMap infoTileMap;
-
-        /// <summary>
-        /// 主摄像头
-        /// </summary>
-        private Camera mainCamera;
-
-        /// <summary>
-        /// 游戏数据中心
-        /// </summary>
-        public GameAssetDataHelper GameDataCentre;
+        public TMP_Dropdown dropdownTileAsset;
 
         /// <summary>
         /// 编辑器所在的画布
@@ -58,11 +33,29 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         public Canvas EditorCanvas;
 
         /// <summary>
+        /// 游戏数据中心
+        /// </summary>
+        public GameAssetDataHelper GameDataCentre;
+
+        /// <summary>
         /// 六边形单元格表面画布
         /// </summary>
         public HexCellTxtCanvas hexCellDebugTxtCanvas;
 
+        public AssetReference HexMapMakeBoxAsset;
         public HexTileMap HexTileMap;
+
+        /// <summary>
+        /// 信息地图
+        /// </summary>
+        public HexMeshTileMap infoTileMap;
+
+        public GameObject InputController;
+
+        /// <summary>
+        /// 网格地图
+        /// </summary>
+        public HexMeshTileMap marginMeshTilemap;
 
         /// <summary>
         /// 鼠标检测碰撞体
@@ -70,6 +63,16 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         public BoxCollider mouseDetectionCollider;
 
         public RoleManager RoleManager;
+
+        /// <summary>
+        /// 背景地图
+        /// </summary>
+        public Tilemap tilemapBackground;
+
+        /// <summary>
+        /// 笔刷大小文本框
+        /// </summary>
+        public TextMeshProUGUI txtBrushSzieNumber;
 
         /// <summary>
         /// 活动的Tile资源索引
@@ -82,25 +85,25 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         private int brushSize = 0;
 
         /// <summary>
-        /// 笔刷大小文本框
-        /// </summary>
-        public TextMeshProUGUI txtBrushSzieNumber;
-
-        public TMP_Dropdown dropdownTileAsset;
-
-        /// <summary>
-        /// 生成地图按钮
-        /// </summary>
-        public Button btnMake;
-
-        /// <summary>
         /// 当前鼠标下面的单元格的位置信息
         /// </summary>
         private Vector2Int CurrentUnderCell = Vector2Int.zero;
 
-        public AssetReference HexMapMakeBoxAsset;
+        /// <summary>
+        /// 六边形地图
+        /// </summary>
+        private HexGrid m_HexGrid;
+
+        /// <summary>
+        /// 主摄像头
+        /// </summary>
+        private Camera mainCamera;
 
         #region Unity实体方法
+
+        private Vector2Int[] Distance;
+
+        private Vector2Int m_vector2Error;
 
         private void Awake()
         {
@@ -111,24 +114,12 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             dropdownTileAsset.interactable = false;
         }
 
-        private Vector2Int m_vector2Error;
-
-        private void Start()
+        private void OnGUI()
         {
-            m_vector2Error = Vector2Int.zero.Error();
-            Distance = new Vector2Int[2]
-            {
-                m_vector2Error,
-                m_vector2Error
-            };
+            GUIStyle style = new GUIStyle();
+            style.fontSize = 28;
+            GUI.Label(new Rect(300, 100, 400, 50), $"Distance0:{Distance[0]} Distance1:{Distance[1]}", style);
         }
-
-        private void Update()
-        {
-            DrawPrevuewCell();
-        }
-
-        private Vector2Int[] Distance;
 
         private void OnMouseUpAsButton()
         {
@@ -163,11 +154,19 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             }
         }
 
-        private void OnGUI()
+        private void Start()
         {
-            GUIStyle style = new GUIStyle();
-            style.fontSize = 28;
-            GUI.Label(new Rect(300, 100, 400, 50), $"Distance0:{Distance[0]} Distance1:{Distance[1]}", style);
+            m_vector2Error = Vector2Int.zero.Error();
+            Distance = new Vector2Int[2]
+            {
+                m_vector2Error,
+                m_vector2Error
+            };
+        }
+
+        private void Update()
+        {
+            DrawPrevuewCell();
         }
 
         #endregion Unity实体方法
@@ -175,19 +174,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         #region 地图操作
 
         /// <summary>
-        /// 显示地图创建界面
+        /// 清空背景地图
         /// </summary>
-        public void ShowHexMapMakeBox()
+        public void ClearAllMap()
         {
-            HexMapMakeBoxAsset.InstantiateAsync(parent: EditorCanvas.transform).Completed += HexMapMakeBoxAsset_Completed;
-        }
-
-        private void HexMapMakeBoxAsset_Completed(AsyncOperationHandle<GameObject> obj)
-        {
-            var makeBox = obj.Result.GetComponent<HexMapMakeBox>();
-            makeBox.context = this;
-            var rect = obj.Result.GetComponent<RectTransform>();
-            rect.localPosition = Vector3.zero;
+            tilemapBackground.ClearAllTiles();
         }
 
         /// <summary>
@@ -233,11 +224,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         }
 
         /// <summary>
-        /// 清空背景地图
+        /// 显示地图创建界面
         /// </summary>
-        public void ClearAllMap()
+        public void ShowHexMapMakeBox()
         {
-            tilemapBackground.ClearAllTiles();
+            HexMapMakeBoxAsset.InstantiateAsync(parent: EditorCanvas.transform).Completed += HexMapMakeBoxAsset_Completed;
         }
 
         /// <summary>
@@ -260,6 +251,14 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             hexCellDebugTxtCanvas.SetTxt(cell.CellPosition, cell.ThroughCost.ToString());
         }
 
+        private void HexMapMakeBoxAsset_Completed(AsyncOperationHandle<GameObject> obj)
+        {
+            var makeBox = obj.Result.GetComponent<HexMapMakeBox>();
+            makeBox.context = this;
+            var rect = obj.Result.GetComponent<RectTransform>();
+            rect.localPosition = Vector3.zero;
+        }
+
         #endregion 地图操作
 
         #region 刷新
@@ -278,6 +277,11 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         #endregion 刷新
 
         #region 网格地图
+
+        public void SetEnabledOfMarginMeshTileMap(Toggle toggle)
+        {
+            marginMeshTilemap.enabled = toggle.isOn;
+        }
 
         private void GameDataCentre_AseetLoadStatusChang(object sender, AseetLoadStatusArgs e)
         {
@@ -312,24 +316,9 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             }
         }
 
-        public void SetEnabledOfMarginMeshTileMap(Toggle toggle)
-        {
-            marginMeshTilemap.enabled = toggle.isOn;
-        }
-
         #endregion 网格地图
 
         #region 鼠标位置获取与判断
-
-        /// <summary>
-        /// 鼠标世界位置是否处于异常值
-        /// </summary>
-        /// <param name="mouseWorldPosition"></param>
-        /// <returns></returns>
-        private bool IsMouseWorldPositionError(Vector3 mouseWorldPosition)
-        {
-            return mouseWorldPosition == Vector3.back;
-        }
 
         /// <summary>
         /// 获取鼠标当前的世界坐标
@@ -367,7 +356,62 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             return Vector3.back;
         }
 
+        /// <summary>
+        /// 鼠标世界位置是否处于异常值
+        /// </summary>
+        /// <param name="mouseWorldPosition"></param>
+        /// <returns></returns>
+        private bool IsMouseWorldPositionError(Vector3 mouseWorldPosition)
+        {
+            return mouseWorldPosition == Vector3.back;
+        }
+
         #endregion 鼠标位置获取与判断
+
+        /// <summary>
+        /// 设置触发器
+        /// </summary>
+        private enum OptionToggle
+        {
+            /// <summary>
+            /// 忽略
+            /// </summary>
+            Ignore,
+
+            /// <summary>
+            /// 是
+            /// </summary>
+            Yes,
+
+            /// <summary>
+            /// 否
+            /// </summary>
+            No
+        }
+
+        public void Exit()
+        {
+            Application.Quit();
+        }
+
+        /// <summary>
+        /// 设置活动Tile资源索引
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetActiveTileAssetIndex(TMP_Dropdown dropdown)
+        {
+            activeTileAssetName = dropdown.options[dropdown.value].text;
+        }
+
+        /// <summary>
+        /// 设置笔刷大小
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetBrushSize(Slider slider)
+        {
+            brushSize = (int)slider.value;
+            txtBrushSzieNumber.SetText(((int)slider.value).ToString());
+        }
 
         /// <summary>
         /// 显示 range 范围内其他单元格到计算坐标的距离
@@ -381,6 +425,35 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             int count = 1;
             hexCellDebugTxtCanvas.
                 SetTxts(resultDict, resultDict.Select(x => (count += m_HexGrid[x].ThroughCost).ToString()).ToArray());
+        }
+
+        /// <summary>
+        /// 绘制标识网格
+        /// </summary>
+        private void DrawPrevuewCell()
+        {
+            if (GameDataCentre.IsAssetLoadCompleted == false) return;
+            Vector2Int MouseCellPosition = GetMouseCellPosition();
+            if (CurrentUnderCell != MouseCellPosition)
+            {
+                CurrentUnderCell = MouseCellPosition;
+                TileBase tileBase;
+                if (activeTileAssetName == "忽略")
+                {
+                    tileBase = GameDataCentre.GetRandomTileAssetDict("border");
+                }
+                else
+                {
+                    tileBase = GameDataCentre.GetRandomTileAssetDict(activeTileAssetName);
+                }
+
+                if (tileBase == null)
+                {
+                    Debug.LogWarning("TileAsset border didn't load");
+                    return;
+                }
+                infoTileMap.DrawHexMeshTileCells(HexTileMetrics.GetCellInRange(CurrentUnderCell, brushSize).ToVector3Int(), tileBase);
+            }
         }
 
         /// <summary>
@@ -430,68 +503,6 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
         }
 
         /// <summary>
-        /// 设置单元格
-        /// </summary>
-        /// <param name="CellPosition"></param>
-        private void SetTile(HexCell Cell)
-        {
-            if (activeTileAssetName != "忽略")
-            {
-                Cell.TileAssetName =
-                    GameDataCentre.GetRandomTileAssetDict(activeTileAssetName).name;
-            }
-            Cell.Refres();
-        }
-
-        /// <summary>
-        /// 绘制标识网格
-        /// </summary>
-        private void DrawPrevuewCell()
-        {
-            if (GameDataCentre.IsAssetLoadCompleted == false) return;
-            Vector2Int MouseCellPosition = GetMouseCellPosition();
-            if (CurrentUnderCell != MouseCellPosition)
-            {
-                CurrentUnderCell = MouseCellPosition;
-                TileBase tileBase;
-                if (activeTileAssetName == "忽略")
-                {
-                    tileBase = GameDataCentre.GetRandomTileAssetDict("border");
-                }
-                else
-                {
-                    tileBase = GameDataCentre.GetRandomTileAssetDict(activeTileAssetName);
-                }
-
-                if (tileBase == null)
-                {
-                    Debug.LogWarning("TileAsset border didn't load");
-                    return;
-                }
-                infoTileMap.DrawHexMeshTileCells(HexTileMetrics.GetCellInRange(CurrentUnderCell, brushSize).ToVector3Int(), tileBase);
-            }
-        }
-
-        /// <summary>
-        /// 设置活动Tile资源索引
-        /// </summary>
-        /// <param name="value"></param>
-        public void SetActiveTileAssetIndex(TMP_Dropdown dropdown)
-        {
-            activeTileAssetName = dropdown.options[dropdown.value].text;
-        }
-
-        /// <summary>
-        /// 设置笔刷大小
-        /// </summary>
-        /// <param name="value"></param>
-        public void SetBrushSize(Slider slider)
-        {
-            brushSize = (int)slider.value;
-            txtBrushSzieNumber.SetText(((int)slider.value).ToString());
-        }
-
-        /// <summary>
         /// 根据当前Tilemap大小设置用鼠标检查碰撞体
         /// </summary>
         private void MouseDetectionColliderInit()
@@ -508,30 +519,18 @@ namespace OurGameName.DoMain.Entity.TileHexMap.UI
             }
         }
 
-        public void Exit()
-        {
-            Application.Quit();
-        }
-
         /// <summary>
-        /// 设置触发器
+        /// 设置单元格
         /// </summary>
-        private enum OptionToggle
+        /// <param name="CellPosition"></param>
+        private void SetTile(HexCell Cell)
         {
-            /// <summary>
-            /// 忽略
-            /// </summary>
-            Ignore,
-
-            /// <summary>
-            /// 是
-            /// </summary>
-            Yes,
-
-            /// <summary>
-            /// 否
-            /// </summary>
-            No
+            if (activeTileAssetName != "忽略")
+            {
+                Cell.TileAssetName =
+                    GameDataCentre.GetRandomTileAssetDict(activeTileAssetName).name;
+            }
+            Cell.Refres();
         }
     }
 }

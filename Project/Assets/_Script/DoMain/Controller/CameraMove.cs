@@ -1,12 +1,13 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
-
-namespace OurGameName.DoMain.Controller
+﻿namespace OurGameName.DoMain.Controller
 {
+    using UnityEngine;
+    using UnityEngine.InputSystem;
+    using UnityEngine.Tilemaps;
+
     internal class CameraMove : MonoBehaviour
     {
-        public PlayerInput PlayerInput;
+        public Tilemap BackGroundTilemap;
+        public Cinemachine.CinemachineVirtualCamera CinemachineCamera;
 
         /// <summary>
         /// 键盘移动速度
@@ -14,17 +15,9 @@ namespace OurGameName.DoMain.Controller
         public float KeyboardMovespeed = 10f;
 
         /// <summary>
-        /// 鼠标俯仰速度
+        /// 最大视野距离
         /// </summary>
-        public float MouseTiltSpeed = 5f;
-
-        /// <summary>
-        /// 鼠标拖曳速度
-        /// </summary>
-        public float MouseDragSpeed = 12f;
-
-        public Tilemap BackGroundTilemap;
-        public Cinemachine.CinemachineVirtualCamera CinemachineCamera;
+        public int MaxFieldOfView = 4;
 
         /// <summary>
         /// 最小视野距离
@@ -32,17 +25,23 @@ namespace OurGameName.DoMain.Controller
         public int MinFieldOfView = -3;
 
         /// <summary>
-        /// 最大视野距离
+        /// 鼠标拖曳速度
         /// </summary>
-        public int MaxFieldOfView = 4;
+        public float MouseDragSpeed = 12f;
 
-        private Camera mainCamera;
+        /// <summary>
+        /// 鼠标俯仰速度
+        /// </summary>
+        public float MouseTiltSpeed = 5f;
+
+        public PlayerInput PlayerInput;
 
         /// <summary>
         /// 当前鼠标
         /// </summary>
         private Mouse currentMouse;
 
+        private Camera mainCamera;
         private InputAction MoveAction;
 
         private void Awake()
@@ -59,6 +58,13 @@ namespace OurGameName.DoMain.Controller
             KeyMoveEvent();
         }
 
+        private void KeyMoveEvent()
+        {
+            Vector2 MoveVector = MoveAction.ReadValue<Vector2>();
+            // Debug.Log($"MoveVector{MoveVector}");
+            transform.position += new Vector3(MoveVector.x, MoveVector.y, 0f) * KeyboardMovespeed * Time.deltaTime;
+        }
+
         private void ScrollWheelEvent(InputAction.CallbackContext obj)
         {
             var position = transform.position;
@@ -66,37 +72,30 @@ namespace OurGameName.DoMain.Controller
             transform.position = new Vector3(position.x, position.y, Mathf.Clamp(newFileOfView, MinFieldOfView, MaxFieldOfView));
         }
 
-        private void KeyMoveEvent()
-        {
-            Vector2 MoveVector = MoveAction.ReadValue<Vector2>();
-            //Debug.Log($"MoveVector{MoveVector}");
-            transform.position += new Vector3(MoveVector.x, MoveVector.y, 0f) * KeyboardMovespeed * Time.deltaTime;
-        }
-
         #region 鼠标拖拽
 
+        private bool IsMouseHold = false;
         private Vector2 MouseDownPosition;
         private Vector2 MouseUpPosition;
-        private bool IsMouseHold = false;
 
         private void DragMapEvent()
         {
-            if (currentMouse.middleButton.ReadValue() == 1 && IsMouseHold == false)
+            if (this.currentMouse.middleButton.ReadValue() == 1 && this.IsMouseHold == false)
             {
-                IsMouseHold = true;
-                MouseDownPosition = currentMouse.position.ReadValue();
+                this.IsMouseHold = true;
+                this.MouseDownPosition = this.currentMouse.position.ReadValue();
             }
             else if (currentMouse.middleButton.ReadValue() == 0)
             {
-                IsMouseHold = false;
+                this.IsMouseHold = false;
             }
 
-            if (IsMouseHold == true)
+            if (this.IsMouseHold == true)
             {
-                MouseUpPosition = currentMouse.position.ReadValue();
-                var moveVector = (MouseDownPosition - MouseUpPosition).normalized;
-                transform.position += new Vector3(moveVector.x, moveVector.y) * MouseDragSpeed * Time.deltaTime;
-                MouseDownPosition = MouseUpPosition;
+                this.MouseUpPosition = this.currentMouse.position.ReadValue();
+                var moveVector = (this.MouseDownPosition - this.MouseUpPosition).normalized;
+                this.transform.position += new Vector3(moveVector.x, moveVector.y) * this.MouseDragSpeed * Time.deltaTime;
+                this.MouseDownPosition = this.MouseUpPosition;
             }
         }
 

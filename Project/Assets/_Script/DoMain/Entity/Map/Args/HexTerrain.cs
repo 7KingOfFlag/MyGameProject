@@ -1,4 +1,4 @@
-﻿namespace OurGameName.DoMain.Entity.Map
+﻿namespace OurGameName.DoMain.Entity.Map.Args
 {
     using System;
 
