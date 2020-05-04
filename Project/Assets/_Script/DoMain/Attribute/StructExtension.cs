@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-
-namespace OurGameName.DoMain.Attribute
+﻿namespace OurGameName.DoMain.Attribute
 {
+    using UnityEngine;
+
     public struct Float2
     {
         public float a, b;

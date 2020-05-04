@@ -1,28 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
-using OurGameName.DoMain.Attribute;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Tilemaps;
-using Random = System.Random;
-
-namespace OurGameName.DoMain.Data
+﻿namespace OurGameName.DoMain.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web.Script.Serialization;
+    using OurGameName.DoMain.Attribute;
+    using OurGameName.Extension;
+    using UnityEngine;
+    using UnityEngine.AddressableAssets;
+    using UnityEngine.Tilemaps;
+    using Random = System.Random;
+
     /// <summary>
     /// 游戏数据中心
     /// </summary>
     internal class GameAssetDataHelper : MonoBehaviour
     {
+        public AssetLabelReference TileAssetLabel;
+
+        private Random m_random;
+
+        /// <summary>
+        /// Tile通过费用字典Json文件的地址
+        /// </summary>
+        private string m_terrainThroughCostDictJsonFilePath;
+
         /// <summary>
         /// 资源加载发生变化事件
         /// </summary>
         public event EventHandler<AseetLoadStatusArgs> AseetLoadStatusChang;
 
-        public AssetLabelReference TileAssetLabel;
-        private Random m_random;
+        /// <summary>
+        /// Tiel资源是否全部加载完成
+        /// </summary>
+        public bool IsAssetLoadCompleted { get; private set; }
+
+        /// <summary>
+        /// Tile通过费用字典
+        /// </summary>
+        public Dictionary<string, int> TerrainThroughCostDict { get; private set; }
 
         /// <summary>
         /// Tile资源字典
@@ -43,43 +60,12 @@ namespace OurGameName.DoMain.Data
         }
 
         /// <summary>
-        /// Tile通过费用字典
+        /// 当资源载入完成时向数据中心报告并分发该信息
         /// </summary>
-        public Dictionary<string, int> TerrainThroughCostDict { get; private set; }
-
-        /// <summary>
-        /// Tile通过费用字典Json文件的地址
-        /// </summary>
-        private string m_terrainThroughCostDictJsonFilePath;
-
-        /// <summary>
-        /// Tiel资源是否全部加载完成
-        /// </summary>
-        public bool IsAssetLoadCompleted { get; private set; }
-
-        private void Awake()
+        /// <param name="e"></param>
+        public virtual void OnAseetLoadStatusChang(AseetLoadStatusArgs e)
         {
-            m_random = new Random((int)DateTime.Now.Ticks);
-            m_terrainThroughCostDictJsonFilePath = Application.dataPath + @"/Data/Save/TileThroughCostDict.Json";
-            TileAssetLoadInit();
-        }
-
-        private void Start()
-        {
-            TerrainThroughCostDict = LoadTileThrougCostDictOnJson(m_terrainThroughCostDictJsonFilePath);
-            OnAseetLoadStatusChang(
-                new AseetLoadStatusArgs(typeof(Dictionary<string, int>), "TerrainThroughCostDict", AseetLoadStatusArgs.LoadStatus.Completed));
-        }
-
-        /// <summary>
-        /// Tile资源加载初始化
-        /// </summary>
-        private void TileAssetLoadInit()
-        {
-            IsAssetLoadCompleted = false;
-            TileAssetDict = new Dictionary<string, TileBase>();
-            Addressables.LoadAssetsAsync<TileBase>(TileAssetLabel, TileAseetLoadCompleted).
-                Completed += TileAssetAllLoadCompleted;
+            e.Raise(this, ref AseetLoadStatusChang);
         }
 
         /// <summary>
@@ -89,6 +75,27 @@ namespace OurGameName.DoMain.Data
         public void TileAseetLoadCompleted(TileBase aseet)
         {
             TileAssetDict.Add(aseet.name, aseet);
+        }
+
+        private void Awake()
+        {
+            m_random = new Random((int)DateTime.Now.Ticks);
+            m_terrainThroughCostDictJsonFilePath = Application.dataPath + @"/Data/Save/TileThroughCostDict.Json";
+            TileAssetLoadInit();
+        }
+
+        private Dictionary<string, int> LoadTileThrougCostDictOnJson(string jsonFilePath)
+        {
+            string json = FileHelper.ReadFileToString(jsonFilePath);
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<Dictionary<string, int>>(json);
+        }
+
+        private void Start()
+        {
+            TerrainThroughCostDict = LoadTileThrougCostDictOnJson(m_terrainThroughCostDictJsonFilePath);
+            OnAseetLoadStatusChang(
+                new AseetLoadStatusArgs(typeof(Dictionary<string, int>), "TerrainThroughCostDict", AseetLoadStatusArgs.LoadStatus.Completed));
         }
 
         /// <summary>
@@ -102,6 +109,17 @@ namespace OurGameName.DoMain.Data
             OnAseetLoadStatusChang(
                 new AseetLoadStatusArgs(typeof(TileBase), "TileAsset", AseetLoadStatusArgs.LoadStatus.Completed));
             //TileThroughCostDictInit(TileAssetDict);
+        }
+
+        /// <summary>
+        /// Tile资源加载初始化
+        /// </summary>
+        private void TileAssetLoadInit()
+        {
+            IsAssetLoadCompleted = false;
+            TileAssetDict = new Dictionary<string, TileBase>();
+            Addressables.LoadAssetsAsync<TileBase>(TileAssetLabel, TileAseetLoadCompleted).
+                Completed += TileAssetAllLoadCompleted;
         }
 
         /// <summary>
@@ -139,22 +157,6 @@ namespace OurGameName.DoMain.Data
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             string json = serializer.Serialize(TerrainThroughCostDict);
             FileHelper.SaveStringToFile(m_terrainThroughCostDictJsonFilePath, json);
-        }
-
-        private Dictionary<string, int> LoadTileThrougCostDictOnJson(string jsonFilePath)
-        {
-            string json = FileHelper.ReadFileToString(jsonFilePath);
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            return serializer.Deserialize<Dictionary<string, int>>(json);
-        }
-
-        /// <summary>
-        /// 当资源载入完成时向数据中心报告并分发该信息
-        /// </summary>
-        /// <param name="e"></param>
-        public virtual void OnAseetLoadStatusChang(AseetLoadStatusArgs e)
-        {
-            e.Raise(this, ref AseetLoadStatusChang);
         }
     }
 }

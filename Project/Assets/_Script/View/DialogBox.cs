@@ -1,5 +1,5 @@
 ﻿using System;
-using OurGameName.DoMain.Attribute;
+using OurGameName.Extension;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,39 +7,16 @@ namespace OurGameName.View
 {
     public class DialogBox : MonoBehaviour
     {
+        public Button btnNo;
+
+        public Button btnYes;
+
+        public CanvasGroup canvasGroup;
+
         /// <summary>
         /// 对话框按钮的返回结果
         /// </summary>
         internal event EventHandler<DialogBoxReturnArgs> Result;
-
-        public Button btnYes;
-        public Button btnNo;
-        public CanvasGroup canvasGroup;
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("代码质量", "IDE0051:删除未使用的私有成员", Justification = "<挂起>")]
-        private void Start()
-        {
-            canvasGroup.alpha = 0;
-            btnYes.onClick.AddListener(OnYes);
-            btnNo.onClick.AddListener(OnNo);
-        }
-
-        private void OnYes()
-        {
-            OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.Yes));
-            Hide();
-        }
-
-        private void OnNo()
-        {
-            OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.No));
-            Hide();
-        }
-
-        public void Show()
-        {
-            canvasGroup.alpha = 1f;
-        }
 
         /// <summary>
         /// 关闭对话框
@@ -49,9 +26,34 @@ namespace OurGameName.View
             canvasGroup.alpha = 0f;
         }
 
+        public void Show()
+        {
+            canvasGroup.alpha = 1f;
+        }
+
         internal virtual void OnResult(DialogBoxReturnArgs e)
         {
             e.Raise(this, ref Result);
+        }
+
+        private void OnNo()
+        {
+            OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.No));
+            Hide();
+        }
+
+        private void OnYes()
+        {
+            OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.Yes));
+            Hide();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("代码质量", "IDE0051:删除未使用的私有成员", Justification = "<挂起>")]
+        private void Start()
+        {
+            canvasGroup.alpha = 0;
+            btnYes.onClick.AddListener(OnYes);
+            btnNo.onClick.AddListener(OnNo);
         }
     }
 

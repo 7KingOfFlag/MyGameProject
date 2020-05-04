@@ -7,13 +7,6 @@ namespace OurGameName.DoMain.Entity
     {
         private static int count = 0;
 
-        public int ID { get; set; }
-        public int ParentID { get; set; }
-        public string Name { get; set; }
-        public string Effect { get; set; }
-        public string Directory { get; set; }
-        public int MakerID { get; set; }
-
         public Prop()
         {
         }
@@ -27,6 +20,13 @@ namespace OurGameName.DoMain.Entity
             Directory = directory;
             MakerID = makerID;
         }
+
+        public string Directory { get; set; }
+        public string Effect { get; set; }
+        public int ID { get; set; }
+        public int MakerID { get; set; }
+        public string Name { get; set; }
+        public int ParentID { get; set; }
 
         public static List<Prop> JosnDeserialize(string JosnStr)
         {

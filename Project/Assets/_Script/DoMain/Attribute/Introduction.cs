@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace OurGameName.DoMain.Attribute
+﻿namespace OurGameName.DoMain.Attribute
 {
+    using System;
+    using System.Linq;
+
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class Introduction : System.Attribute
     {
@@ -10,10 +10,10 @@ namespace OurGameName.DoMain.Attribute
 
         public Introduction(string msg)
         {
-            Msg = msg;
+            this.Msg = msg;
         }
 
-        public static string getMsg(Type objType, AttributeTargets targets, string targetName)
+        public static string GetMsg(Type objType, AttributeTargets targets, string targetName)
         {
             Object[] attributes = null;
             string msg = null;

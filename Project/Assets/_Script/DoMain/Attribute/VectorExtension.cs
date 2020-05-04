@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
-namespace OurGameName.DoMain.Attribute
+﻿namespace OurGameName.DoMain.Attribute
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEngine;
+
     public static class VectorExtension
     {
+        private static Vector2Int m_errorV2 = new Vector2Int(-1, -1);
         private static Vector3Int m_errorV3 = new Vector3Int(-1, -1, -1);
 
         /// <summary>
@@ -18,8 +19,6 @@ namespace OurGameName.DoMain.Attribute
             return m_errorV3;
         }
 
-        private static Vector2Int m_errorV2 = new Vector2Int(-1, -1);
-
         /// <summary>
         /// 返回一个代表错误的二元整型向量
         /// </summary>
@@ -30,6 +29,11 @@ namespace OurGameName.DoMain.Attribute
             return m_errorV2;
         }
 
+        /// <summary>
+        /// 将三维向量转为二维向量,舍弃z
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns></returns>
         public static Vector2Int ToVector2Int(this Vector3Int vector)
         {
             return new Vector2Int(vector.x, vector.y);

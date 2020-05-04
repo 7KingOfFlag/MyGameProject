@@ -1,8 +1,8 @@
-﻿using System.IO;
-using UnityEngine;
-
-namespace OurGameName.DoMain.Attribute
+﻿namespace OurGameName.DoMain.Attribute
 {
+    using System.IO;
+    using UnityEngine;
+
     /// <summary>
     /// 文件导入工具类
     /// </summary>
@@ -44,24 +44,6 @@ namespace OurGameName.DoMain.Attribute
         }
 
         /// <summary>
-        /// 已覆盖的形式保存字符串到文件
-        /// </summary>
-        /// <param name="path">文件路径 包括文件名</param>
-        /// <param name="context">文件字符串</param>
-        public static void SaveStringToFile(string path, string context)
-        {
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-
-            using (StreamWriter writer = File.CreateText(path))
-            {
-                writer.Write(context);
-            }
-        }
-
-        /// <summary>
         /// 以纯文本形式读取文件并返回字符串
         /// </summary>
         /// <param name="path">文件地址</param>
@@ -81,6 +63,24 @@ namespace OurGameName.DoMain.Attribute
                 throw new FileNotFoundException();
             }
             return result;
+        }
+
+        /// <summary>
+        /// 已覆盖的形式保存字符串到文件
+        /// </summary>
+        /// <param name="path">文件路径 包括文件名</param>
+        /// <param name="context">文件字符串</param>
+        public static void SaveStringToFile(string path, string context)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            using (StreamWriter writer = File.CreateText(path))
+            {
+                writer.Write(context);
+            }
         }
     }
 }
