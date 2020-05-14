@@ -12,7 +12,9 @@
     using OurGameName.Extension;
     using OurGameName.DoMain.Attribute;
     using OurGameName.DoMain.Map.Extensions;
+    using UnityEngine.AddressableAssets;
     using OurGameName.Interface;
+    using TMPro;
 
     /// <summary>
     /// 六边形地图
@@ -38,6 +40,21 @@
         /// 地图碰撞体
         /// </summary>
         public BoxCollider MapCollider;
+
+        /// <summary>
+        /// 地图标识点
+        /// </summary>
+        public Canvas MapMarkPoint;
+
+        /// <summary>
+        /// 地图标识点预制体
+        /// </summary>
+        public AssetReference MapMarkPointReference;
+
+        /// <summary>
+        /// 测试地图
+        /// </summary>
+        public Tilemap TestTileMap;
 
         /// <summary>
         /// 主摄像头
@@ -78,11 +95,27 @@
             }
         }
 
+        /// <summary>
+        /// 设置测试地图
+        /// </summary>
+        /// <param name="list"></param>
+        public void SetTestMap(List<Vector2Int> list)
+        {
+            this.TestTileMap.ClearAllTiles();
+            var tileAseet = this.TileMapAseets["border"].GetRandomItem();
+            foreach (var item in list)
+            {
+                this.TestTileMap.SetTile(item.ToVector3Int(), tileAseet);
+            }
+        }
+
         private void Awake()
         {
             this.mainCamera = Camera.main;
 
             this.GameWorld.InitComplete += async (sender, e) => await this.InitMapAsync();
+
+            this.TestTileMapInit();
         }
 
         /// <summary>
@@ -110,17 +143,33 @@
             this.GameWorld.GameMap.ForEach(x => this.SetMap(x));
             this.GameWorld.GameMap.Update += (sender, e) => e.UpdateElement.ForEach(x => this.SetMap(x));
 
-            this.InitMapCollider();
+            this.InitMapCollider(this.GameWorld.MapSize);
+            this.InitMapMarkPoint(this.GameWorld.MapSize);
         }
 
         /// <summary>
         /// 初始化地图碰撞体
         /// </summary>
-        private void InitMapCollider()
+        private void InitMapCollider(Vector2Int mapSize)
         {
-            var (ColliderWidth, ColliderHeight) = MapMetrics.GetMapColliderSize(this.GameWorld.MapSzie);
+            var (ColliderWidth, ColliderHeight) = MapMetrics.GetMapColliderSize(mapSize);
             this.MapCollider.size = new Vector3(ColliderWidth, ColliderHeight, 0.1f);
             this.MapCollider.center = new Vector3(ColliderWidth * 0.5f - 0.5f, ColliderHeight * 0.5f - 0.5f);
+        }
+
+        /// <summary>
+        /// 初始化地图标识点
+        /// </summary>
+        /// <param name="mapSize">地图大小</param>
+        private void InitMapMarkPoint(Vector2Int mapSize)
+        {
+            for (int x = 0; x < mapSize.x; x++)
+            {
+                for (int y = 0; y < mapSize.y; y++)
+                {
+                    this.SetMapMarkPoint(x, y);
+                }
+            }
         }
 
         /// <summary>
@@ -148,6 +197,32 @@
             {
                 this.BackgroundTilemap.SetTile(item.Position.ToVector3Int(), this.TileMapAseets["Void"].First());
             }
+        }
+
+        /// <summary>
+        /// 设置地图标识点
+        /// </summary>
+        private void SetMapMarkPoint(int x, int y)
+        {
+            var worldSpace = this.CellToWorld(new Vector3Int(x, y, 0));
+
+            //this.MapMarkPointReference.LoadAssetAsync<TextMeshProUGUI>().Completed += obj =>
+            //{
+            //    TextMeshProUGUI text = obj.;
+            //    text.transform.position = worldSpace;
+            //    text.text = $"({x},{y})";
+            //};
+
+            this.MapMarkPointReference.InstantiateAsync(worldSpace, MapMetrics.ZeroQuaternion, this.MapMarkPoint.transform).Completed += obj =>
+            {
+                TextMeshProUGUI text = obj.Result.GetComponent<TextMeshProUGUI>();
+                text.text = $"({x},{y})";
+            };
+        }
+
+        private void TestTileMapInit()
+        {
+            this.TestTileMap.ClearAllTiles();
         }
     }
 }

@@ -23,7 +23,7 @@
         /// <summary>
         /// 地图大小
         /// </summary>
-        public Vector2Int MapSzie => this.GameMap.MapSzie;
+        public Vector2Int MapSize => this.GameMap.MapSzie;
 
         /// <summary>
         /// 世界哈希值

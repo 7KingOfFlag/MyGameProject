@@ -1,6 +1,9 @@
 ﻿namespace OurGameName.DoMain.Map
 {
+    using System.Linq;
     using OurGameName.DoMain.Map.Args;
+    using OurGameName.DoMain.Map.Extensions;
+    using OurGameName.Extension;
     using UnityEngine;
     using Terrain = Args.Terrain;
 
@@ -13,7 +16,7 @@
         /// 邻近的单元格
         /// </summary>
         [SerializeField]
-        public Vector2Int[] neighbors;
+        public Vector2Int?[] neighbors;
 
         /// <summary>
         /// 地块类型索引
@@ -24,10 +27,11 @@
         /// 地图单元
         /// </summary>
         /// <param name="position">单元位置</param>
-        public Element(Vector2Int position)
+        /// <param name="mapSize">地图大小</param>
+        public Element(Vector2Int position, Vector2Int mapSize)
         {
-            Position = position;
-            neighbors = CalculateNeighbor(Position);
+            this.Position = position;
+            this.neighbors = CalculateNeighbor(this.Position, mapSize);
         }
 
         /// <summary>
@@ -40,10 +44,10 @@
         /// </summary>
         public Terrain Terrain
         {
-            get => terrainType;
+            get => this.terrainType;
             set
             {
-                terrainType = value;
+                this.terrainType = value;
             }
         }
 
@@ -52,9 +56,9 @@
         /// </summary>
         /// <param name="dir"></param>
         /// <returns></returns>
-        public Vector2Int GetNeighbor(HexDirection dir)
+        public Vector2Int? GetNeighbor(HexDirection dir)
         {
-            return neighbors[(int)dir];
+            return this.neighbors[(int)dir];
         }
 
         /// <summary>
@@ -62,13 +66,14 @@
         /// <para>数组中单元格排序依照 HexDirection 枚举中表示的方向的顺序排列</para>
         /// </summary>
         /// <param name="centrePosition">所求的相邻单元格数组的中心单元格位置</param>
+        /// <param name="mapSize">地图大小</param>
         /// <remarks>
         /// 六边形单元格偶数行修正原理
         /// 因为六边形网格是奇数行与偶数行是交错排列的
         /// 所以偶数行会比奇数行落后一格
         /// 这导致在中心点的上下四个相邻的单元格偶数行会比奇数行单元格整体向 x 轴负方向移动一个单位
         /// </remarks>
-        private static Vector2Int[] CalculateNeighbor(Vector2Int centrePosition)
+        private static Vector2Int?[] CalculateNeighbor(Vector2Int centrePosition, Vector2Int mapSize)
         {
             Vector2Int[] result = new Vector2Int[6];
             int correction = 0;
@@ -83,7 +88,21 @@
             result[(int)HexDirection.W] = new Vector2Int(centrePosition.x - 1, centrePosition.y);
             result[(int)HexDirection.NW] = new Vector2Int(centrePosition.x + correction, centrePosition.y + 1);
 
-            return result;
+            return result.Select(v => IsErrorPosition(v, mapSize) ? null : new Vector2Int?(v)).ToArray();
+        }
+
+        /// <summary>
+        /// 是否为异常位置
+        /// </summary>
+        /// <param name="v">测试位置</param>
+        /// <param name="mapSize">地图大小</param>
+        /// <returns></returns>
+        private static bool IsErrorPosition(Vector2Int v, Vector2Int mapSize)
+        {
+            return v.x < 0
+                || v.y < 0
+                || v.x >= mapSize.x
+                || v.y >= mapSize.y;
         }
     }
 }

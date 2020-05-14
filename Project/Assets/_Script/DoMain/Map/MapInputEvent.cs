@@ -13,7 +13,14 @@
     /// </summary>
     internal class MapInputEvent : MonoBehaviour
     {
+        /// <summary>
+        /// 六边形地图
+        /// </summary>
         public HexGrid context;
+
+        /// <summary>
+        /// 游戏输入
+        /// </summary>
         public PlayerInput PlayerInput;
 
         public event EventHandler<MapInputEventArgs> NewClick;
@@ -25,24 +32,24 @@
 
         private void Awake()
         {
-            PlayerInput.actions["LeftClick"].performed += OnLeftClick;
-            PlayerInput.actions["MiddleClick"].performed += OnMiddleClick;
-            PlayerInput.actions["RighTClick"].performed += OnRighTClick;
+            this.PlayerInput.actions["LeftClick"].performed += this.OnLeftClick;
+            this.PlayerInput.actions["MiddleClick"].performed += this.OnMiddleClick;
+            this.PlayerInput.actions["RighTClick"].performed += this.OnRighTClick;
         }
 
         private void OnLeftClick(InputAction.CallbackContext obj)
         {
-            OnNewClick(new MapInputEventArgs(context.GetMouseCellPosition(), MouseButton.LeftMouse));
+            this.OnNewClick(new MapInputEventArgs(this.context.GetMouseCellPosition(), MouseButton.LeftMouse));
         }
 
         private void OnMiddleClick(InputAction.CallbackContext obj)
         {
-            OnNewClick(new MapInputEventArgs(context.GetMouseCellPosition(), MouseButton.MiddleMouse));
+            this.OnNewClick(new MapInputEventArgs(this.context.GetMouseCellPosition(), MouseButton.MiddleMouse));
         }
 
         private void OnRighTClick(InputAction.CallbackContext obj)
         {
-            OnNewClick(new MapInputEventArgs(context.GetMouseCellPosition(), MouseButton.RightMouse));
+            this.OnNewClick(new MapInputEventArgs(this.context.GetMouseCellPosition(), MouseButton.RightMouse));
         }
     }
 }

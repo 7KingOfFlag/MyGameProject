@@ -41,23 +41,23 @@
                     "name": "ScrollWheel",
                     "type": "Value",
                     "id": "6b1fd68c-6bc6-4f29-9303-be255360b0ce",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Double",
                     "processors": "",
                     "interactions": ""
                 },
                 {
                     "name": "MiddleClick",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "e011e09b-6dcf-4139-b046-6505be20dd8c",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 },
                 {
                     "name": "RightClick",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "f9a843c9-c3a4-4d77-88e8-5fa3da68845a",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -289,7 +289,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse",
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false

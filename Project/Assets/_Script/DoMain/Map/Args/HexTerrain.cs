@@ -57,21 +57,21 @@
                     int maxSize = 0,
                     int minSize = 0)
         {
-            Name = name;
+            this.Name = name;
             if (canPlace == null)
             {
-                CanPlace = x => true;
+                this.CanPlace = x => true;
             }
             else
             {
-                CanPlace = canPlace;
+                this.CanPlace = canPlace;
             }
-            Layer = layer;
-            ChunkSize = chunkSize;
-            Wave = wave;
-            MaxSize = maxSize;
-            MinSize = minSize;
-            Terrain = terrain;
+            this.Layer = layer;
+            this.ChunkSize = chunkSize;
+            this.Wave = wave;
+            this.MaxSize = maxSize;
+            this.MinSize = minSize;
+            this.Terrain = terrain;
         }
 
         /// <summary>

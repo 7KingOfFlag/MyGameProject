@@ -31,7 +31,7 @@
     /// <summary>
     /// 角色类
     /// </summary>
-    public class Role
+    internal class Role : Organism
     {
         private static int IDCount = 0;
 
@@ -83,11 +83,6 @@
         public string Forces { get; set; }
 
         /// <summary>
-        /// 角色ID
-        /// </summary>
-        public int ID { get; private set; }
-
-        /// <summary>
         /// 气运
         /// </summary>
         public int Luck { get; set; }
@@ -101,11 +96,6 @@
         /// 头像地址
         /// </summary>
         public string PicturePath { get; set; }
-
-        /// <summary>
-        /// 处事立场
-        /// </summary>
-        public int Position { get; set; }
 
         /// <summary>
         /// 气海
@@ -150,41 +140,9 @@
         #region 战斗相关
 
         /// <summary>
-        /// 当前生命值
-        /// </summary>
-        private int currentHP;
-
-        /// <summary>
         /// 角色行动点
         /// </summary>
         public int ActionPoint { get; set; }
-
-        /// <summary>
-        /// 当前生命值
-        /// </summary>
-        public int CurrentHP
-        {
-            get
-            {
-                return this.currentHP;
-            }
-            set
-            {
-                if (value <= this.MaxHP)
-                {
-                    this.currentHP = value;
-                }
-                else if (value > this.MaxHP)
-                {
-                    this.currentHP = this.MaxHP;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 最大生命值
-        /// </summary>
-        public int MaxHP { get; set; }
 
         /// <summary>
         /// 力量

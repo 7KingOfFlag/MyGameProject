@@ -8,6 +8,14 @@
     /// </summary>
     internal class RoleImageComponent : MonoBehaviour
     {
+        /// <summary>
+        /// 角色贴图
+        /// </summary>
+        public SpriteRenderer RoleSprite;
+
+        /// <summary>
+        /// 贴图材质
+        /// </summary>
         private Material spriteMaterial;
 
         public bool IsBlink
@@ -20,11 +28,11 @@
             {
                 if (value == true)
                 {
-                    this.spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedTrue);
+                    this.spriteMaterial.SetFloat("_Blink", SharedMetrics.SharedTrue);
                 }
                 else
                 {
-                    this.spriteMaterial.SetFloat("_IsBlink", SharedMetrics.SharedFalse);
+                    this.spriteMaterial.SetFloat("_Blink", SharedMetrics.SharedFalse);
                 }
             }
         }
@@ -39,7 +47,7 @@
                 }
                 else
                 {
-                    this.spriteMaterial.SetFloat("_Outline", SharedMetrics.SharedTrue);
+                    this.spriteMaterial.SetFloat("_Outline", SharedMetrics.SharedFalse);
                 }
             }
         }

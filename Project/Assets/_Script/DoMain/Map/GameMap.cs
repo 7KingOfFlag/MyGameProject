@@ -8,11 +8,12 @@
     using System.Collections;
     using OurGameName.DoMain.Map.Args;
     using Terrain = Args.Terrain;
+    using OurGameName.DoMain.Map.Extensions;
 
     /// <summary>
     /// 游戏地图
     /// </summary>
-    internal class GameMap : IEnumerable<Element>
+    internal class GameMap
     {
         /// <summary>
         /// 游戏地图
@@ -33,7 +34,7 @@
         /// <summary>
         /// 地图单元
         /// </summary>
-        public List<Element> Elements { get; private set; }
+        public Element[,] Elements { get; private set; }
 
         /// <summary>
         /// 地图大小
@@ -55,19 +56,15 @@
                     Debug.LogError($"地图索引({x},{y})错误,索引越界!");
                     return null;
                 }
-                return this.Elements[x + this.MapSzie.x * y];
+                return this.Elements[x, y];
             }
         }
 
         /// <summary>
-        /// 返回一个循环访问集合的枚举器。
+        /// ForEach循环
         /// </summary>
-        public IEnumerator<Element> GetEnumerator() => this.Elements.GetEnumerator();
-
-        /// <summary>
-        /// 返回一个循环访问集合的枚举器。
-        /// </summary>
-        IEnumerator IEnumerable.GetEnumerator() => this.Elements.GetEnumerator();
+        /// <param name="action"></param>
+        public void ForEach(Action<Element> action) => this.Elements.ForEach(action);
 
         /// <summary>
         /// 触发地图更新事件
@@ -78,10 +75,16 @@
             e.Raise(this, ref Update);
         }
 
-        private List<Element> GenerateTerrain(List<Element> elements)
+        /// <summary>
+        /// 生成地形
+        /// </summary>
+        /// <param name="elements"></param>
+        /// <returns></returns>
+        private Element[,] GenerateTerrain(Element[,] elements)
         {
             System.Random random = new System.Random();
-            elements.ForEach(x => x.Terrain = (Terrain)random.Next(0, 3));
+            //elements.ForEach(x => x.Terrain = (Terrain)random.Next(0, 6));
+            elements.ForEach(x => x.Terrain = Terrain.Dirt);
             return elements;
         }
 
@@ -90,14 +93,14 @@
         /// </summary>
         /// <param name="mapSzie">地图大小</param>
         /// <returns></returns>
-        private List<Element> InitElements(Vector2Int mapSzie)
+        private Element[,] InitElements(Vector2Int mapSzie)
         {
-            List<Element> result = new List<Element>(mapSzie.x * mapSzie.y);
+            var result = new Element[mapSzie.x, mapSzie.y];
             for (int x = 0; x < mapSzie.x; x++)
             {
                 for (int y = 0; y < mapSzie.y; y++)
                 {
-                    result.Add(new Element(new Vector2Int(x, y)));
+                    result[x, y] = new Element(new Vector2Int(x, y), mapSzie);
                 }
             }
             return result;

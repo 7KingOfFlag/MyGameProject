@@ -1,17 +1,32 @@
 ﻿namespace OurGameName.DoMain.RoleSpace
 {
+    using System.Collections.Generic;
     using System.Linq;
     using OurGameName.DoMain.Attribute;
     using OurGameName.DoMain.GameWorld;
+    using OurGameName.DoMain.RoleSpace.Args;
     using UnityEngine;
 
     internal class RoleEntity : MonoBehaviour
     {
-        public RoleImageComponent roleImage;
+        /// <summary>
+        /// 角色贴图组件
+        /// </summary>
+        public RoleImageComponent roleImageComponent;
 
+        /// <summary>
+        /// 角色管理器
+        /// </summary>
         public RoleManager RoleManager;
+
+        /// <summary>
+        /// 是否被选中
+        /// </summary>
         private bool m_isSelect;
 
+        /// <summary>
+        /// 是否被选中
+        /// </summary>
         public bool IsSelect
         {
             get
@@ -20,7 +35,7 @@
             }
             set
             {
-                if (this.roleImage == null)
+                if (this.roleImageComponent == null)
                 {
                     Debug.LogError("Important Error!!RoleEntity can't have RoleImageComponent");
                     return;
@@ -35,20 +50,26 @@
                     this.m_isSelect = value;
                     if (this.m_isSelect == true)
                     {
-                        this.roleImage.Outline = true;
-                        this.roleImage.IsBlink = true;
+                        this.roleImageComponent.Outline = true;
+                        this.roleImageComponent.IsBlink = true;
                     }
                     else
                     {
-                        this.roleImage.Outline = false;
-                        this.roleImage.IsBlink = false;
+                        this.roleImageComponent.Outline = false;
+                        this.roleImageComponent.IsBlink = false;
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// 角色移动组件
+        /// </summary>
         public RoleMoveComponent MoveComponent { get; private set; }
 
+        /// <summary>
+        /// 角色位置
+        /// </summary>
         public Vector2Int RolePosition { get { return this.MoveComponent.CurrentRolePosition.ToVector2Int(); } }
 
         /// <summary>
@@ -60,9 +81,21 @@
             this.MoveComponent.Move(TargetCellPosition.ToVector3Int());
         }
 
-        public void MoveRole(Vector2Int[] moveList)
+        /// <summary>
+        /// 移动角色
+        /// </summary>
+        /// <param name="moveList">目的地单元格列表</param>
+        public void MoveRole(List<Vector2Int> moveList)
         {
             this.MoveComponent.Move(moveList.ToList());
+        }
+
+        /// <summary>
+        /// 初始化角色
+        /// </summary>
+        /// <param name="args"></param>
+        internal void Init(RoleEntityInitArgs args)
+        {
         }
 
         private void Awake()
@@ -73,7 +106,7 @@
             }
             this.IsSelect = false;
 
-            this.MoveComponent = new RoleMoveComponent(Vector3Int.zero, this, 20);
+            this.MoveComponent = new RoleMoveComponent(Vector3Int.zero, this, 30);
         }
 
         private void OnMouseUpAsButton()
