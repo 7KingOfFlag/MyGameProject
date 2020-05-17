@@ -3,32 +3,6 @@
     using System;
 
     /// <summary>
-    /// 角色态度
-    /// </summary>
-    public enum RoleType
-    {
-        /// <summary>
-        /// 中立
-        /// </summary>
-        neutrality,
-
-        /// <summary>
-        /// 盟友
-        /// </summary>
-        ally,
-
-        /// <summary>
-        /// 敌人
-        /// </summary>
-        enemy,
-
-        /// <summary>
-        /// 玩家
-        /// </summary>
-        player
-    }
-
-    /// <summary>
     /// 角色类
     /// </summary>
     internal class Role : Organism
@@ -41,13 +15,29 @@
         /// <param name="familyName">姓</param>
         /// <param name="name">名</param>
         /// <param name="birthday">生日</param>
-
-        public Role(string familyName, string name, DateTime birthday)
+        /// <param name="actionPoint"></param>
+        /// <param name="hp"></param>
+        /// <param name="armor">护甲</param>
+        /// <param name="shield"></param>
+        public Role(
+            string familyName,
+            string name,
+            DateTime birthday,
+            int actionPoint,
+            int hp,
+            int armor = 0,
+            int shield = 0)
         {
             this.ID = IDCount++;
             this.FamilyName = familyName;
             this.Name = name;
             this.Birthday = birthday;
+            this.Speed = 100;
+            this.MaxHP = hp;
+            this.HP = hp;
+            this.ActionPoint = actionPoint;
+            this.Armor = armor;
+            this.Shield = shield;
         }
 
         /// <summary>
@@ -58,19 +48,9 @@
         }
 
         /// <summary>
-        /// 出生时间 格式####.##.##
+        /// 出生时间
         /// </summary>
         public DateTime Birthday { get; private set; }
-
-        /// <summary>
-        /// 根骨
-        /// </summary>
-        public int Bone { get; set; }
-
-        /// <summary>
-        /// 魅力
-        /// </summary>
-        public int Charm { get; set; }
 
         /// <summary>
         /// 姓氏
@@ -78,49 +58,14 @@
         public string FamilyName { get; set; }
 
         /// <summary>
-        /// 所属势力
-        /// </summary>
-        public string Forces { get; set; }
-
-        /// <summary>
-        /// 气运
-        /// </summary>
-        public int Luck { get; set; }
-
-        /// <summary>
         /// 名
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// 头像地址
-        /// </summary>
-        public string PicturePath { get; set; }
-
-        /// <summary>
-        /// 气海
-        /// </summary>
-        public int Qi { get; set; }
-
-        /// <summary>
-        /// 角色立场
-        /// </summary>
-        public RoleType roleType { get; set; }
-
-        /// <summary>
         /// 角色技能
         /// </summary>
         //  public List<Skill> Skills { get; set; }
-
-        /// <summary>
-        /// 势力地位
-        /// </summary>
-        public string Status { get; set; }
-
-        /// <summary>
-        /// 悟性
-        /// </summary>
-        public int Understanding { get; set; }
 
         /// <summary>
         /// 获取角色年龄
@@ -132,6 +77,10 @@
             return this.Birthday.Year - nowTime.Year;
         }
 
+        /// <summary>
+        /// 获取角色名字
+        /// </summary>
+        /// <returns></returns>
         public string GetName()
         {
             return this.FamilyName + this.Name;
@@ -145,9 +94,9 @@
         public int ActionPoint { get; set; }
 
         /// <summary>
-        /// 力量
+        /// 护甲
         /// </summary>
-        public int Power { get; set; }
+        public int Armor { get; set; }
 
         /// <summary>
         /// 护盾
@@ -158,17 +107,6 @@
         /// 速度
         /// </summary>
         public int Speed { get; set; }
-
-        /// <summary>
-        /// 战斗初始化
-        /// </summary>
-        public void CombatInit()
-        {
-            this.Power = this.Bone * 2;
-            this.Speed = 100;
-            this.ActionPoint = 3;
-            this.Shield = (int)(this.Qi * 0.5);
-        }
 
         #endregion 战斗相关
     }

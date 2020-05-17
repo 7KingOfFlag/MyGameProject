@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DefaultGroup: 99b3e76073ed5964080c9f426755b92e
   m_BuildRemoteCatalog: 0
+  m_BundleLocalCatalog: 0
   m_DisableCatalogUpdateOnStart: 0
   m_UniqueBundleIds: 0
   m_RemoteCatalogBuildPath:
@@ -23,6 +24,7 @@ MonoBehaviour:
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: 0f71082703418344ca9e6bdea5fd29a2, type: 2}
+  - {fileID: 11400000, guid: 96e7a1dd915cc384ea859447f9fdebe0, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -66,6 +68,8 @@ MonoBehaviour:
     - default
     - TileMapAsset
     - UiPrefabAsset
+    - WholeBodyImage
+    - Avatar
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: be0c6ec949d5ac04eb563c91032e3671, type: 2}

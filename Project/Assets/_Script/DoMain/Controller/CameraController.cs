@@ -18,12 +18,12 @@
         /// <summary>
         /// 最大视野距离
         /// </summary>
-        public int MaxFieldOfView = 4;
+        public float MaxFieldOfView = 7.5f;
 
         /// <summary>
         /// 最小视野距离
         /// </summary>
-        public int MinFieldOfView = -3;
+        public float MinFieldOfView = 0;
 
         /// <summary>
         /// 鼠标拖曳速度
@@ -92,8 +92,10 @@
             if (this.IsMouseHold == true)
             {
                 this.MouseUpPosition = this.currentMouse.position.ReadValue();
-                var moveVector = (this.MouseDownPosition - this.MouseUpPosition).normalized;
-                this.transform.position += new Vector3(moveVector.x, moveVector.y) * this.MouseDragSpeed * Time.deltaTime;
+                Vector2 moveVector = (this.MouseDownPosition - this.MouseUpPosition).normalized;
+                float heightFix = (-this.CinemachineCamera.transform.position.z) / 10;
+                float fix = this.MouseDragSpeed * heightFix * Time.deltaTime;
+                this.transform.position += new Vector3(moveVector.x, moveVector.y) * fix;
                 this.MouseDownPosition = this.MouseUpPosition;
             }
         }

@@ -1,4 +1,4 @@
-﻿namespace OurGameName.DoMain.GameWorld
+﻿namespace OurGameName.DoMain.RoleSpace
 {
     using OurGameName.DoMain.Attribute;
     using OurGameName.DoMain.Map;
@@ -15,6 +15,8 @@
     using OurGameName.DoMain.Map.Extensions;
     using System.Linq;
     using Vector3 = UnityEngine.Vector3;
+    using Boo.Lang;
+    using OurGameName.DoMain.GameWorld;
 
     internal class RoleManager : MonoBehaviour
     {
@@ -39,6 +41,11 @@
         public PlayerInput PlayerInput;
 
         /// <summary>
+        /// 角色
+        /// </summary>
+        public List<Role> Roles;
+
+        /// <summary>
         /// 坐标转换器
         /// </summary>
         private ICoordinateConverter coordinateConverter;
@@ -53,6 +60,24 @@
         /// </summary>
         public RoleEntity SelectRoleEntity { get; set; }
 
+        #region Unity
+
+        private void Awake()
+        {
+            this.SelectRoleEntity = null;
+            this.coordinateConverter = this.HexGrid;
+            this.navigateService = new NavigateService();
+            this.Roles = this.LoadRoles();
+        }
+
+        private void Start()
+        {
+            this.MapInputEvent.NewClick += this.HexTileInputEvent_NewClick;
+            this.BuildRoleEntity(this.Roles);
+        }
+
+        #endregion Unity
+
         /// <summary>
         /// 将地图坐标转化为世界坐标
         /// </summary>
@@ -63,11 +88,13 @@
             return this.coordinateConverter.CellToWorld(currentRolePosition);
         }
 
-        private void Awake()
+        /// <summary>
+        /// 生成角色实体
+        /// </summary>
+        /// <param name="roles"></param>
+        private void BuildRoleEntity(List<Role> roles)
         {
-            this.SelectRoleEntity = null;
-            this.coordinateConverter = this.HexGrid;
-            this.navigateService = new NavigateService();
+            throw new NotImplementedException();
         }
 
         private void HexTileInputEvent_NewClick(object sender, MapInputEventArgs e)
@@ -101,9 +128,23 @@
             }
         }
 
-        private void Start()
+        /// <summary>
+        /// 载入角色
+        /// </summary>
+        /// <returns></returns>
+        private List<Role> LoadRoles()
         {
-            this.MapInputEvent.NewClick += this.HexTileInputEvent_NewClick;
+            return new List<Role>
+            {
+                new Role("姬","掘突", new DateTime(0,8,2),4,300)
+                {
+                    Position = new Vector3Int(0,0,0),
+                },
+                new Role("石", "腊", new DateTime(0,4,5),4,300)
+                {
+                    Position = new Vector3Int(2,2,0),
+                },
+            };
         }
     }
 }

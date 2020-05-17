@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Role
+  m_EditorClassIdentifier: 
+  m_GroupName: Role
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7db3f5f9576a55e40a0cbfc2f742843f
+  m_SerializeEntries:
+  - m_GUID: 376f9fdd9ab25d54b90f669a501b559e
+    m_Address: Assets/image/Role/Avatar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Avatar
+    m_MainAsset: {fileID: 102900000, guid: 376f9fdd9ab25d54b90f669a501b559e, type: 3}
+    m_TargetAsset: {fileID: 102900000, guid: 376f9fdd9ab25d54b90f669a501b559e, type: 3}
+  - m_GUID: 8fdc6798e36f5e34db233703d4384c77
+    m_Address: Assets/image/Role/WholeBodyImage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WholeBodyImage
+    m_MainAsset: {fileID: 102900000, guid: 8fdc6798e36f5e34db233703d4384c77, type: 3}
+    m_TargetAsset: {fileID: 102900000, guid: 8fdc6798e36f5e34db233703d4384c77, type: 3}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 0e7c5bfce2adc6844910eb2039e9827e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 471cf9c310f97a242a66043e5007ba9e, type: 2}
+    - {fileID: 11400000, guid: 75af45dde736ab849a499ee9a706d333, type: 2}

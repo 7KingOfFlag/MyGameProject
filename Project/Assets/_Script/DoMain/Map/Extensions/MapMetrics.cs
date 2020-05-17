@@ -19,11 +19,6 @@
         public const float innerRadiusRatio = 0.8660254038f;
 
         /// <summary>
-        /// Quaternion(0, 0, 0, 0)
-        /// </summary>
-        public static Quaternion ZeroQuaternion = new Quaternion(0, 0, 0, 0);
-
-        /// <summary>
         /// 返回以 CenterCellPosition 坐标为中心 range 范围内的所有单元格的位置
         /// </summary>
         /// <param name="CenterCellPosition">中心单元格的坐标</param>

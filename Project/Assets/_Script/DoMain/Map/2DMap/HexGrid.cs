@@ -206,14 +206,7 @@
         {
             var worldSpace = this.CellToWorld(new Vector3Int(x, y, 0));
 
-            //this.MapMarkPointReference.LoadAssetAsync<TextMeshProUGUI>().Completed += obj =>
-            //{
-            //    TextMeshProUGUI text = obj.;
-            //    text.transform.position = worldSpace;
-            //    text.text = $"({x},{y})";
-            //};
-
-            this.MapMarkPointReference.InstantiateAsync(worldSpace, MapMetrics.ZeroQuaternion, this.MapMarkPoint.transform).Completed += obj =>
+            this.MapMarkPointReference.InstantiateAsync(worldSpace, Metrics.ZeroQuaternion, this.MapMarkPoint.transform).Completed += obj =>
             {
                 TextMeshProUGUI text = obj.Result.GetComponent<TextMeshProUGUI>();
                 text.text = $"({x},{y})";

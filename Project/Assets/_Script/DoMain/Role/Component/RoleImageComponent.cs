@@ -1,4 +1,4 @@
-﻿namespace OurGameName.DoMain.RoleSpace
+﻿namespace OurGameName.DoMain.RoleSpace.Component
 {
     using OurGameName.DoMain.Attribute;
     using UnityEngine;
@@ -66,7 +66,8 @@
 
         private void Awake()
         {
-            this.spriteMaterial = this.GetComponent<SpriteRenderer>().sharedMaterial;
+            this.RoleSprite = this.GetComponent<SpriteRenderer>();
+            this.spriteMaterial = this.RoleSprite.sharedMaterial;
         }
     }
 }

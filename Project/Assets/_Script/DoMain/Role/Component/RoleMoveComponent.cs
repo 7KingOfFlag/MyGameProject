@@ -1,4 +1,4 @@
-﻿namespace OurGameName.DoMain.RoleSpace
+﻿namespace OurGameName.DoMain.RoleSpace.Component
 {
     using System.Linq;
     using System.Collections.Generic;

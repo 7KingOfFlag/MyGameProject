@@ -5,10 +5,19 @@
     using OurGameName.DoMain.Attribute;
     using OurGameName.DoMain.GameWorld;
     using OurGameName.DoMain.RoleSpace.Args;
+    using OurGameName.DoMain.RoleSpace.Component;
     using UnityEngine;
 
+    /// <summary>
+    /// 角色实体
+    /// </summary>
     internal class RoleEntity : MonoBehaviour
     {
+        /// <summary>
+        /// 该实体对应的角色
+        /// </summary>
+        public Role Role;
+
         /// <summary>
         /// 角色贴图组件
         /// </summary>
@@ -22,7 +31,7 @@
         /// <summary>
         /// 是否被选中
         /// </summary>
-        private bool m_isSelect;
+        private bool isSelect;
 
         /// <summary>
         /// 是否被选中
@@ -31,7 +40,7 @@
         {
             get
             {
-                return this.m_isSelect;
+                return this.isSelect;
             }
             set
             {
@@ -42,13 +51,13 @@
                 }
                 else
                 {
-                    if (this.m_isSelect == value)
+                    if (this.isSelect == value)
                     {
                         return;
                     }
 
-                    this.m_isSelect = value;
-                    if (this.m_isSelect == true)
+                    this.isSelect = value;
+                    if (this.isSelect == true)
                     {
                         this.roleImageComponent.Outline = true;
                         this.roleImageComponent.IsBlink = true;
@@ -94,8 +103,9 @@
         /// 初始化角色
         /// </summary>
         /// <param name="args"></param>
-        internal void Init(RoleEntityInitArgs args)
+        internal void Init(Role role)
         {
+            this.Role = role;
         }
 
         private void Awake()
