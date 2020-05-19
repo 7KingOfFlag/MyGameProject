@@ -1,11 +1,7 @@
-﻿namespace Assets._Script.DoMain.UIComponent.Role
+﻿namespace OurGameName.DoMain.RoleSpace.Component
 {
-    using System.Linq;
-    using System.Threading.Tasks;
     using Boo.Lang;
-    using OurGameName.DoMain.Attribute;
     using OurGameName.DoMain.UIComponent.Extensions;
-    using OurGameName.Extension;
     using UnityEngine;
     using UnityEngine.AddressableAssets;
     using UnityEngine.UI;
@@ -13,7 +9,7 @@
     /// <summary>
     /// 行动点生成器
     /// </summary>
-    public sealed class ActionPointBuilder : MonoBehaviour
+    public sealed class ActionPointComponent : MonoBehaviour
     {
         /// <summary>
         /// 行动点资源
@@ -52,9 +48,23 @@
             }
         }
 
-        private void Awake()
+        /// <summary>
+        /// 初始化行动点
+        /// </summary>
+        /// <param name="maxActionPoint">行动点最大值</param>
+        public void Init(int maxActionPoint)
         {
-            this.Init();
+            this.MaxActionPoint = maxActionPoint;
+            this.ActionPointList = new List<Image>(this.MaxActionPoint);
+            for (int i = 0; i < this.MaxActionPoint; i++)
+            {
+                this.ActionPointAsset.InstantiateAsync(this.transform, false).Completed += obj =>
+                {
+                    this.ActionPointList.Add(obj.Result.GetComponent<Image>());
+                    var index = this.ActionPointList.Count - 1;
+                    this.ActionPointList[index].rectTransform.localPosition = new Vector3(index * 5, 0, 0);
+                };
+            }
         }
 
         /// <summary>
@@ -66,23 +76,6 @@
             for (int i = 0; i < value; i++)
             {
                 this.ActionPointList[this.currentActionPoint - value].SetAlpha(0);
-            }
-        }
-
-        /// <summary>
-        /// 初始化行动点
-        /// </summary>
-        private void Init()
-        {
-            this.ActionPointList = new List<Image>(this.MaxActionPoint);
-            for (int i = 0; i < this.MaxActionPoint; i++)
-            {
-                this.ActionPointAsset.InstantiateAsync(this.transform, false).Completed += obj =>
-                {
-                    this.ActionPointList.Add(obj.Result.GetComponent<Image>());
-                    var index = this.ActionPointList.Count - 1;
-                    this.ActionPointList[index].rectTransform.localPosition = new Vector3(index * 5, 0, 0);
-                };
             }
         }
 

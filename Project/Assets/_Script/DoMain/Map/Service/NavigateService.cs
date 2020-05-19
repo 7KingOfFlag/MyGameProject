@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using OurGameName.DoMain.Map.Extensions;
     using UnityEngine;
     using Terrain = Args.Terrain;
@@ -67,6 +68,20 @@
             Debug.Log($"寻路完成!\n路径{string.Join("=>", result)}\n" +
                 $"共计遍历{navigateCount}次,总耗时{navigateTime.TotalMilliseconds}ms");
             return result;
+        }
+
+        /// <summary>
+        /// 异步获取最短路径
+        /// </summary>
+        /// <param name="map">游戏地图</param>
+        /// <param name="start">起始点</param>
+        /// <param name="end">终点</param>
+        /// <param name="passabilityArgs">角色通过性参数</param>
+        /// <returns>路径数组</returns>
+        /// <returns></returns>
+        public async Task<List<Vector2Int>> GetPathAsync(GameMap map, Vector2Int start, Vector2Int end, RolePassabilityArgs passabilityArgs)
+        {
+            return await Task.Run(() => this.GetPath(map, start, end, passabilityArgs));
         }
 
         /// <summary>

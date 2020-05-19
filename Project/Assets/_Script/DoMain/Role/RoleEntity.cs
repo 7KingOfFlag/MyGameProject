@@ -7,16 +7,24 @@
     using OurGameName.DoMain.RoleSpace.Args;
     using OurGameName.DoMain.RoleSpace.Component;
     using UnityEngine;
+    using UniRx;
 
     /// <summary>
     /// 角色实体
     /// </summary>
     internal class RoleEntity : MonoBehaviour
     {
+        #region Component
+
         /// <summary>
-        /// 该实体对应的角色
+        /// 行动点组件
         /// </summary>
-        public Role Role;
+        public ActionPointComponent ActionPointComponent;
+
+        /// <summary>
+        /// Hp组件
+        /// </summary>
+        public HpComponent HpComponent;
 
         /// <summary>
         /// 角色贴图组件
@@ -24,9 +32,23 @@
         public RoleImageComponent roleImageComponent;
 
         /// <summary>
+        /// 角色移动组件
+        /// </summary>
+        public RoleMoveComponent MoveComponent { get; private set; }
+
+        #endregion Component
+
+        /// <summary>
+        /// 该实体对应的角色
+        /// </summary>
+        public Role Role;
+
+        /// <summary>
         /// 角色管理器
         /// </summary>
         public RoleManager RoleManager;
+
+        private bool CanUpdate = false;
 
         /// <summary>
         /// 是否被选中
@@ -44,42 +66,49 @@
             }
             set
             {
-                if (this.roleImageComponent == null)
+                if (this.isSelect == value)
                 {
-                    Debug.LogError("Important Error!!RoleEntity can't have RoleImageComponent");
                     return;
+                }
+
+                this.isSelect = value;
+                if (this.isSelect == true)
+                {
+                    this.roleImageComponent.Outline = true;
                 }
                 else
                 {
-                    if (this.isSelect == value)
-                    {
-                        return;
-                    }
-
-                    this.isSelect = value;
-                    if (this.isSelect == true)
-                    {
-                        this.roleImageComponent.Outline = true;
-                        this.roleImageComponent.IsBlink = true;
-                    }
-                    else
-                    {
-                        this.roleImageComponent.Outline = false;
-                        this.roleImageComponent.IsBlink = false;
-                    }
+                    this.roleImageComponent.Outline = false;
                 }
             }
         }
 
         /// <summary>
-        /// 角色移动组件
-        /// </summary>
-        public RoleMoveComponent MoveComponent { get; private set; }
-
-        /// <summary>
         /// 角色位置
         /// </summary>
         public Vector2Int RolePosition { get { return this.MoveComponent.CurrentRolePosition.ToVector2Int(); } }
+
+        #region Unity
+
+        private void Awake()
+        {
+            this.IsSelect = false;
+        }
+
+        private void OnMouseUpAsButton()
+        {
+            this.IsSelect = true;
+            this.RoleManager.SelectRoleEntity = this;
+        }
+
+        private void Update()
+        {
+            if (this.CanUpdate == false) return;
+
+            this.MoveComponent.Update();
+        }
+
+        #endregion Unity
 
         /// <summary>
         /// 移动角色
@@ -103,31 +132,22 @@
         /// 初始化角色
         /// </summary>
         /// <param name="args"></param>
-        internal void Init(Role role)
+        internal void Init(Role role, Sprite roleSprite)
         {
             this.Role = role;
-        }
 
-        private void Awake()
-        {
-            if (this.RoleManager == null)
-            {
-                Debug.LogError("RoleEntity's RoleManager is null");
-            }
-            this.IsSelect = false;
+            this.ActionPointComponent.Init(role.ActionPoint);
+            this.HpComponent.Init(role.MaxHP.Value);
+            this.MoveComponent = new RoleMoveComponent(role.Position.Value, this, 300);
+            this.roleImageComponent.Init(roleSprite);
 
-            this.MoveComponent = new RoleMoveComponent(Vector3Int.zero, this, 30);
-        }
+            this.Role.HP.Subscribe(x => this.HpComponent.HP = x);
+            this.Role.MaxHP.Subscribe(x => this.HpComponent.MaxHp = x);
+            this.Role.Position
+                .Where(x => x != this.MoveComponent.CurrentRolePosition)
+                .Subscribe(x => this.MoveComponent.Move(x));
 
-        private void OnMouseUpAsButton()
-        {
-            this.IsSelect = true;
-            this.RoleManager.SelectRoleEntity = this;
-        }
-
-        private void Update()
-        {
-            this.MoveComponent.Update();
+            this.CanUpdate = true;
         }
     }
 }

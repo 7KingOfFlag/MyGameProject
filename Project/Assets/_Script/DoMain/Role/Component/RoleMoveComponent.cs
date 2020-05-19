@@ -46,10 +46,16 @@
         /// </summary>
         private Vector3Int RoletargetPosition;
 
-        public RoleMoveComponent(Vector3Int currentRolePosition, RoleEntity context, int moveSpeed)
+        /// <summary>
+        /// 角色移动组件
+        /// </summary>
+        /// <param name="position">初始位置</param>
+        /// <param name="context"></param>
+        /// <param name="moveSpeed">移动速度</param>
+        public RoleMoveComponent(Vector3Int position, RoleEntity context, int moveSpeed)
         {
-            this.CurrentRolePosition = currentRolePosition;
-            this.RoletargetPosition = currentRolePosition;
+            this.CurrentRolePosition = position;
+            this.RoletargetPosition = position;
             this.MoveSpeed = moveSpeed;
             this.context = context;
             this.moveCount = 0;

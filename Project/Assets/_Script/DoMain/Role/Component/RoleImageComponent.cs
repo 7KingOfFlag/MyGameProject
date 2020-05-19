@@ -18,6 +18,9 @@
         /// </summary>
         private Material spriteMaterial;
 
+        /// <summary>
+        /// 是否闪烁
+        /// </summary>
         public bool IsBlink
         {
             get
@@ -37,6 +40,9 @@
             }
         }
 
+        /// <summary>
+        /// 是否显示外边框
+        /// </summary>
         public bool Outline
         {
             set
@@ -52,6 +58,9 @@
             }
         }
 
+        /// <summary>
+        /// 外边框颜色
+        /// </summary>
         public Color OutlineColor
         {
             get
@@ -64,10 +73,21 @@
             }
         }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public void Init(Sprite roleImage)
+        {
+            this.RoleSprite.sprite = roleImage;
+            this.IsBlink = true;
+            this.Outline = false;
+            this.OutlineColor = Color.white;
+        }
+
         private void Awake()
         {
             this.RoleSprite = this.GetComponent<SpriteRenderer>();
-            this.spriteMaterial = this.RoleSprite.sharedMaterial;
+            this.spriteMaterial = this.RoleSprite.material;
         }
     }
 }

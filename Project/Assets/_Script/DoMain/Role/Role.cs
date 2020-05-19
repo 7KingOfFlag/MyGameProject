@@ -1,6 +1,7 @@
 ﻿namespace OurGameName.DoMain.RoleSpace
 {
     using System;
+    using UniRx;
 
     /// <summary>
     /// 角色类
@@ -33,8 +34,8 @@
             this.Name = name;
             this.Birthday = birthday;
             this.Speed = 100;
-            this.MaxHP = hp;
-            this.HP = hp;
+            this.MaxHP = new ReactiveProperty<int>(hp);
+            this.HP = new ReactiveProperty<int>(hp);
             this.ActionPoint = actionPoint;
             this.Armor = armor;
             this.Shield = shield;

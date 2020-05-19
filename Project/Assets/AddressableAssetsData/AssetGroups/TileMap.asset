@@ -34,8 +34,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - TileMapAsset
-    m_MainAsset: {fileID: 102900000, guid: 59ef6b22e355dbc4ba617cdb50876f00, type: 3}
-    m_TargetAsset: {fileID: 102900000, guid: 59ef6b22e355dbc4ba617cdb50876f00, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 5a5edeb3527881544bc6b3614a526eeb
     m_Address: Assets/Prefab/HexTileMap
     m_ReadOnly: 0
@@ -54,24 +54,26 @@ MonoBehaviour:
     m_Address: Assets/image/Role
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 102900000, guid: 77bed2bb0159b8e43b44c36bf069df2d, type: 3}
-    m_TargetAsset: {fileID: 102900000, guid: 77bed2bb0159b8e43b44c36bf069df2d, type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 8fb35644ce4054d48ac7fd0141e1b388
     m_Address: Assets/_Script/Shader/RoleEntity.shadergraph
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: -6465566751694194690, guid: 8fb35644ce4054d48ac7fd0141e1b388,
-      type: 3}
-    m_TargetAsset: {fileID: -6465566751694194690, guid: 8fb35644ce4054d48ac7fd0141e1b388,
-      type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: e4d5a0b42a4d35343972ed7b643e5ba9
     m_Address: Assets/Prefab/UI/Role/Action Point.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 5360300632683346075, guid: e4d5a0b42a4d35343972ed7b643e5ba9,
-      type: 3}
-    m_TargetAsset: {fileID: 5360300632683346075, guid: e4d5a0b42a4d35343972ed7b643e5ba9,
-      type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f0630519304bf6b4c9a97f2455aff276
+    m_Address: Assets/Prefab/UI/Role/Role Entity.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0e7c5bfce2adc6844910eb2039e9827e, type: 2}
   m_SchemaSet:

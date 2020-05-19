@@ -1,6 +1,7 @@
 ﻿namespace OurGameName.DoMain.RoleSpace
 {
     using UnityEngine;
+    using UniRx;
 
     /// <summary>
     /// 生物类 所有生命体的基类
@@ -10,27 +11,27 @@
         /// <summary>
         /// 当前生命值
         /// </summary>
-        private int currentHP;
+        private readonly ReactiveProperty<int> currentHP = new ReactiveProperty<int>();
 
         /// <summary>
         /// 当前生命值
         /// </summary>
-        public int HP
+        public ReactiveProperty<int> HP
         {
             get { return this.currentHP; }
             set
             {
-                if (value <= 0)
+                if (value.Value <= 0)
                 {
-                    this.currentHP = 0;
+                    this.currentHP.Value = 0;
                 }
-                else if (value >= this.MaxHP)
+                else if (value.Value >= this.MaxHP.Value)
                 {
-                    this.currentHP = this.MaxHP;
+                    this.currentHP.Value = this.MaxHP.Value;
                 }
                 else
                 {
-                    this.currentHP = value;
+                    this.currentHP.Value = value.Value;
                 }
             }
         }
@@ -38,16 +39,16 @@
         /// <summary>
         /// 生物ID
         /// </summary>
-        public long ID { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// 最大生命值
         /// </summary>
-        public int MaxHP { get; set; }
+        public ReactiveProperty<int> MaxHP { get; set; }
 
         /// <summary>
         /// 角色位置
         /// </summary>
-        public Vector3Int Position { get; set; }
+        public ReactiveProperty<Vector3Int> Position { get; set; }
     }
 }

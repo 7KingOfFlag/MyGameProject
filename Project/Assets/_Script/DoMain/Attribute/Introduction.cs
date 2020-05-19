@@ -4,7 +4,7 @@
     using System.Linq;
 
     [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class Introduction : System.Attribute
+    public class Introduction : Attribute
     {
         public string Msg;
 
