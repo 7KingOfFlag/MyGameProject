@@ -4,6 +4,7 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using OurGameName.DoMain.GameAction.Args;
 
     /// <summary>
@@ -71,44 +72,19 @@
         public void Registered<T>()
             where T : IAction, new()
         {
-            var interfaces = typeof(T).GetInterfaces();
-
-            if (interfaces.Contains(typeof(IConditAction)) == true)
+            var action = new T();
+            switch (action.ID.ActionType)
             {
-                var action = (IConditAction)new T();
-                this.Registered(action);
-                return;
-            }
+                case ActionID.ActionTypeCode.Condit:
+                    this.Registered((IConditAction)action);
+                    break;
 
-            if (interfaces.Contains(typeof(IExecuteAction)) == true)
-            {
-                var action = (IExecuteAction)new T();
-                this.Registered(action);
-                return;
-            }
-        }
+                case ActionID.ActionTypeCode.Execute:
+                    this.Registered((IExecuteAction)action);
+                    break;
 
-        /// <summary>
-        /// 注册游戏动作
-        /// </summary>
-        /// <param name="">注册动作</param>
-        public void Registered(IConditAction conditAction)
-        {
-            if (this.conditActionDict.TryAdd(conditAction.ID, conditAction) == false)
-            {
-                throw new ArgumentException($"插入的动作ID:{conditAction.ID}已存在");
-            }
-        }
-
-        /// <summary>
-        /// 注册游戏动作
-        /// </summary>
-        /// <param name="">注册动作</param>
-        public void Registered(IExecuteAction executeAction)
-        {
-            if (this.executeActionDict.TryAdd(executeAction.ID, executeAction) == false)
-            {
-                throw new ArgumentException($"插入的动作ID:{executeAction.ID}已存在");
+                default:
+                    throw new ArgumentException($"出现为处理的ActionType枚举类型{action.ID.ActionType}");
             }
         }
 
@@ -117,39 +93,61 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IConditAction resolveConditAction(ActionID id)
+        public T resolve<T>(ActionID id)
+            where T : class, IAction
         {
-            if (id.ActionType != ActionID.ActionTypeCode.Condit)
+            T result = null;
+            switch (id.ActionType)
             {
-                throw new ArgumentException($"动作ID{id}类型错误,不是条件类动作ID");
+                case ActionID.ActionTypeCode.Condit:
+                    if (this.conditActionDict.TryGetValue(id, out var conditAction) == false)
+                    {
+                        throw new ArgumentException($"动作ID{id}未注册");
+                    }
+
+                    result = conditAction as T;
+                    break;
+
+                case ActionID.ActionTypeCode.Execute:
+                    if (this.executeActionDict.TryGetValue(id, out var executeAction) == false)
+                    {
+                        throw new ArgumentException($"动作ID{id}未注册");
+                    }
+
+                    result = executeAction as T;
+                    break;
+
+                default:
+                    throw new ArgumentException($"出现为处理的ActionType枚举类型{id.ActionType}");
             }
 
-            if (this.conditActionDict.TryGetValue(id, out var result) == false)
-            {
-                throw new ArgumentException($"动作ID{id}未注册");
-            }
+            if (result == null) throw new ArgumentException($"泛型类型错误,类型{nameof(T)}与ID{id}不对应");
 
             return result;
         }
 
         /// <summary>
-        /// 解析游戏动作
+        /// 注册游戏动作
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public IExecuteAction resolveIExecuteAction(ActionID id)
+        /// <param name="">注册动作</param>
+        private void Registered(IExecuteAction executeAction)
         {
-            if (id.ActionType != ActionID.ActionTypeCode.Execute)
+            if (this.executeActionDict.TryAdd(executeAction.ID, executeAction) == false)
             {
-                throw new ArgumentException($"动作ID{id}类型错误,不是执行类动作ID");
+                throw new ArgumentException($"插入的动作ID:{executeAction.ID}已存在");
             }
+        }
 
-            if (this.executeActionDict.TryGetValue(id, out var result) == false)
+        /// <summary>
+        /// 注册游戏动作
+        /// </summary>
+        /// <param name="">注册动作</param>
+        private void Registered(IConditAction conditAction)
+        {
+            if (this.conditActionDict.TryAdd(conditAction.ID, conditAction) == false)
             {
-                throw new ArgumentException($"动作ID{id}未注册");
+                throw new ArgumentException($"插入的动作ID:{conditAction.ID}已存在");
             }
-
-            return result;
         }
     }
 }

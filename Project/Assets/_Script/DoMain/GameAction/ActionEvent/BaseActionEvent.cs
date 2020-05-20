@@ -2,13 +2,11 @@
 {
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Args;
-    using OurGameName.Extension;
-    using System.Linq;
 
     /// <summary>
-    /// 游戏动作事件
+    /// 游戏动作事件基类
     /// </summary>
-    internal class ActionEvent
+    internal abstract class BaseActionEvent : IActionEvent
     {
         /// <summary>
         /// 游戏动作事件ID
@@ -16,7 +14,7 @@
         /// <param name="id">游戏动作ID</param>
         /// <param name="conditionsActions">条件动作组</param>
         /// <param name="executionACtions">执行动作组</param>
-        public ActionEvent(
+        public BaseActionEvent(
             ActionEventID uid,
             IConditAction[] conditionsActions,
             IExecuteAction[] executionACtions)
@@ -44,20 +42,14 @@
         /// <summary>
         /// 校验动作条件组
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">动作输入参数</param>
         /// <returns></returns>
-        public ActionConditResult[] CheckConditAction(ReadonlyActionInputArgs args)
-        {
-            return this.ConditionsActions.Select(x => x.CheckCondition(args)).ToArray();
-        }
+        public abstract ActionConditResult[] CheckConditAction(IActionInputArgs[] args);
 
         /// <summary>
         /// 执行动作组
         /// </summary>
-        /// <param name="args"></param>
-        public void ExecutionAction(ActionInputArgs args)
-        {
-            this.ExecutionActions.ForEach(x => x.Execute(args));
-        }
+        /// <param name="args">动作输入参数</param>
+        public abstract void ExecutionAction(IActionInputArgs[] args);
     }
 }

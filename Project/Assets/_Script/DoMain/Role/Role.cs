@@ -59,6 +59,12 @@
         public string FamilyName { get; set; }
 
         /// <summary>
+        /// 获取角色全名
+        /// </summary>
+        /// <returns></returns>
+        public string FullName => this.FamilyName + this.Name;
+
+        /// <summary>
         /// 名
         /// </summary>
         public string Name { get; set; }
@@ -76,15 +82,6 @@
         public int Age(DateTime nowTime)
         {
             return this.Birthday.Year - nowTime.Year;
-        }
-
-        /// <summary>
-        /// 获取角色名字
-        /// </summary>
-        /// <returns></returns>
-        public string GetName()
-        {
-            return this.FamilyName + this.Name;
         }
 
         #region 战斗相关

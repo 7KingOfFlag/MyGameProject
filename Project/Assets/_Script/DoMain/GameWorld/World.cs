@@ -3,7 +3,7 @@
     using UnityEngine;
     using OurGameName.DoMain.Map;
     using System;
-    using OurGameName.Extension;
+    using OurGameName.General.Extension;
 
     /// <summary>
     /// 游戏世界 : 数据类保存当前整个游戏数据的数据

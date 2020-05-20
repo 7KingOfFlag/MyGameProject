@@ -1,4 +1,4 @@
-﻿namespace OurGameName.Extension
+﻿namespace OurGameName.General.Extension
 {
     using System;
     using System.Threading;

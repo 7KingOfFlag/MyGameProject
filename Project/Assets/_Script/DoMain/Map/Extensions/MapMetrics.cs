@@ -1,10 +1,8 @@
 ﻿namespace OurGameName.DoMain.Map.Extensions
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Numerics;
     using UnityEngine;
 
     /// <summary>
@@ -23,7 +21,17 @@
         /// </summary>
         /// <param name="CenterCellPosition">中心单元格的坐标</param>
         /// <param name="range">范围</param>
-        /// <returns></returns>
+        public static Vector2Int[] GetCellInRange(this Vector3Int CenterCellPosition, int range)
+        {
+            var v2 = new Vector2Int(CenterCellPosition.x, CenterCellPosition.y);
+            return v2.GetCellInRange(range);
+        }
+
+        /// <summary>
+        /// 返回以 CenterCellPosition 坐标为中心 range 范围内的所有单元格的位置
+        /// </summary>
+        /// <param name="CenterCellPosition">中心单元格的坐标</param>
+        /// <param name="range">范围</param>
         /// <remarks>
         /// 首先获取中心点 然后为获取每行的首个单元格坐标
         /// 因为是六边形网格单元格排序并不是像方形单元格一样完全规则的

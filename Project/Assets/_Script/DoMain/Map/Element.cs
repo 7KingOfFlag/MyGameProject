@@ -3,7 +3,7 @@
     using System.Linq;
     using OurGameName.DoMain.Map.Args;
     using OurGameName.DoMain.Map.Extensions;
-    using OurGameName.Extension;
+    using OurGameName.General.Extension;
     using UnityEngine;
     using Terrain = Args.Terrain;
 

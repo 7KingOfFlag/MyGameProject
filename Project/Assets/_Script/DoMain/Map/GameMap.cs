@@ -4,7 +4,7 @@
     using UnityEngine;
     using System;
     using System.Linq;
-    using OurGameName.Extension;
+    using OurGameName.General.Extension;
     using System.Collections;
     using OurGameName.DoMain.Map.Args;
     using Terrain = Args.Terrain;

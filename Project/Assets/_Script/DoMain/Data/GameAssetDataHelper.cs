@@ -6,7 +6,7 @@
     using System.Text.RegularExpressions;
     using System.Web.Script.Serialization;
     using OurGameName.DoMain.Attribute;
-    using OurGameName.Extension;
+    using OurGameName.General.Extension;
     using UnityEngine;
     using UnityEngine.AddressableAssets;
     using UnityEngine.Tilemaps;
@@ -19,12 +19,12 @@
     {
         public AssetLabelReference TileAssetLabel;
 
-        private Random m_random;
+        private Random random;
 
         /// <summary>
         /// Tile通过费用字典Json文件的地址
         /// </summary>
-        private string m_terrainThroughCostDictJsonFilePath;
+        private string terrainThroughCostDictJsonFilePath;
 
         /// <summary>
         /// 资源加载发生变化事件
@@ -53,10 +53,10 @@
         /// <returns></returns>
         public TileBase GetRandomTileAssetDict(string assetName)
         {
-            var tileAsset = TileAssetDict.
+            var tileAsset = this.TileAssetDict.
                 Where(item => Regex.IsMatch(item.Key, assetName)).
                 Select(item => item.Value).ToArray();
-            return tileAsset[m_random.Next(0, tileAsset.Count() - 1)];
+            return tileAsset[this.random.Next(0, tileAsset.Count() - 1)];
         }
 
         /// <summary>
@@ -74,14 +74,14 @@
         /// <param name="aseet"></param>
         public void TileAseetLoadCompleted(TileBase aseet)
         {
-            TileAssetDict.Add(aseet.name, aseet);
+            this.TileAssetDict.Add(aseet.name, aseet);
         }
 
         private void Awake()
         {
-            m_random = new Random((int)DateTime.Now.Ticks);
-            m_terrainThroughCostDictJsonFilePath = Application.dataPath + @"/Data/Save/TileThroughCostDict.Json";
-            TileAssetLoadInit();
+            this.random = new Random((int)DateTime.Now.Ticks);
+            this.terrainThroughCostDictJsonFilePath = Application.dataPath + @"/Data/Save/TileThroughCostDict.Json";
+            this.TileAssetLoadInit();
         }
 
         private Dictionary<string, int> LoadTileThrougCostDictOnJson(string jsonFilePath)
@@ -93,8 +93,8 @@
 
         private void Start()
         {
-            TerrainThroughCostDict = LoadTileThrougCostDictOnJson(m_terrainThroughCostDictJsonFilePath);
-            OnAseetLoadStatusChang(
+            this.TerrainThroughCostDict = this.LoadTileThrougCostDictOnJson(this.terrainThroughCostDictJsonFilePath);
+            this.OnAseetLoadStatusChang(
                 new AseetLoadStatusArgs(typeof(Dictionary<string, int>), "TerrainThroughCostDict", AseetLoadStatusArgs.LoadStatus.Completed));
         }
 
@@ -104,9 +104,9 @@
         /// <param name="obj"></param>
         private void TileAssetAllLoadCompleted(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<IList<TileBase>> obj)
         {
-            IsAssetLoadCompleted = true;
+            this.IsAssetLoadCompleted = true;
             //Debug.Log($"tileAsset load completed");
-            OnAseetLoadStatusChang(
+            this.OnAseetLoadStatusChang(
                 new AseetLoadStatusArgs(typeof(TileBase), "TileAsset", AseetLoadStatusArgs.LoadStatus.Completed));
             //TileThroughCostDictInit(TileAssetDict);
         }
@@ -116,10 +116,10 @@
         /// </summary>
         private void TileAssetLoadInit()
         {
-            IsAssetLoadCompleted = false;
-            TileAssetDict = new Dictionary<string, TileBase>();
-            Addressables.LoadAssetsAsync<TileBase>(TileAssetLabel, TileAseetLoadCompleted).
-                Completed += TileAssetAllLoadCompleted;
+            this.IsAssetLoadCompleted = false;
+            this.TileAssetDict = new Dictionary<string, TileBase>();
+            Addressables.LoadAssetsAsync<TileBase>(this.TileAssetLabel, this.TileAseetLoadCompleted).
+                Completed += this.TileAssetAllLoadCompleted;
         }
 
         /// <summary>
@@ -127,13 +127,13 @@
         /// </summary>
         private void TileThroughCostDictInit(Dictionary<string, TileBase> tileAssetDict)
         {
-            if (TerrainThroughCostDict == null)
+            if (this.TerrainThroughCostDict == null)
             {
-                TerrainThroughCostDict = new Dictionary<string, int>();
+                this.TerrainThroughCostDict = new Dictionary<string, int>();
             }
             else
             {
-                TerrainThroughCostDict.Clear();
+                this.TerrainThroughCostDict.Clear();
             }
 
             foreach (var key in tileAssetDict.Keys)
@@ -143,20 +143,20 @@
 
                 if (Regex.IsMatch(key, pattern: patternCost2) == true)
                 {
-                    TerrainThroughCostDict.Add(key, 2);
+                    this.TerrainThroughCostDict.Add(key, 2);
                 }
                 else if (Regex.IsMatch(key, pattern: patternCost5) == true)
                 {
-                    TerrainThroughCostDict.Add(key, 5);
+                    this.TerrainThroughCostDict.Add(key, 5);
                 }
                 else
                 {
-                    TerrainThroughCostDict.Add(key, 1);
+                    this.TerrainThroughCostDict.Add(key, 1);
                 }
             }
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            string json = serializer.Serialize(TerrainThroughCostDict);
-            FileHelper.SaveStringToFile(m_terrainThroughCostDictJsonFilePath, json);
+            string json = serializer.Serialize(this.TerrainThroughCostDict);
+            FileHelper.SaveStringToFile(this.terrainThroughCostDictJsonFilePath, json);
         }
     }
 }

@@ -23,7 +23,7 @@
         /// <summary>
         /// 技能效果
         /// </summary>
-        public ActionEvent SkillEffect { get; set; }
+        public BaseActionEvent SkillEffect { get; set; }
 
         /// <summary>
         /// 技能影响范围参数

@@ -14,6 +14,8 @@
         /// </summary>
         /// <param name="vector3"></param>
         /// <returns></returns>
+#pragma warning disable IDE0060 // 删除未使用的参数
+
         public static Vector3Int Error(this Vector3Int vector3)
         {
             return m_errorV3;
@@ -28,6 +30,8 @@
         {
             return m_errorV2;
         }
+
+#pragma warning restore IDE0060 // 删除未使用的参数
 
         /// <summary>
         /// 将三维向量转为二维向量,舍弃z

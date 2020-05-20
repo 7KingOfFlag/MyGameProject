@@ -1,10 +1,10 @@
-﻿using System;
-using OurGameName.Extension;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace OurGameName.View
+﻿namespace OurGameName.View
 {
+    using System;
+    using OurGameName.General.Extension;
+    using UnityEngine;
+    using UnityEngine.UI;
+
     public class DialogBox : MonoBehaviour
     {
         public Button btnNo;
@@ -23,12 +23,12 @@ namespace OurGameName.View
         /// </summary>
         public void Hide()
         {
-            canvasGroup.alpha = 0f;
+            this.canvasGroup.alpha = 0f;
         }
 
         public void Show()
         {
-            canvasGroup.alpha = 1f;
+            this.canvasGroup.alpha = 1f;
         }
 
         internal virtual void OnResult(DialogBoxReturnArgs e)
@@ -38,22 +38,22 @@ namespace OurGameName.View
 
         private void OnNo()
         {
-            OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.No));
-            Hide();
+            this.OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.No));
+            this.Hide();
         }
 
         private void OnYes()
         {
-            OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.Yes));
-            Hide();
+            this.OnResult(new DialogBoxReturnArgs(DialogBoxReturnArgs.DialogBoxReturnArgsCode.Yes));
+            this.Hide();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("代码质量", "IDE0051:删除未使用的私有成员", Justification = "<挂起>")]
         private void Start()
         {
-            canvasGroup.alpha = 0;
-            btnYes.onClick.AddListener(OnYes);
-            btnNo.onClick.AddListener(OnNo);
+            this.canvasGroup.alpha = 0;
+            this.btnYes.onClick.AddListener(this.OnYes);
+            this.btnNo.onClick.AddListener(this.OnNo);
         }
     }
 

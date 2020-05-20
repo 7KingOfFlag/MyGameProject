@@ -4,7 +4,7 @@
     using UnityEngine;
     using UnityEngine.InputSystem;
     using OurGameName.DoMain.Map.Args;
-    using OurGameName.Extension;
+    using OurGameName.General.Extension;
     using UnityEngine.UIElements;
     using OurGameName.DoMain.Map._2DMap;
 

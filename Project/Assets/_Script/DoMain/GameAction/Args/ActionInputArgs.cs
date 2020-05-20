@@ -3,10 +3,23 @@
     using Boo.Lang;
     using OurGameName.DoMain.RoleSpace;
 
+    internal interface IActionInputArgs
+    {
+        /// <summary>
+        /// 动作目标
+        /// </summary>
+        List<Role> Targets { get; set; }
+
+        /// <summary>
+        /// 动作使用者
+        /// </summary>
+        Role User { get; set; }
+    }
+
     /// <summary>
     /// 动作输入参数
     /// </summary>
-    internal class ActionInputArgs
+    internal class ActionInputArgs<T> : IActionInputArgs
     {
         /// <summary>
         /// 动作输入参数
@@ -17,7 +30,7 @@
         public ActionInputArgs(
             Role user,
             List<Role> targets,
-            int[] actionConifArgs)
+            T actionConifArgs)
         {
             this.User = user;
             this.Targets = targets;
@@ -27,7 +40,7 @@
         /// <summary>
         /// 动作配置参数
         /// </summary>
-        public int[] ActionConifArgs { get; private set; }
+        public T ActionConifArgs { get; private set; }
 
         /// <summary>
         /// 动作目标
@@ -43,17 +56,17 @@
     /// <summary>
     /// 只读动作输入参数
     /// </summary>
-    internal sealed class ReadonlyActionInputArgs
+    internal sealed class ReadonlyActionInputArgs<T>
     {
         /// <summary>
         /// 只读动作输入参数
         /// </summary>
         /// <param name="args">动作输入参数</param>
-        public ReadonlyActionInputArgs(ActionInputArgs args)
+        public ReadonlyActionInputArgs(ActionInputArgs<T> args)
         {
             this.User = args.User;
             this.Targets = args.Targets;
-            this.ActionConifArgs = args.ActionConifArgs;
+            this.ActionConfigArgs = args.ActionConifArgs;
         }
 
         /// <summary>
@@ -61,21 +74,21 @@
         /// </summary>
         /// <param name="user">动作使用者</param>
         /// <param name="targets">动作目标</param>
-        /// <param name="actionConifArgs">动作配置参数</param>
+        /// <param name="actionConfigfArgs">动作配置参数</param>
         public ReadonlyActionInputArgs(
             Role user,
             List<Role> targets,
-            int[] actionConifArgs)
+            T actionConfigfArgs)
         {
             this.User = user;
             this.Targets = targets;
-            this.ActionConifArgs = actionConifArgs;
+            this.ActionConfigArgs = actionConfigfArgs;
         }
 
         /// <summary>
         /// 动作配置参数
         /// </summary>
-        public int[] ActionConifArgs { get; }
+        public T ActionConfigArgs { get; }
 
         /// <summary>
         /// 动作目标

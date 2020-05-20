@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using OurGameName.DoMain.GameAction.Args;
+    using OurGameName.DoMain.GameAction.Config.Action;
     using static OurGameName.DoMain.GameAction.Args.ActionID;
 
     /// <summary>
@@ -19,13 +20,21 @@
         /// 父条件
         /// </summary>
         IConditAction Parent { get; }
+    }
 
+    /// <summary>
+    /// 游戏动作条件接口
+    /// <para>定义游戏道具与技能执行所需的条件</para>
+    /// </summary>
+    /// <typeparam name="T">动作配置参数的类型</typeparam>
+    internal interface IConditAction<T> : IConditAction
+    {
         /// <summary>
         /// 校验动作条件
         /// </summary>
         /// <param name="args">动作输入参数</param>
         /// <returns>校验结果</returns>
-        ActionConditResult CheckCondition(ReadonlyActionInputArgs args);
+        ActionConditResult CheckCondition(ReadonlyActionInputArgs<T> args);
     }
 
     /// <summary>
@@ -34,7 +43,8 @@
     /// 实现游戏道具与技能具体效果的抽象父类
     /// </para>
     /// </summary>
-    internal abstract class BaseConditAction : IConditAction
+    /// <typeparam name="T">动作配置参数的类型</typeparam>
+    internal abstract class BaseConditAction<T> : IConditAction<T>
     {
         /// <summary>
         /// 执行游戏动作基类
@@ -44,12 +54,12 @@
         /// <param name="childs">子条件</param>
         /// <param name="parent">父条件</param>
         protected BaseConditAction(
-            ushort id,
-            byte runType,
+            ActionRunType runType,
+            ConditActionName id,
             IConditAction parent = null,
             List<IConditAction> childs = null)
         {
-            this.ID = new ActionID(ActionTypeCode.Condit, runType, id);
+            this.ID = new ActionID(ActionTypeCode.Condit, (byte)runType, (ushort)id);
             this.Parent = parent;
             this.Childs = childs;
         }
@@ -79,6 +89,6 @@
         /// </summary>
         /// <param name="args">动作输入参数</param>
         /// <returns>校验结果</returns>
-        public abstract ActionConditResult CheckCondition(ReadonlyActionInputArgs args);
+        public abstract ActionConditResult CheckCondition(ReadonlyActionInputArgs<T> args);
     }
 }

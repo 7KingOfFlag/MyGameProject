@@ -9,7 +9,7 @@
     using OurGameName.DoMain.GameWorld;
     using UnityEngine;
     using UnityEngine.Tilemaps;
-    using OurGameName.Extension;
+    using OurGameName.General.Extension;
     using OurGameName.DoMain.Attribute;
     using OurGameName.DoMain.Map.Extensions;
     using UnityEngine.AddressableAssets;

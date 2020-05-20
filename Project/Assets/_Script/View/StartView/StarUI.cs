@@ -1,19 +1,19 @@
-﻿using System.IO;
-using OurGameName.Config;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using DialogBoxReturn = OurGameName.View.DialogBoxReturnArgs.DialogBoxReturnArgsCode;
-
-namespace OurGameName.View.StarView
+﻿namespace OurGameName.View.StarView
 {
+    using System.IO;
+    using OurGameName.Config;
+    using UnityEngine;
+    using UnityEngine.AddressableAssets;
+    using UnityEngine.SceneManagement;
+    using UnityEngine.UI;
+    using DialogBoxReturn = OurGameName.View.DialogBoxReturnArgs.DialogBoxReturnArgsCode;
+
     internal class StarUI : MonoBehaviour
     {
         /// <summary>
-        /// 主UI
+        /// 退出游戏
         /// </summary>
-        public Canvas MainUI;
+        public Button btnExitGame;
 
         /// <summary>
         /// 载入游戏
@@ -31,43 +31,27 @@ namespace OurGameName.View.StarView
         public Button btnOption;
 
         /// <summary>
-        /// 退出游戏
-        /// </summary>
-        public Button btnExitGame;
-
-        /// <summary>
         /// 对话框游戏资源
         /// </summary>
         public AssetReference DialogBoxAsset;
+
+        /// <summary>
+        /// 主UI
+        /// </summary>
+        public Canvas MainUI;
 
         /// <summary>
         /// 对话框实例
         /// </summary>
         private DialogBox dialogBox;
 
-        private void Start()
-        {
-            BtnInit();
-            AssetLoad();
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
-        {
-            SceneManager.SetActiveScene(scene);
-        }
-
-        private void AssetLoad()
-        {
-            BtnExitAssetLoad();
-        }
-
         /// <summary>
-        /// 按钮初始化
+        /// 弹出确认退出游戏界面
         /// </summary>
-        private void BtnInit()
+        public void Exit()
         {
-            BtnLoadGameInit();
+            dialogBox.Result += (seed, e) => { if (e.result == DialogBoxReturn.Yes) Application.Quit(); };
+            dialogBox.Show();
         }
 
         /// <summary>
@@ -94,13 +78,33 @@ namespace OurGameName.View.StarView
             SceneManager.LoadSceneAsync("OptionView", LoadSceneMode.Additive);
         }
 
-        /// <summary>
-        /// 弹出确认退出游戏界面
-        /// </summary>
-        public void Exit()
+        private void AssetLoad()
         {
-            dialogBox.Result += (seed, e) => { if (e.result == DialogBoxReturn.Yes) Application.Quit(); };
-            dialogBox.Show();
+            BtnExitAssetLoad();
+        }
+
+        /// <summary>
+        /// 退出按钮资源载入
+        /// </summary>
+        private void BtnExitAssetLoad()
+        {
+            btnExitGame.enabled = false;
+            DialogBoxAsset.InstantiateAsync(MainUI.transform, false)
+                .Completed += x =>
+                {
+                    Debug.Log("LoadCompleted");
+                    dialogBox = x.Result.GetComponent<DialogBox>();
+                    x.Result.transform.localPosition = Vector3.zero;
+                    btnExitGame.enabled = true;
+                };
+        }
+
+        /// <summary>
+        /// 按钮初始化
+        /// </summary>
+        private void BtnInit()
+        {
+            BtnLoadGameInit();
         }
 
         /// <summary>
@@ -131,20 +135,16 @@ namespace OurGameName.View.StarView
             }
         }
 
-        /// <summary>
-        /// 退出按钮资源载入
-        /// </summary>
-        private void BtnExitAssetLoad()
+        private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            btnExitGame.enabled = false;
-            DialogBoxAsset.InstantiateAsync(MainUI.transform, false)
-                .Completed += x =>
-                {
-                    Debug.Log("LoadCompleted");
-                    dialogBox = x.Result.GetComponent<DialogBox>();
-                    x.Result.transform.localPosition = Vector3.zero;
-                    btnExitGame.enabled = true;
-                };
+            SceneManager.SetActiveScene(scene);
+        }
+
+        private void Start()
+        {
+            BtnInit();
+            AssetLoad();
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
 }

@@ -18,9 +18,9 @@
                     bool canExcute,
                     string msg = "",
                     ActionConditResult parent = null,
-                    List<ActionConditResult> childs = null)
+                    IEnumerable<ActionConditResult> childs = null)
         {
-            this.CanExcute = canExcute;
+            this.CanExecute = canExcute;
             this.Msg = msg;
             this.Parent = parent;
             this.Childs = childs;
@@ -29,12 +29,12 @@
         /// <summary>
         /// 能否执行
         /// </summary>
-        public bool CanExcute { get; set; }
+        public bool CanExecute { get; set; }
 
         /// <summary>
         /// 子返回值
         /// </summary>
-        public List<ActionConditResult> Childs { get; }
+        public IEnumerable<ActionConditResult> Childs { get; }
 
         /// <summary>
         /// 附加消息

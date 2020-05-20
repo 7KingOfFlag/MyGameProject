@@ -1,7 +1,6 @@
-﻿namespace OurGameName.Extension
+﻿namespace OurGameName.General.Extension
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using UnityEngine;

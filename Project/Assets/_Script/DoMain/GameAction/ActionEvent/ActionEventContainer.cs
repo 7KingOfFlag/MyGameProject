@@ -17,14 +17,14 @@
         /// </summary>
         private static ActionEventContainer instance = null;
 
-        private readonly ConcurrentDictionary<ActionEventID, ActionEvent> actionEventDict;
+        private readonly ConcurrentDictionary<ActionEventID, IActionEvent> actionEventDict;
 
         /// 单例构造函数
         /// </summary>
         private ActionEventContainer()
         {
             IEqualityComparer<ActionEventID> comparer = new ActionEventID();
-            this.actionEventDict = new ConcurrentDictionary<ActionEventID, ActionEvent>(comparer);
+            this.actionEventDict = new ConcurrentDictionary<ActionEventID, IActionEvent>(comparer);
         }
 
         /// <summary>
@@ -53,11 +53,13 @@
         /// 注册游戏动作
         /// </summary>
         /// <param name="">注册动作</param>
-        private void Registered(ActionEvent actionEvent)
+        private void Registered<T>()
+            where T : class, IActionEvent, new()
         {
+            var actionEvent = new T();
             if (this.actionEventDict.TryAdd(actionEvent.UID, actionEvent))
             {
-                throw new ArgumentException($"插入的动作ID:{actionEvent.UID}已存在");
+                throw new ArgumentException($"插入的动作事件ID:{actionEvent.UID}已存在");
             }
         }
 
@@ -66,11 +68,11 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private ActionEvent resolve(ActionEventID id)
+        private IActionEvent resolve(ActionEventID id)
         {
             if (this.actionEventDict.TryGetValue(id, out var result) == false)
             {
-                throw new ArgumentException($"动作ID{id}未注册");
+                throw new ArgumentException($"动作事件ID{id}未注册");
             }
             return result;
         }
