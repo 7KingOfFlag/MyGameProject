@@ -11,7 +11,7 @@
     {
         static HexExtensions()
         {
-            CostDict = ConfigCostDict(costList);
+            CostDict = ConfigCostDict(CostList);
         }
 
         /// <summary>
@@ -22,7 +22,7 @@
         /// <summary>
         /// 地形通过费用列表 - 配置用
         /// </summary>
-        private static Dictionary<int, List<Terrain>> costList { get; } = new Dictionary<int, List<Terrain>>
+        private static Dictionary<int, List<Terrain>> CostList { get; } = new Dictionary<int, List<Terrain>>
         {
             { 1, new List<Terrain>{ Terrain.Base, Terrain.Ocean} },
             { 2, new List<Terrain>{ Terrain.DesertDunes, Terrain.Dirt, Terrain.ForestBroadleaf} },

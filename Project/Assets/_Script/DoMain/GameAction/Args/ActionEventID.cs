@@ -1,6 +1,7 @@
 ﻿namespace OurGameName.DoMain.GameAction.Args
 {
     using System.Collections.Generic;
+    using OurGameName.DoMain.GameAction.Config.ActionEvent;
 
     /// <summary>
     /// 游戏动作事件ID
@@ -14,6 +15,15 @@
         public ActionEventID(uint uid)
         {
             this.UID = uid;
+        }
+
+        /// <summary>
+        /// ID
+        /// </summary>
+        /// <param name="uid"></param>
+        public ActionEventID(DefaultActionEventName uid)
+        {
+            this.UID = (uint)uid;
         }
 
         /// <summary>

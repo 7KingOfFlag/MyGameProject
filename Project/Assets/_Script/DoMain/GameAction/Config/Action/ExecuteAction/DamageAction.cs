@@ -1,5 +1,6 @@
 ﻿namespace OurGameName.DoMain.GameAction.Config.Action.ExecuteAction
 {
+    using System;
     using System.Diagnostics.Contracts;
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Args;
@@ -13,13 +14,10 @@
         public DamageAction() : base(ActionRunType.Base, ExecuteActionName.Damage)
         { }
 
-        /// <summary>
-        /// 对目标角色造成指定伤害
-        /// </summary>
-        /// <param name="args">动作输入参数</param>
-        public override void Execute(ActionInputArgs<int> args)
+        public override void Execute(IActionInputArgs args)
         {
-            args.Targets.ForEach(x => x.HP.Value -= args.ActionConifArgs);
+            Contract.Requires<ArgumentException>(args is IActionInputArgs<int> == true);
+            args.Targets.ForEach(x => x.HP.Value -= args.GetActionConfigArgs<int>());
         }
     }
 }

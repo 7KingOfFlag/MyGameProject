@@ -20,6 +20,13 @@
         /// 父条件
         /// </summary>
         IConditAction Parent { get; }
+
+        /// <summary>
+        /// 校验动作条件
+        /// </summary>
+        /// <param name="args">动作输入参数</param>
+        /// <returns>校验结果</returns>
+        ActionConditResult CheckCondition(IReadonlyActionInputArgs args);
     }
 
     /// <summary>
@@ -29,12 +36,6 @@
     /// <typeparam name="T">动作配置参数的类型</typeparam>
     internal interface IConditAction<T> : IConditAction
     {
-        /// <summary>
-        /// 校验动作条件
-        /// </summary>
-        /// <param name="args">动作输入参数</param>
-        /// <returns>校验结果</returns>
-        ActionConditResult CheckCondition(ReadonlyActionInputArgs<T> args);
     }
 
     /// <summary>
@@ -89,6 +90,6 @@
         /// </summary>
         /// <param name="args">动作输入参数</param>
         /// <returns>校验结果</returns>
-        public abstract ActionConditResult CheckCondition(ReadonlyActionInputArgs<T> args);
+        public abstract ActionConditResult CheckCondition(IReadonlyActionInputArgs args);
     }
 }

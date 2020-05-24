@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using UnityEngine;
     using Random = System.Random;
@@ -22,6 +23,39 @@
             {
                 action.Invoke(item);
             }
+        }
+
+        /// <summary>
+        /// 对 IEnumerable<T> 的每个元素执行指定操作。
+        /// </summary>
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
+        {
+            int index = 0;
+            foreach (T item in source)
+            {
+                action.Invoke(item, index++);
+            }
+        }
+
+        /// <summary>
+        /// 泛型参数是否相同
+        /// </summary>
+        /// <param name="genericA">泛型A</param>
+        /// <param name="genericB">泛型B</param>
+        /// <returns>
+        /// A: T<int> B:T<int> return True
+        /// A: T<int> B:U<int> return True
+        /// A: T<bool> B:T<int> return false
+        /// A: T<bool> B:U<int> return false
+        /// </returns>
+        public static bool GenericParametersIsSame(this Type genericA, Type genericB)
+        {
+            return genericA.IsGenericType
+                && genericB.IsGenericType
+                && genericA.GenericTypeArguments.Length == genericB.GenericTypeArguments.Length
+                && genericA.GenericTypeArguments
+                    .Select((x, i) => x == genericB.GenericTypeArguments[i])
+                    .All(x => x == true);
         }
 
         /// <summary>

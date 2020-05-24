@@ -9,7 +9,13 @@
     /// <para>定义游戏道具与技能具体效果的实现框架</para>
     /// </summary>
     internal interface IExecuteAction : IAction
-    { }
+    {
+        /// <summary>
+        /// 执行动作
+        /// </summary>
+        /// <param name="input">动作输入参数</param>
+        void Execute(IActionInputArgs args);
+    }
 
     /// <summary>
     /// 游戏执行动作接口
@@ -18,11 +24,6 @@
     /// <typeparam name="T">动作配置参数的类型</typeparam>
     internal interface IExecuteAction<T> : IExecuteAction
     {
-        /// <summary>
-        /// 执行动作
-        /// </summary>
-        /// <param name="input">动作输入参数</param>
-        void Execute(ActionInputArgs<T> args);
     }
 
     /// <summary>
@@ -58,6 +59,6 @@
         /// 执行动作
         /// </summary>
         /// <param name="args">动作输入参数</param>
-        public abstract void Execute(ActionInputArgs<T> args);
+        public abstract void Execute(IActionInputArgs args);
     }
 }

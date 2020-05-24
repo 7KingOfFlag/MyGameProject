@@ -1,4 +1,4 @@
-﻿namespace OurGameName.DoMain.RoleSpace.Skill
+﻿namespace OurGameName.DoMain.RoleSpace.SkillSpace
 {
     /// <summary>
     /// 技能影响范围参数

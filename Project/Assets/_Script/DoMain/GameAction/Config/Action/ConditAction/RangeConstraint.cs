@@ -25,13 +25,13 @@
         /// </summary>
         /// <param name="args">动作输入参数</param>
         /// <returns>行动点是否足够</returns>
-        public override ActionConditResult CheckCondition(ReadonlyActionInputArgs<int> args)
+        public override ActionConditResult CheckCondition(IReadonlyActionInputArgs args)
         {
             Contract.Requires(args.User != null);
             Contract.Requires(args.Targets.Count > 0);
             Contract.Requires(args.Targets.All(x => x != null));
 
-            var range = args.User.Position.Value.GetCellInRange(args.ActionConfigArgs).ToVector3Int();
+            var range = args.User.Position.Value.GetCellInRange(args.GetActionConfigArgs<int>()).ToVector3Int();
             var result = args.Targets
                 .Select(x => (canExecute: range.Contains(x.Position.Value), role: x))
                 .Select(x => (x.canExecute, msg: x.canExecute ? this.GetTrueMsg(x.role) : this.GetFalseMsg(x.role)))

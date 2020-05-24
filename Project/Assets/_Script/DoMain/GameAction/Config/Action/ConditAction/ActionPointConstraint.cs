@@ -1,5 +1,6 @@
 ﻿namespace OurGameName.DoMain.GameAction.Config.Action.ConditAction
 {
+    using System;
     using System.Diagnostics.Contracts;
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Args;
@@ -21,11 +22,11 @@
         /// </summary>
         /// <param name="args">动作输入参数</param>
         /// <returns>行动点是否足够</returns>
-        public override ActionConditResult CheckCondition(ReadonlyActionInputArgs<int> args)
+        public override ActionConditResult CheckCondition(IReadonlyActionInputArgs args)
         {
             Contract.Requires(args.User != null);
 
-            int cost = args.ActionConfigArgs;
+            int cost = args.GetActionConfigArgs<int>();
             bool canExecute = args.User.ActionPoint >= cost;
 
             return new ActionConditResult(

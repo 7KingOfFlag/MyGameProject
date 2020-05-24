@@ -1,5 +1,7 @@
 ﻿namespace OurGameName.DoMain.GameAction.Config.Action.ExecuteAction
 {
+    using System;
+    using System.Diagnostics.Contracts;
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Args;
     using OurGameName.General.Extension;
@@ -15,13 +17,11 @@
         public HealingAction() : base(0, ExecuteActionName.Healing)
         { }
 
-        /// <summary>
-        /// 恢复目标角色生命值 不会超过最大生值
-        /// </summary>
-        /// <param name="args">动作输入参数</param>
-        public override void Execute(ActionInputArgs<int> args)
+        public override void Execute(IActionInputArgs args)
         {
-            args.Targets.ForEach(x => x.HP.Value += args.ActionConifArgs);
+            Contract.Requires<ArgumentException>(args is IActionInputArgs<int> == true);
+
+            args.Targets.ForEach(x => x.HP.Value += args.GetActionConfigArgs<int>());
         }
     }
 }

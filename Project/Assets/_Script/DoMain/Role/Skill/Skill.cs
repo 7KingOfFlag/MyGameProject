@@ -1,15 +1,31 @@
-﻿namespace OurGameName.DoMain.RoleSpace.Skill
+﻿namespace OurGameName.DoMain.RoleSpace.SkillSpace
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using OurGameName.DoMain.Entity;
     using OurGameName.DoMain.GameAction.ActionEvent;
 
+    /// <summary>
+    /// 技能
+    /// </summary>
     internal class Skill
     {
+        /// <summary>
+        /// 技能
+        /// </summary>
+        /// <param name="cost">行动点费用</param>
+        /// <param name="name">技能名字</param>
+        /// <param name="skillEffect">技能效果</param>
+        /// <param name="skillRangeArgs">技能影响范围参数</param>
+        public Skill(
+            int cost,
+            string name,
+            IActionEvent skillEffect,
+            SkillRangeArgs skillRangeArgs)
+        {
+            this.Cost = cost;
+            this.Name = name;
+            this.SkillEffect = skillEffect;
+            this.SkillRangeArgs = skillRangeArgs;
+        }
+
         /// <summary>
         /// 行动点费用
         /// </summary>
@@ -23,7 +39,7 @@
         /// <summary>
         /// 技能效果
         /// </summary>
-        public BaseActionEvent SkillEffect { get; set; }
+        public IActionEvent SkillEffect { get; set; }
 
         /// <summary>
         /// 技能影响范围参数

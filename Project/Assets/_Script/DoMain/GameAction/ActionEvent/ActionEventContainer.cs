@@ -5,6 +5,9 @@
     using System.Collections.Generic;
     using OurGameName.DoMain.GameAction.Args;
 
+    /// <summary>
+    /// 游戏动作事件容器
+    /// </summary>
     internal sealed class ActionEventContainer
     {
         /// <summary>
@@ -53,7 +56,7 @@
         /// 注册游戏动作
         /// </summary>
         /// <param name="">注册动作</param>
-        private void Registered<T>()
+        public void Registered<T>()
             where T : class, IActionEvent, new()
         {
             var actionEvent = new T();
@@ -68,12 +71,13 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private IActionEvent resolve(ActionEventID id)
+        private IActionEvent Resolve(ActionEventID id)
         {
             if (this.actionEventDict.TryGetValue(id, out var result) == false)
             {
                 throw new ArgumentException($"动作事件ID{id}未注册");
             }
+
             return result;
         }
     }

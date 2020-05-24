@@ -1,6 +1,5 @@
 ﻿namespace OurGameName.DoMain.GameAction.Config.Action
 {
-    using System;
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Config.Action.ConditAction;
     using OurGameName.DoMain.GameAction.Config.Action.ExecuteAction;

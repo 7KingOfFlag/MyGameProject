@@ -1,5 +1,6 @@
 ﻿namespace OurGameName.DoMain.GameAction.ActionEvent
 {
+    using System.Collections.Generic;
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Args;
 
@@ -9,14 +10,24 @@
     internal interface IActionEvent
     {
         /// <summary>
+        /// 校验动作条件配置参数
+        /// </summary>
+        List<IReadonlyActionInputArgs> ConditActionConfig { get; }
+
+        /// <summary>
         /// 条件动作组
         /// </summary>
-        IConditAction[] ConditionsActions { get; }
+        List<IConditAction> ConditionsActions { get; }
+
+        /// <summary>
+        /// 执行动作组配置参数
+        /// </summary>
+        List<IActionInputArgs> ExecutionActionConfig { get; }
 
         /// <summary>
         /// 执行动作组
         /// </summary>
-        IExecuteAction[] ExecutionActions { get; }
+        List<IExecuteAction> ExecutionActions { get; }
 
         /// <summary>
         /// 动作事件唯一识别码
@@ -28,12 +39,12 @@
         /// </summary>
         /// <param name="args">动作输入参数</param>
         /// <returns></returns>
-        ActionConditResult[] CheckConditAction(IActionInputArgs[] args);
+        List<ActionConditResult> CheckConditAction();
 
         /// <summary>
-        /// 执行动作组W
+        /// 执行动作组
         /// </summary>
         /// <param name="args">动作输入参数</param>
-        void ExecutionAction(IActionInputArgs[] args);
+        void ExecutionAction();
     }
 }

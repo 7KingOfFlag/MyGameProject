@@ -1,6 +1,8 @@
 ﻿namespace OurGameName.DoMain.RoleSpace
 {
     using System;
+    using System.Collections.Generic;
+    using OurGameName.DoMain.RoleSpace.SkillSpace;
     using UniRx;
 
     /// <summary>
@@ -72,7 +74,7 @@
         /// <summary>
         /// 角色技能
         /// </summary>
-        //  public List<Skill> Skills { get; set; }
+        public List<Skill> Skills { get; set; }
 
         /// <summary>
         /// 获取角色年龄
