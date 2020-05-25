@@ -10,19 +10,9 @@
     internal interface IActionEvent
     {
         /// <summary>
-        /// 校验动作条件配置参数
-        /// </summary>
-        List<IReadonlyActionInputArgs> ConditActionConfig { get; }
-
-        /// <summary>
         /// 条件动作组
         /// </summary>
         List<IConditAction> ConditionsActions { get; }
-
-        /// <summary>
-        /// 执行动作组配置参数
-        /// </summary>
-        List<IActionInputArgs> ExecutionActionConfig { get; }
 
         /// <summary>
         /// 执行动作组
@@ -39,12 +29,12 @@
         /// </summary>
         /// <param name="args">动作输入参数</param>
         /// <returns></returns>
-        List<ActionConditResult> CheckConditAction();
+        List<ActionConditResult> CheckConditAction(List<IReadonlyActionInputArgs> args);
 
         /// <summary>
         /// 执行动作组
         /// </summary>
         /// <param name="args">动作输入参数</param>
-        void ExecutionAction();
+        void ExecutionAction(List<IActionInputArgs> args);
     }
 }

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Numerics;
+    using OurGameName.DoMain.Attribute;
     using UnityEngine;
 
     /// <summary>
@@ -23,8 +24,7 @@
         /// <param name="range">范围</param>
         public static Vector2Int[] GetCellInRange(this Vector3Int CenterCellPosition, int range)
         {
-            var v2 = new Vector2Int(CenterCellPosition.x, CenterCellPosition.y);
-            return v2.GetCellInRange(range);
+            return CenterCellPosition.ToVector2Int().GetCellInRange(range);
         }
 
         /// <summary>

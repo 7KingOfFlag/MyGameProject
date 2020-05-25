@@ -4,6 +4,7 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using OurGameName.DoMain.GameAction.Args;
+    using UnityEngine.InputSystem.LowLevel;
 
     /// <summary>
     /// 游戏动作事件容器
@@ -66,19 +67,31 @@
             }
         }
 
+        public T Resolve<T>()
+             where T : class, IActionEvent, new()
+        {
+            var result = new T();
+            if (this.actionEventDict.ContainsKey(result.UID) == false)
+            {
+                throw new ArgumentException($"动作事件{typeof(T)}未注册");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 解析游戏动作
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private IActionEvent Resolve(ActionEventID id)
+        public IActionEvent Resolve(ActionEventID id)
         {
             if (this.actionEventDict.TryGetValue(id, out var result) == false)
             {
                 throw new ArgumentException($"动作事件ID{id}未注册");
             }
 
-            return result;
+            return (IActionEvent)Activator.CreateInstance(result.GetType());
         }
     }
 }

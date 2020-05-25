@@ -6,6 +6,11 @@
     internal enum ExecuteActionName : ushort
     {
         /// <summary>
+        /// 移动
+        /// </summary>
+        Move,
+
+        /// <summary>
         /// 伤害
         /// </summary>
         Damage,

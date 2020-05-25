@@ -4,7 +4,6 @@
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.ActionEvent;
     using OurGameName.DoMain.GameAction.Args;
-    using OurGameName.DoMain.GameAction.Config.Action.ConditAction;
     using OurGameName.DoMain.GameAction.Config.Action.ExecuteAction;
 
     /// <summary>
@@ -19,7 +18,7 @@
         {
             this.ExecutionActions = new List<IExecuteAction>
             {
-                new HealingAction(),
+                new HealingAction(){ ActionConfig = 10},
             };
         }
     }

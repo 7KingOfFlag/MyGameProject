@@ -1,6 +1,5 @@
 ﻿namespace OurGameName.DoMain.GameAction.Config.Action.ConditAction
 {
-    using System;
     using System.Diagnostics.Contracts;
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Args;
@@ -26,7 +25,7 @@
         {
             Contract.Requires(args.User != null);
 
-            int cost = args.GetActionConfigArgs<int>();
+            int cost = this.ActionConfig;
             bool canExecute = args.User.ActionPoint >= cost;
 
             return new ActionConditResult(

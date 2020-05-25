@@ -1,6 +1,9 @@
 ﻿namespace OurGameName.DoMain.RoleSpace.SkillSpace
 {
-    using OurGameName.DoMain.GameAction.ActionEvent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using OurGameName.DoMain.GameAction.Action;
+    using OurGameName.DoMain.GameAction.Args;
 
     /// <summary>
     /// 技能
@@ -10,26 +13,13 @@
         /// <summary>
         /// 技能
         /// </summary>
-        /// <param name="cost">行动点费用</param>
         /// <param name="name">技能名字</param>
-        /// <param name="skillEffect">技能效果</param>
-        /// <param name="skillRangeArgs">技能影响范围参数</param>
-        public Skill(
-            int cost,
-            string name,
-            IActionEvent skillEffect,
-            SkillRangeArgs skillRangeArgs)
+        public Skill(string name, List<IConditAction> conditionsActions, List<IExecuteAction> executionActions)
         {
-            this.Cost = cost;
             this.Name = name;
-            this.SkillEffect = skillEffect;
-            this.SkillRangeArgs = skillRangeArgs;
+            this.ConditionsActions = conditionsActions;
+            this.ExecutionActions = executionActions;
         }
-
-        /// <summary>
-        /// 行动点费用
-        /// </summary>
-        public int Cost { get; set; }
 
         /// <summary>
         /// 技能名字
@@ -37,13 +27,32 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// 技能效果
+        /// 条件动作组
         /// </summary>
-        public IActionEvent SkillEffect { get; set; }
+        private List<IConditAction> ConditionsActions { get; }
 
         /// <summary>
-        /// 技能影响范围参数
+        /// 执行动作组
         /// </summary>
-        public SkillRangeArgs SkillRangeArgs { get; set; }
+        private List<IExecuteAction> ExecutionActions { get; }
+
+        /// <summary>
+        /// 校验动作条件组
+        /// </summary>
+        /// <param name="args">动作输入参数</param>
+        /// <returns></returns>
+        public List<ActionConditResult> CheckConditAction(IReadonlyActionInputArgs args)
+        {
+            return this.ConditionsActions.Select(x => x.CheckCondition(args)).ToList();
+        }
+
+        /// <summary>
+        /// 执行动作组
+        /// </summary>
+        /// <param name="args">动作输入参数</param>
+        public void ExecutionAction(IActionInputArgs args)
+        {
+            this.ExecutionActions.ForEach(x => x.Execute(args));
+        }
     }
 }

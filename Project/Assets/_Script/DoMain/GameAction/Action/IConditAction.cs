@@ -36,6 +36,10 @@
     /// <typeparam name="T">动作配置参数的类型</typeparam>
     internal interface IConditAction<T> : IConditAction
     {
+        /// <summary>
+        /// 动作配置参数
+        /// </summary>
+        T ActionConfig { get; set; }
     }
 
     /// <summary>
@@ -64,6 +68,11 @@
             this.Parent = parent;
             this.Childs = childs;
         }
+
+        /// <summary>
+        /// 动作配置参数
+        /// </summary>
+        public T ActionConfig { get; set; }
 
         /// <summary>
         /// 子条件

@@ -4,7 +4,6 @@
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.ActionEvent;
     using OurGameName.DoMain.GameAction.Args;
-    using OurGameName.DoMain.GameAction.Config.Action.ConditAction;
     using OurGameName.DoMain.GameAction.Config.Action.ExecuteAction;
     using OurGameName.DoMain.GameAction.Config.ActionEvent;
 
@@ -21,7 +20,7 @@
         {
             this.ExecutionActions = new List<IExecuteAction>
             {
-                new DamageAction(),
+                new DamageAction(){ ActionConfig = 10},
             };
         }
     }

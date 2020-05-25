@@ -132,6 +132,7 @@
         {
             this.context.transform.position = this.context.RoleManager.CellToWorld(newPosition);
             this.CurrentRolePosition = newPosition;
+            this.context.RolePosition.Value = newPosition;
             if (this.moveTargetList.Count > 1)
             {
                 this.moveTargetList.RemoveAt(this.moveTargetList.Count - 1);

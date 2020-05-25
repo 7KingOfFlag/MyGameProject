@@ -1,8 +1,8 @@
 ﻿namespace OurGameName.DoMain.GameAction.Args
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using Boo.Lang;
     using OurGameName.DoMain.RoleSpace;
 
     /// <summary>
@@ -22,31 +22,18 @@
     }
 
     /// <summary>
-    ///
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    internal interface IReadonlyActionInputArgs<T> : IReadonlyActionInputArgs
-    {
-        /// <summary>
-        /// 动作配置参数
-        /// </summary>
-        T ActionConfigArgs { get; }
-    }
-
-    /// <summary>
     /// 只读动作输入参数
     /// </summary>
-    internal sealed class ReadonlyActionInputArgs<T> : IReadonlyActionInputArgs
+    internal sealed class ReadonlyActionInputArgs : IReadonlyActionInputArgs
     {
         /// <summary>
         /// 只读动作输入参数
         /// </summary>
         /// <param name="args">动作输入参数</param>
-        public ReadonlyActionInputArgs(ActionInputArgs<T> args)
+        public ReadonlyActionInputArgs(ActionInputArgs args)
         {
             this.User = args.User;
             this.Targets = args.Targets;
-            this.ActionConfigArgs = args.ActionConifgArgs;
         }
 
         /// <summary>
@@ -55,20 +42,11 @@
         /// <param name="user">动作使用者</param>
         /// <param name="targets">动作目标</param>
         /// <param name="actionConfigfArgs">动作配置参数</param>
-        public ReadonlyActionInputArgs(
-            Role user,
-            List<Role> targets,
-            T actionConfigfArgs)
+        public ReadonlyActionInputArgs(Role user, List<Role> targets)
         {
             this.User = user;
             this.Targets = targets;
-            this.ActionConfigArgs = actionConfigfArgs;
         }
-
-        /// <summary>
-        /// 动作配置参数
-        /// </summary>
-        public T ActionConfigArgs { get; }
 
         /// <summary>
         /// 动作目标

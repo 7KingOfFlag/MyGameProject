@@ -4,6 +4,8 @@
     using OurGameName.DoMain.Map;
     using System;
     using OurGameName.General.Extension;
+    using OurGameName.DoMain.GameAction.Config.Action;
+    using OurGameName.DoMain.GameAction.Config.ActionEvent;
 
     /// <summary>
     /// 游戏世界 : 数据类保存当前整个游戏数据的数据
@@ -37,6 +39,10 @@
         internal virtual void OnInitComplete(EventArgs e)
         {
             e.Raise(this, ref InitComplete);
+        }
+
+        private void Awake()
+        {
         }
 
         private void Start()

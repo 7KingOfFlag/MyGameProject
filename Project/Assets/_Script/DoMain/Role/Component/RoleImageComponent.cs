@@ -19,28 +19,6 @@
         private Material spriteMaterial;
 
         /// <summary>
-        /// 是否闪烁
-        /// </summary>
-        public bool IsBlink
-        {
-            get
-            {
-                return this.spriteMaterial.GetFloat("_IsBlink") > 0;
-            }
-            set
-            {
-                if (value == true)
-                {
-                    this.spriteMaterial.SetFloat("_Blink", SharedMetrics.SharedTrue);
-                }
-                else
-                {
-                    this.spriteMaterial.SetFloat("_Blink", SharedMetrics.SharedFalse);
-                }
-            }
-        }
-
-        /// <summary>
         /// 是否显示外边框
         /// </summary>
         public bool Outline
@@ -79,7 +57,6 @@
         public void Init(Sprite roleImage)
         {
             this.RoleSprite.sprite = roleImage;
-            this.IsBlink = true;
             this.Outline = false;
             this.OutlineColor = Color.white;
         }

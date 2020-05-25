@@ -3,11 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using OurGameName.DoMain.Attribute;
-    using OurGameName.DoMain.GameWorld;
-    using OurGameName.DoMain.RoleSpace.Args;
     using OurGameName.DoMain.RoleSpace.Component;
-    using UnityEngine;
     using UniRx;
+    using UnityEngine;
 
     /// <summary>
     /// 角色实体
@@ -29,7 +27,12 @@
         /// <summary>
         /// 角色贴图组件
         /// </summary>
-        public RoleImageComponent roleImageComponent;
+        public RoleImageComponent RoleImageComponent;
+
+        /// <summary>
+        /// 角色技能组件
+        /// </summary>
+        public RoleSkillComponet RoleSkillComponet;
 
         /// <summary>
         /// 角色移动组件
@@ -48,12 +51,15 @@
         /// </summary>
         public RoleManager RoleManager;
 
+        /// <summary>
+        /// 是否刷新
+        /// </summary>
         private bool CanUpdate = false;
 
         /// <summary>
         /// 是否被选中
         /// </summary>
-        private bool isSelect;
+        private ReactiveProperty<bool> isSelect = new ReactiveProperty<bool>();
 
         /// <summary>
         /// 是否被选中
@@ -62,31 +68,28 @@
         {
             get
             {
-                return this.isSelect;
+                return this.isSelect.Value;
             }
             set
             {
-                if (this.isSelect == value)
+                if (this.isSelect.Value == value)
                 {
                     return;
                 }
 
-                this.isSelect = value;
-                if (this.isSelect == true)
-                {
-                    this.roleImageComponent.Outline = true;
-                }
-                else
-                {
-                    this.roleImageComponent.Outline = false;
-                }
+                this.isSelect.Value = value;
             }
         }
 
         /// <summary>
         /// 角色位置
         /// </summary>
-        public Vector2Int RolePosition { get { return this.MoveComponent.CurrentRolePosition.ToVector2Int(); } }
+        public ReactiveProperty<Vector3Int> RolePosition => this.Role.Position;
+
+        /// <summary>
+        /// 角色状态
+        /// </summary>
+        public IRoleStatus RoleStatus { get; private set; }
 
         #region Unity
 
@@ -97,8 +100,12 @@
 
         private void OnMouseUpAsButton()
         {
-            this.IsSelect = true;
-            this.RoleManager.SelectRoleEntity = this;
+            if (this.isSelect.Value == true)
+            {
+                return;
+            }
+
+            this.RoleManager.TrySelectRoleEntity(this);
         }
 
         private void Update()
@@ -139,7 +146,8 @@
             this.ActionPointComponent.Init(role.ActionPoint);
             this.HpComponent.Init(role.MaxHP.Value);
             this.MoveComponent = new RoleMoveComponent(role.Position.Value, this, 300);
-            this.roleImageComponent.Init(roleSprite);
+            this.RoleImageComponent.Init(roleSprite);
+            this.RoleSkillComponet.Init(this);
 
             this.Role.HP.Subscribe(x => this.HpComponent.HP = x);
             this.Role.MaxHP.Subscribe(x => this.HpComponent.MaxHp = x);
@@ -147,7 +155,24 @@
                 .Where(x => x != this.MoveComponent.CurrentRolePosition)
                 .Subscribe(x => this.MoveComponent.Move(x));
 
+            this.RoleStatus = this.RoleSkillComponet;
+
+            this.isSelect.Subscribe(x => this.RoleImageComponent.Outline = x);
+            this.isSelect.Subscribe(x => this.RoleSkillComponet.Visibility = x);
+
             this.CanUpdate = true;
+        }
+
+        /// <summary>
+        /// 尝试取消选中角色实体
+        /// </summary>
+        /// <param name="roleEntity"></param>
+        internal void TryDeSelectRoleEntity()
+        {
+            if (this.RoleManager != null)
+            {
+                this.RoleManager.TryDeSelectRoleEntity(this);
+            }
         }
     }
 }

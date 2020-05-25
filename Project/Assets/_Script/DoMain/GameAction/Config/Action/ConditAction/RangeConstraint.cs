@@ -1,5 +1,6 @@
 ﻿namespace OurGameName.DoMain.GameAction.Config.Action.ConditAction
 {
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using OurGameName.DoMain.Attribute;
@@ -7,6 +8,7 @@
     using OurGameName.DoMain.GameAction.Args;
     using OurGameName.DoMain.Map.Extensions;
     using OurGameName.DoMain.RoleSpace;
+    using OurGameName.General.Extension;
 
     /// <summary>
     /// 范围约束
@@ -31,7 +33,8 @@
             Contract.Requires(args.Targets.Count > 0);
             Contract.Requires(args.Targets.All(x => x != null));
 
-            var range = args.User.Position.Value.GetCellInRange(args.GetActionConfigArgs<int>()).ToVector3Int();
+            var range = args.User.Position.Value.GetCellInRange(this.ActionConfig).ToVector3Int().Where(x => x.x >= 0 && x.y >= 0);
+            UnityEngine.Debug.Log("Rang" + string.Join("\n", range.Select(x => x.ToString())));
             var result = args.Targets
                 .Select(x => (canExecute: range.Contains(x.Position.Value), role: x))
                 .Select(x => (x.canExecute, msg: x.canExecute ? this.GetTrueMsg(x.role) : this.GetFalseMsg(x.role)))
@@ -47,7 +50,7 @@
         /// <returns></returns>
         private string GetFalseMsg(Role role)
         {
-            return $"{role.FullName}在射程内";
+            return $"{role.FullName}在射程外";
         }
 
         /// <summary>
@@ -57,7 +60,7 @@
         /// <returns></returns>
         private string GetTrueMsg(Role role)
         {
-            return $"{role.FullName}在射程外";
+            return $"{role.FullName}在射程内";
         }
     }
 }

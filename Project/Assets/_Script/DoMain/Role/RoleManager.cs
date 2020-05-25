@@ -1,14 +1,19 @@
 ﻿namespace OurGameName.DoMain.RoleSpace
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Boo.Lang;
     using OurGameName.DoMain.Attribute;
+    using OurGameName.DoMain.GameAction.Args;
+    using OurGameName.DoMain.GameAction.Config.ActionEvent;
     using OurGameName.DoMain.GameWorld;
     using OurGameName.DoMain.Map;
     using OurGameName.DoMain.Map._2DMap;
     using OurGameName.DoMain.Map.Args;
     using OurGameName.DoMain.Map.Service;
+    using OurGameName.DoMain.RoleSpace.SkillSpace;
     using OurGameName.Interface;
     using UniRx;
     using UnityEngine;
@@ -72,7 +77,6 @@
             this.SelectRoleEntity = null;
             this.coordinateConverter = this.HexGrid;
             this.navigateService = new NavigateService();
-            this.Roles = this.LoadRoles();
         }
 
         /// <summary>
@@ -90,6 +94,7 @@
         private void Start()
         {
             this.MapInputEvent.NewClick += this.OnClick;
+            this.Roles = this.LoadRoles();
             _ = this.BuildRoleEntityAsync(this.Roles);
         }
 
@@ -103,6 +108,50 @@
         internal Vector3 CellToWorld(Vector3Int currentRolePosition)
         {
             return this.coordinateConverter.CellToWorld(currentRolePosition);
+        }
+
+        /// <summary>
+        /// 指定位置上是否有角色
+        /// </summary>
+        /// <param name="postion">坐标</param>
+        /// <returns></returns>
+        internal bool HasRole(Vector2Int postion, out Role role)
+        {
+            role = this.Roles.FirstOrDefault(x => x.Position.Value.ToVector2Int() == postion);
+            return role != null;
+        }
+
+        /// <summary>
+        /// 尝试取消选中角色实体
+        /// </summary>
+        /// <param name="roleEntity"></param>
+        internal void TryDeSelectRoleEntity(RoleEntity roleEntity)
+        {
+            if (roleEntity != this.SelectRoleEntity) return;
+
+            this.DeSelectRoleEntity();
+        }
+
+        /// <summary>
+        /// 尝试选中角色实体
+        /// </summary>
+        /// <param name="roleEntity"></param>
+        /// <returns></returns>
+        internal void TrySelectRoleEntity(RoleEntity roleEntity)
+        {
+            if (this.SelectRoleEntity == roleEntity
+                && this.SelectRoleEntity != null
+                && this.SelectRoleEntity.RoleStatus.Status != RoleSkillStatus.Unselected)
+            {
+                return;
+            };
+
+            if (this.SelectRoleEntity != null)
+            {
+                this.SelectRoleEntity.IsSelect = false;
+            }
+            roleEntity.IsSelect = true;
+            this.SelectRoleEntity = roleEntity;
         }
 
         /// <summary>
@@ -124,22 +173,94 @@
         }
 
         /// <summary>
+        /// 能否触发技能
+        /// </summary>
+        /// <param name="args"></param>
+        private bool CanExecuteSkill(MapInputEventArgs args)
+        {
+            if (this.HasRole(args.ClickPosition, out var target) == false)
+            {
+                return false;
+            }
+            var skill = this.SelectRoleEntity.RoleStatus.SelectedSkill;
+            var skillArgs = new ReadonlyActionInputArgs(this.SelectRoleEntity.Role, new List<Role> { target });
+            var skillResult = skill.CheckConditAction(skillArgs);
+            Debug.Log(skillResult.ReturnMsg());
+            return skillResult.All(x => x.CanExecute == true);
+        }
+
+        /// <summary>
+        /// 取消选择当前选中的角色
+        /// </summary>
+        private void DeSelectRoleEntity()
+        {
+            this.SelectRoleEntity.IsSelect = false;
+            if (this.SelectRoleEntity.RoleStatus.Status == RoleSkillStatus.Skill)
+            {
+                this.SelectRoleEntity.RoleStatus.SelectedSkill = null;
+            }
+            this.SelectRoleEntity.RoleStatus.Status = RoleSkillStatus.Unselected;
+            this.SelectRoleEntity = null;
+        }
+
+        /// <summary>
+        /// 执行技能
+        /// </summary>
+        /// <param name="args"></param>
+        private void ExecutionSkill(MapInputEventArgs args)
+        {
+            if (this.CanExecuteSkill(args) == false) return;
+
+            if (this.HasRole(args.ClickPosition, out var target) == false)
+            {
+                return;
+            }
+            var skill = this.SelectRoleEntity.RoleStatus.SelectedSkill;
+            var skillArgs = new ActionInputArgs(this.SelectRoleEntity.Role, new List<Role> { target });
+            skill.ExecutionAction(skillArgs);
+        }
+
+        /// <summary>
         /// 载入角色
         /// </summary>
         /// <returns></returns>
         private List<Role> LoadRoles()
         {
+            var defaultSkill = ActionEventRegistrar.GetDefaultSkill();
+
             return new List<Role>
             {
                 new Role("姬","掘突", new DateTime(1, 8, 2), 4, 300)
                 {
                     Position = new ReactiveProperty<Vector3Int>(new Vector3Int(0, 0, 0)),
+                    Skills = defaultSkill,
                 },
                 new Role("石", "腊", new DateTime(1, 4, 5), 4, 300)
                 {
                     Position = new ReactiveProperty<Vector3Int>(new Vector3Int(2, 2, 0)),
+                    Skills = defaultSkill,
                 },
             };
+        }
+
+        /// <summary>
+        /// 移动角色
+        /// </summary>
+        /// <param name="args"></param>
+        private void MoveRole(MapInputEventArgs args)
+        {
+            var start = this.SelectRoleEntity.RolePosition.Value.ToVector2Int();
+            var end = args.ClickPosition;
+            if (start == end) return;
+            if (this.HasRole(args.ClickPosition, out var _)) return;
+
+            var RolePassability = new RolePassabilityArgs();
+            var path = this.navigateService.GetPath(this.GameWorld.GameMap, start, end, RolePassability);
+            if (path.Count > 0)
+            {
+                this.SelectRoleEntity.MoveRole(path);
+                // this.HexGrid.SetTestMap(path);
+            }
         }
 
         /// <summary>
@@ -154,26 +275,27 @@
 
             if (this.SelectRoleEntity != null)
             {
-                if (e.ClickButtomCoed == MouseButton.LeftMouse)
+                if (e.ClickButtomCoed == MouseButton.LeftMouse
+                    && this.SelectRoleEntity.RoleStatus.Status != RoleSkillStatus.Unselected)
                 {
-                    var start = this.SelectRoleEntity.RolePosition;
-                    var end = e.ClickPosition;
-                    if (start == end) return;
-
-                    var RolePassability = new RolePassabilityArgs();
-                    var path = this.navigateService.GetPath(this.GameWorld.GameMap, start, end, RolePassability);
-                    if (path.Count > 0)
+                    switch (this.SelectRoleEntity.RoleStatus.Status)
                     {
-                        this.SelectRoleEntity.MoveRole(path);
-                        this.HexGrid.SetTestMap(path);
+                        case RoleSkillStatus.Move:
+                            this.MoveRole(e);
+                            break;
 
-                        //Debug.Log(string.Join("=>", path));
+                        case RoleSkillStatus.Skill:
+                            this.ExecutionSkill(e);
+                            break;
+
+                        default:
+                            throw new ArgumentException($"出现未处理的枚举:{this.SelectRoleEntity.RoleStatus.Status}");
                     }
+                    this.DeSelectRoleEntity();
                 }
                 if (e.ClickButtomCoed == MouseButton.RightMouse && e.ClickPosition.ToVector3Int() != this.SelectRoleEntity.MoveComponent.CurrentRolePosition)
                 {
-                    this.SelectRoleEntity.IsSelect = false;
-                    this.SelectRoleEntity = null;
+                    this.DeSelectRoleEntity();
                 }
             }
         }

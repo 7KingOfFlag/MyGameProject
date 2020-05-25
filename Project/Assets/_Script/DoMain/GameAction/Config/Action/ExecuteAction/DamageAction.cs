@@ -1,7 +1,5 @@
 ﻿namespace OurGameName.DoMain.GameAction.Config.Action.ExecuteAction
 {
-    using System;
-    using System.Diagnostics.Contracts;
     using OurGameName.DoMain.GameAction.Action;
     using OurGameName.DoMain.GameAction.Args;
     using OurGameName.General.Extension;
@@ -16,8 +14,7 @@
 
         public override void Execute(IActionInputArgs args)
         {
-            Contract.Requires<ArgumentException>(args is IActionInputArgs<int> == true);
-            args.Targets.ForEach(x => x.HP.Value -= args.GetActionConfigArgs<int>());
+            args.Targets.ForEach(x => x.HP.Value -= this.ActionConfig);
         }
     }
 }

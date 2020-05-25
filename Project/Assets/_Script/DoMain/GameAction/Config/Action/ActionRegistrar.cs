@@ -14,6 +14,13 @@
         /// </summary>
         public ActionRegistrar()
         {
+        }
+
+        /// <summary>
+        /// 注册器
+        /// </summary>
+        public void Registered()
+        {
             var container = ActionContainer.Instance;
             this.RegisteredExecuteAction(container);
             this.RegisteredConditAction(container);
